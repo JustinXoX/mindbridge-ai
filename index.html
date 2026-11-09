@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="zh-Hant"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>MindBridge AI — Every try tells a story.</title><script src="https://cdn.tailwindcss.com/3.4.17"></script><script defer src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script><script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.8/dist/cdn.min.js"></script><style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&display=swap');
+:root{--ink:#30364d;--muted:#74798c;--purple:#7461bd;--line:#e9e8f1;--green:#38785d}
+*{box-sizing:border-box}
+body{margin:0;background:#f7f8fc;color:var(--ink);font-family:'DM Sans','Noto Sans TC',sans-serif;font-size:14px}
+button,input,select{font:inherit}
+button{cursor:pointer;transition:background .15s,transform .15s}
+button:disabled{cursor:not-allowed;opacity:.5}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #b8a5ed;outline-offset:3px}
+button:active:not(:disabled){transform:translateY(1px)}
+[x-cloak]{display:none!important}
+.shell{max-width:1280px;margin:auto;padding:0 34px}
+.topbar{background:#fff;border-bottom:1px solid var(--line)}
+.brand-icon{background:var(--purple);width:39px;height:39px;border-radius:13px;display:grid;place-items:center;color:white}
+.roles{display:flex;background:#f3f3f8;padding:5px;border-radius:13px;gap:3px}
+.roles button{padding:10px 17px;border-radius:9px;color:#72768b}
+.roles button.active{background:white;color:#6650ad;box-shadow:0 2px 6px #3532500c}
+.card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:25px}
+.section-title{font-weight:700;font-size:18px;letter-spacing:-.4px}
+.sub{font-size:12px;color:var(--muted);margin-top:4px}
+.btn{min-height:44px;padding:10px 17px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:600}
+.primary{background:var(--purple);color:white}
+.primary:hover{background:#6250a7}
+.secondary{background:#f0edf8;color:#6550aa}
+.outline{border:1px solid var(--line);background:white}
+.badge{font-size:11px;border-radius:7px;padding:5px 9px;background:#f1eef9;color:#6b55a6;white-space:nowrap}
+.muted{color:var(--muted)}
+.icon{width:19px;height:19px}
+.dashboard{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(330px,1fr);gap:22px}
+.stack{display:flex;flex-direction:column;gap:22px}
+.upload-zone{background:#faf9fe;border:1.5px dashed #c7bce4;border-radius:14px;padding:32px 18px;text-align:center}
+.mode{display:flex;gap:6px;background:#f6f6fa;border-radius:10px;padding:4px;margin:20px 0 16px}
+.mode button{flex:1;min-height:44px;border-radius:8px;color:#777b8c;font-size:12px}
+.mode button.selected{background:white;box-shadow:0 1px 5px #30364d10;color:#6951ad}
+.pet-scene{height:245px;position:relative;display:grid;place-items:center;background:#f1eff9;border-radius:16px;overflow:hidden;margin:18px 0}
+.pet-scene:before{content:'';position:absolute;width:210px;height:210px;border-radius:50%;background:#e6e1f3;top:16px}
+.pet-scene svg{position:relative;width:260px;height:235px}
+.item-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.shop-item{border:1px solid var(--line);border-radius:12px;padding:10px 4px;text-align:center;min-height:100px}
+.shop-item.equipped{background:#f3effb;border-color:#aa95d9}
+.item-art{display:block;font-size:26px;height:37px}
+.progress{height:7px;background:#eeedf3;border-radius:9px;overflow:hidden}
+.progress>span{display:block;height:100%;background:#ac9bd5;border-radius:9px}
+.paper-wrap{background:#f2f1ee;padding:18px;border-radius:12px;margin-top:16px}
+.paper{background:#fffef9;padding:25px 18px;border-radius:4px;box-shadow:0 4px 15px #3835220a;position:relative}
+.paper-row{padding:12px 7px;border-bottom:1px solid #eeece6;font-family:Georgia,'Noto Sans TC',serif;font-size:16px;position:relative}
+.mark{border-radius:5px;border:1.5px dashed;padding:3px 7px;display:inline-block}
+.strike{color:#90632e;border-color:#dca64c;background:#fff4df}
+.erase{color:#6554a0;border-color:#b49bdc;background:#f4effc}
+.unfinished{color:#387c6d;border-color:#7db7a4;background:#edf8f2}
+.checkin{display:flex;gap:9px;margin-top:16px}
+.checkin button{flex:1;border:1px solid var(--line);border-radius:12px;padding:12px 4px}
+.checkin button.selected{background:#f1edf9;border-color:#9d88cf}
+.notice{font-size:12px;color:#757888;line-height:1.8}
+.metric{background:#f7f8fb;border-radius:13px;padding:17px}
+.reward-row{padding:15px 0;border-bottom:1px solid var(--line)}
+.reward-row:last-child{border:0}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;text-align:left}
+th{color:var(--muted);font-size:12px;font-weight:500;background:#f8f8fb}
+td,th{padding:15px 13px;border-bottom:1px solid var(--line);white-space:nowrap}
+tr.chosen td{background:#f5f1fc}
+.quote{padding:22px;border-radius:13px;line-height:1.9}
+.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%);background:#30364d;color:white;padding:14px 24px;border-radius:12px;box-shadow:0 5px 25px #30364d22;z-index:70;max-width:90vw}
+.modal{position:fixed;inset:0;background:#24243f66;display:grid;place-items:center;padding:20px;z-index:60}
+.modal .card{max-width:460px;width:100%}
+label.field{display:block;margin:16px 0 6px;font-weight:600;font-size:13px}
+input,select{width:100%;padding:12px;border:1px solid #dad9e5;border-radius:9px;background:white}
+footer{border-top:1px solid var(--line);margin-top:30px;padding:22px 0;color:#818496;font-size:11px}
+.spinner{animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}
+}
+@media(max-width:900px){.dashboard{grid-template-columns:1fr}
+.shell{padding:0 20px}
+.header-inner{flex-wrap:wrap!important;gap:14px!important}
+.roles{order:3;width:100%;justify-content:center}
+.roles button{flex:1}
+.page-heading{align-items:flex-start!important}
+.parent-grid{grid-template-columns:1fr!important}
+}
+@media(max-width:480px){.shell{padding:0 14px}
+.card{padding:19px}
+.roles button{padding:10px 8px;font-size:12px}
+.page-heading{flex-direction:column;gap:12px!important}
+.checkin button{font-size:12px}
+.item-grid{gap:5px}
+.shop-item{font-size:11px}
+.metric-grid{grid-template-columns:1fr!important}
+.header-tag{display:none}
+.paper-row{font-size:13px}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}
+}
+
+
+/* V2 visual system: a homework studio, evidence inspector and pet club. */
+body{font-size:14px;line-height:1.65}
+.shell{max-width:1320px}
+body h1{font-size:30px;letter-spacing:-.8px;font-weight:700;line-height:1.25}
+body h2{font-size:19px;font-weight:700}
+body h3{font-weight:600}
+.layout{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(340px,1fr);gap:22px}
+.card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px}
+.toplinks{display:flex;gap:24px;border-bottom:1px solid var(--line);margin:20px 0 26px}
+.toplinks button{min-height:48px;border-bottom:2px solid transparent;color:var(--muted);font-size:13px}
+.toplinks button.active{border-color:var(--purple);color:var(--purple);font-weight:600}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:8px;background:#f0ebfa;color:#7156aa;font-size:11px}
+.pill.green{background:#eaf4ed;color:#39765b}
+.pill.amber{background:#fff4dd;color:#91671d}
+.note{font-size:11px;line-height:1.8;color:var(--muted)}
+.btn{font-size:13px}
+.quiet{color:#78638e;font-size:12px;min-height:44px;text-decoration:underline;text-underline-offset:4px}
+.action-row{display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+.feature-strip{background:#eeebf8;border:1px solid #e3dcf1;border-radius:17px;padding:19px 23px}
+.feature-strip h2{color:#614b89;font-size:17px}
+.feature-strip p{font-size:12px;color:#837294;margin-top:5px}
+.mode button.active{background:#fff;color:var(--purple);box-shadow:0 2px 5px #30233d09}
+.worksheet{background:#f3f2ef;border-radius:13px;padding:16px;margin:17px 0}
+.paper-header{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid #e9e7df;padding-bottom:12px}
+.paper h3{font:19px Georgia,serif}
+.paper-row{font-size:17px;line-height:1.9;padding:12px 0}
+.paper-label{display:block;font:10px/1.6 'DM Sans',sans-serif;color:#87838c;margin-top:4px}
+.scribble{font-style:italic;color:#657083}
+.upload-foot{display:flex;justify-content:space-between;align-items:center;gap:15px}
+.metrics{display:flex;background:#f7f6fa;border-radius:13px;padding:15px 0;margin-top:18px}
+.metrics>div{flex:1;padding:0 15px;border-right:1px solid #e7e4ee}
+.metrics>div:last-child{border:0}
+.metrics b{font-size:23px;font-weight:600}
+.metrics span{display:block;font-size:11px;color:var(--muted)}
+.evidence-row{display:grid;grid-template-columns:36px 1fr auto;gap:12px;padding:16px 0;border-bottom:1px solid var(--line)}
+.evidence-row:last-child{border:0}
+.q-num{width:32px;height:32px;display:grid;place-items:center;border-radius:9px;background:#f3f0f8;color:#856baf;font-size:11px}
+.diff{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:6px 0}
+.diff s{background:#fbefeb;color:#9d6f62;padding:1px 7px;border-radius:5px}
+.diff ins{background:#edf5ef;color:#467c5d;text-decoration:none;padding:1px 7px;border-radius:5px}
+.count{font-size:11px;color:#96712f}
+.quote.old{background:#faf1ed;color:#9a7669}
+.quote.new{background:#edf5ef;color:#426e53}
+.pet-scene{height:280px}
+.pet-scene:before{width:230px;height:230px;top:20px}
+.pet-render{position:relative;width:265px;max-width:100%;height:245px;z-index:1}
+.pet-render svg{width:100%;height:100%;overflow:visible}
+.pet-button{border:0;background:transparent}
+.pet-button:hover{transform:rotate(-2deg)}
+.pet-label{position:absolute;top:12px;left:12px;z-index:2;background:white}
+.pet-floor{position:absolute;bottom:12px;font-size:11px;color:#827093;z-index:2}
+.wardrobe{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
+.shop{border:1px solid var(--line);padding:10px 3px;border-radius:12px;min-height:96px}
+.shop.active{background:#f2edfa;border-color:#a48bcf}
+.shop .art{font-size:25px;display:block}
+.shop .name{font-size:11px;display:block}
+.shop .price{font-size:10px;color:#7d5fa7;display:block;margin-top:3px}
+.checkin button.active{background:#f1edf9;border-color:#9d88cf}
+.checkin span{display:block;font-size:25px;margin-bottom:5px}
+.mini-banner{background:#fff6e7;border:1px solid #f3e6cb;border-radius:17px;padding:21px}
+.mini-banner h3{color:#82642f}
+.mini-banner p{font-size:12px;color:#9a865e}
+.field{display:block;font-weight:600;font-size:12px;margin:15px 0 6px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+textarea{width:100%;min-height:90px;resize:vertical;font:inherit;border:1px solid #dedbe8;border-radius:9px;padding:11px;color:var(--ink)}
+.error{font-size:12px;color:#b44848;margin-top:8px}
+.modal .card{max-width:510px;max-height:90vh;overflow-y:auto}
+.empty{padding:26px;border-radius:13px;background:#f8f7fb;text-align:center;color:var(--muted);font-size:13px}
+
+.roster{display:flex;gap:8px;overflow-x:auto;padding:4px 0 12px}
+.roster button{min-width:140px;text-align:left;border:1px solid var(--line);border-radius:12px;padding:13px}
+.roster button.active{border-color:#aa90d2;background:#f3effa}
+.review-box{border:1px solid var(--line);border-radius:12px;padding:16px;margin-top:13px}
+.review-original{background:#faf8f3;padding:12px;border-radius:8px;font:16px/1.8 Georgia,serif}
+.review-note{font-size:12px;color:#56735c;margin-top:10px}
+
+
+.club-banner{display:grid;grid-template-columns:1fr 220px;gap:20px;align-items:center;background:#ede8f6;border:1px solid #e0d7ee;border-radius:21px;padding:25px 28px}
+.club-banner h2{font-size:27px;line-height:1.25;color:#59427c;letter-spacing:-.7px}
+.club-banner .pet-render{width:190px;height:170px;margin:auto}
+.club-banner p{max-width:580px}
+.club-grid{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:22px}
+.pet-gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:19px}
+.pet-card{border:1px solid var(--line);border-radius:16px;padding:13px 12px;background:#fff;min-width:0}
+.pet-card.mine{border-color:#b59ad9;background:#fcfaff}
+.pet-stage{height:148px;border-radius:12px;background:#f4eff9;display:flex;align-items:center;justify-content:center;margin-bottom:9px}
+.pet-stage .pet-render{width:158px;height:148px}
+.pet-card:nth-child(2n) .pet-stage{background:#eff5f1}
+.pet-card:nth-child(3n) .pet-stage{background:#fbf3e8}
+.pet-card .btn{width:100%;font-size:11px;padding:8px 4px}
+.leader-row{display:flex;gap:11px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
+.leader-row:last-child{border:0}
+.rank{background:#f4f1f9;color:#9779bc;width:27px;height:27px;display:grid;place-items:center;font-size:11px;border-radius:8px}
+.exclusive{background:#faf5e9;border:1px solid #eee0be;border-radius:15px;padding:17px}
+.exclusive .pet-render{height:143px;width:160px;margin:auto}
+.weekly-track{font-size:11px;color:#8d7e9e;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.club-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.rules{font-size:12px;line-height:1.9;color:#76798a;padding-left:18px;list-style:disc}
+.sparkle{position:absolute;color:#ceb672;font-size:19px;pointer-events:none}
+.champion-slot{margin-top:12px;padding:12px;background:#fcf6e9;border:1px solid #eee0c3;border-radius:11px}
+
+@media(max-width:1100px){.club-grid{grid-template-columns:1fr 290px}
+.pet-gallery{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+
+@media(max-width:800px){.club-grid{grid-template-columns:1fr}
+.club-banner{grid-template-columns:1fr}
+.club-banner>.pet-render{display:none}
+.club-banner h2{font-size:24px}
+}
+
+@media(max-width:420px){.pet-gallery{gap:9px}
+.pet-card{padding:10px 8px}
+.pet-stage{height:125px}
+.pet-stage .pet-render{width:137px;height:125px}
+}
+
+
+@media(max-width:1000px){.layout{grid-template-columns:1fr}
+.header-inner{flex-wrap:wrap}
+.roles{order:3;width:100%}
+.roles button{flex:1}
+}
+
+@media(max-width:540px){body h1{font-size:25px}
+.pill.header-tag{display:none}
+.paper-header{flex-direction:column;gap:2px}
+.paper{padding:16px}
+.paper-row{font-size:15px}
+.upload-foot{align-items:flex-start;flex-direction:column}
+.upload-foot .btn{width:100%}
+.evidence-row{grid-template-columns:30px 1fr;gap:10px}
+.evidence-row>.count{grid-column:2}
+.metrics>div{padding:0 10px}
+.card-head{flex-wrap:wrap}
+.form-grid{grid-template-columns:1fr}
+.welcome-badge{display:none}
+}
+
+</style></head>
+
+<body x-data="mindBridge()" x-init="boot()" @keydown.escape.window="closeModal()" @keydown.tab.window="trapFocus($event)">
+<header class="topbar">
+<div class="shell header-inner flex items-center justify-between py-5 gap-6">
+<a href="#" @click.prevent="role='student';screen='home'" class="flex items-center gap-3" aria-label="MindBridge 首頁">
+<span class="brand-icon">
+<i data-lucide="sprout">
+</i>
+</span>
+<span class="text-xl font-bold tracking-tight">MindBridge <span class="text-[#8065b9]">AI</span>
+<span class="block text-[10px] muted font-medium tracking-normal">Every try tells a story.</span>
+</span>
+</a>
+<nav class="roles" aria-label="角色切換">
+<template x-for="r in roleOptions" :key="r.id">
+<button @click="role=r.id;screen='home'" :class="{active:role===r.id}" :aria-pressed="role===r.id" x-text="r.label">
+</button>
+</template>
+</nav>
+<span class="pill header-tag">Interactive prototype</span>
+</div>
+</header>
+<main class="shell">
+<div class="flex items-center justify-between gap-4 pt-8">
+<div>
+<p class="sub mb-2" x-text="screen==='club'?'Class 4A / Together we grow':role==='student'?'My learning space / 我的學習小天地':role==='parent'?'Family space / 陪伴，而不是責備':'Teaching space / 看見每一種努力'">
+</p>
+<h1 x-text="screen==='club'?'A little show. A lot of heart.':role==='student'?'Small steps. Big little victories.':role==='parent'?'See the effort. Not just the errors.':'A second look can change everything.'">
+</h1>
+<p class="sub mt-2" x-text="screen==='club'?'每個星期五，讓全班的小夥伴一起見面。':role==='student'?'嗨，小安！不用一次答對，Milo 陪你再試一次。':role==='parent'?'先看他改了什麼、試了什麼，再決定怎樣幫他。':'AI 找出線索，老師複核，再給一個剛剛好的下一步。'">
+</p>
+</div>
+<span class="pill green welcome-badge">Effort over perfection</span>
+</div>
+<nav class="toplinks" aria-label="功能頁面">
+<button @click="screen='home'" :class="{active:screen==='home'}" x-text="role==='student'?'My dashboard':role==='parent'?'Understand & encourage':'Review & assign'">
+</button>
+<button @click="screen='club'" :class="{active:screen==='club'}">Friday Pet Club <span class="pill amber ml-1">New</span>
+</button>
+</nav>
+<!-- Student: an English worksheet, effort evidence and companion. -->
+<section x-show="role==='student' && screen==='home'" x-cloak class="layout" id="student-view">
+<div class="stack">
+<article class="card">
+<div class="card-head">
+<div>
+<h2>Every try counts.</h2>
+<p class="sub">Homework studio · 把努力留下來</p>
+</div>
+<span class="pill amber">✦ 每日首次 +30</span>
+</div>
+<div class="mode">
+<button @click="mode='app'" :class="{active:mode==='app'}">App 拍照上傳</button>
+<button @click="mode='device'" :class="{active:mode==='device'}">3D Print 裝置拍照</button>
+</div>
+<div class="worksheet">
+<div class="paper" role="img" aria-label="英文示意作業，含塗改、擦拭及未完成句子">
+<div class="paper-header">
+<div>
+<p class="note mb-1">English practice · Grade 4</p>
+<h3>A little better, every day.</h3>
+</div>
+<span class="note">Name: Alex (小安)<br>示意作業 / Sample</span>
+</div>
+<div class="paper-row">1. Yesterday, I <span :class="uploaded?'mark strike':'scribble'">
+<s>go</s> <s>goed</s> <b>went</b>
+</span> to the park.<span class="paper-label" x-show="uploaded">2 detected changes · go → goed → went</span>
+</div>
+<div class="paper-row">2. She <span :class="uploaded?'mark strike':'scribble'">
+<s>have</s> <b>has</b>
+</span> two cats.<span class="paper-label" x-show="uploaded">1 strikethrough · have → has</span>
+</div>
+<div class="paper-row">3. We <span :class="uploaded?'mark erase':'scribble'">
+<span style="opacity:.32">is</span> <b>are</b>
+</span> playing outside.<span class="paper-label" x-show="uploaded">1 possible erasure · original word needs teacher review</span>
+</div>
+<div class="paper-row">4. Write one sentence about your weekend.<br>
+<span :class="uploaded?'mark unfinished':'scribble'">I went to …</span>
+<span class="paper-label" x-show="uploaded">Unfinished answer · ask what they wanted to say next</span>
+</div>
+</div>
+</div>
+<div x-show="!loading" class="upload-foot">
+<div>
+<p class="text-xs font-medium" x-text="uploaded?'已找到值得被看見的努力':'不是找錯誤，是看見你怎樣再試一次。'">
+</p>
+<p class="note" x-text="mode==='device'?'模擬拍攝架，不連接真實硬體。':'使用英文範例，不上傳個人照片。'">
+</p>
+</div>
+<button class="btn primary" @click="upload()">
+<i data-lucide="scan-line" class="icon">
+</i>
+<span x-text="uploaded?'重新模擬分析':mode==='app'?'模擬拍照上傳':'模擬裝置拍攝'">
+</span>
+</button>
+</div>
+<div x-show="loading" class="p-5 text-center text-[#8565ad]" role="status" x-text="stage">
+</div>
+<div x-show="uploaded && !loading" class="mt-5">
+<div class="p-4 rounded-xl bg-[#edf5ef] text-[#416b50] text-sm">你把 “goed” 改成了 “went”。再試一次，就是進步。<p class="text-xs mt-1">第 4 題可以先說說，你去了哪裡？</p>
+</div>
+<div class="metrics">
+<div>
+<b x-text="editCount('an')">
+</b>
+<span>偵測修改 · 估計</span>
+</div>
+<div>
+<b>3</b>
+<span>重新嘗試的題目</span>
+</div>
+<div>
+<b>1</b>
+<span>下一個小步驟</span>
+</div>
+</div>
+<p class="note mt-3">單張照片不能還原確切次數與先後；這是示範重建，老師可更正。塗改多不等於更認真，也不直接代表焦慮。</p>
+</div>
+</article>
+<article class="card">
+<div class="card-head">
+<div>
+<h2>Your next little adventure.</h2>
+<p class="sub">老師給你的小任務 · 嘗試後由老師確認積分</p>
+</div>
+<span class="pill" x-text="myTasks.length+' tasks'">
+</span>
+</div>
+<template x-for="t in myTasks" :key="t.id">
+<div class="reward-row" :data-task-id="t.id">
+<div class="flex justify-between gap-3">
+<h3 x-text="t.title">
+</h3>
+<span class="pill amber" x-text="'✦ '+t.points">
+</span>
+</div>
+<p class="text-xs muted mt-2 whitespace-pre-line" x-text="t.instructions">
+</p>
+<p x-show="t.due" class="note mt-2" x-text="'截止日期：'+t.due">
+</p>
+<div class="mt-3">
+<button x-show="!t.submissions.an" class="btn secondary" @click="openTask(t)">開始任務</button>
+<span x-show="t.submissions.an" class="pill green" x-text="t.submissions.an?.status==='approved'?'已確認 · 積分已入帳':'等待老師確認'">
+</span>
+</div>
+</div>
+</template>
+<p x-show="!myTasks.length" class="empty mt-4">老師還沒有派發任務。</p>
+</article>
+<article class="card">
+<h2>How did it feel?</h2>
+<p class="sub">今天的感受，不需要標準答案</p>
+<div class="checkin">
+<template x-for="m in moods" :key="m.id">
+<button @click="mood=m.id;save();notify('謝謝你分享。家長頁已同步你的感受。')" :class="{active:mood===m.id}" :aria-pressed="mood===m.id" :aria-label="m.label">
+<span x-text="m.face">
+</span>
+<b class="font-normal" x-text="m.label">
+</b>
+</button>
+</template>
+</div>
+<p class="note mt-3">感受由你親自分享，不讓筆跡替你說話。這個回報會讓家長知道。</p>
+</article>
+</div>
+<aside class="stack">
+<article class="card">
+<div class="card-head">
+<div>
+<h2>A tiny friend. A big fan.</h2>
+<p class="sub">Milo 永遠站在你這一邊</p>
+</div>
+<div class="text-right">
+<b class="text-xl text-[#af7a2e]">✦ <span id="points" x-text="points">
+</span>
+</b>
+<p class="note">可用積分</p>
+</div>
+</div>
+<div class="pet-scene">
+<span class="pet-label pill">Milo · Your study buddy</span>
+<button class="pet-render pet-button" aria-label="摸摸 Milo" @click="petHappy=true;notify('Milo：你的每一次嘗試，我都有看見！');setTimeout(()=>petHappy=false,1800)" x-html="petMarkup(equipped,'peach',petHappy)">
+</button>
+<span class="pet-floor" x-text="petHappy?'♥ Purr-fectly proud of you!':'點一下 Milo，收下今天的小鼓勵。'">
+</span>
+</div>
+<div class="flex justify-between items-center mb-3">
+<h3>Little wardrobe</h3>
+<span class="note">買一次，隨時穿</span>
+</div>
+<div class="wardrobe">
+<template x-for="i in items" :key="i.id">
+<button class="shop" :class="{active:equipped.includes(i.id)}" @click="equip(i)" :aria-pressed="equipped.includes(i.id)" :aria-label="i.name+'，'+shopLabel(i)">
+<span class="art" x-text="i.art">
+</span>
+<span class="name" x-text="i.name">
+</span>
+<span class="price" x-text="shopLabel(i)">
+</span>
+</button>
+</template>
+</div>
+<div class="champion-slot">
+<div class="flex justify-between gap-2">
+<b class="text-xs text-[#957438]">✦ Starlight Jacket</b>
+<span class="pill amber">Weekly exclusive</span>
+</div>
+<p class="note mt-1" x-text="championOwners.includes('an')?'你的每週冠軍紀念外套，永久保留。':'本週積分冠軍獎勵；不能用積分購買。'">
+</p>
+<button x-show="championOwners.includes('an')" @click="toggleChampion()" class="btn secondary mt-2" x-text="equipped.includes('champion')?'卸下星光外套':'穿上星光外套'">
+</button>
+</div>
+<p class="note mt-3">首次購買扣點，卸下／重穿免費。花掉的點數不影響每週努力排名。</p>
+</article>
+<div class="mini-banner">
+<h3>Fridays are for little friends.</h3>
+<p class="mt-2">帶 Milo 去見同學的小夥伴。每週努力冠軍還能解鎖星光外套！</p>
+<button class="quiet" @click="screen='club'">探索 Friday Pet Club</button>
+</div>
+<article class="card">
+<h2>Little promises, together.</h2>
+<p class="sub">和家人的小約定</p>
+<template x-for="r in rewards" :key="r.id">
+<div class="reward-row">
+<div class="flex justify-between items-center gap-2">
+<b x-text="r.title" class="text-sm">
+</b>
+<span class="pill" x-text="r.claimed?'已兌換':Math.min(progress(r),r.target)+' / '+r.target">
+</span>
+</div>
+<p class="note mt-1" x-text="r.kind==='streak'?'連續 '+r.target+' 天上傳功課':'累積 '+r.target+' 天上傳功課'">
+</p>
+<div class="progress">
+<span :style="'width:'+Math.min(100,progress(r)/r.target*100)+'%'">
+</span>
+</div>
+<button class="btn secondary mt-3" x-show="progress(r)>=r.target && !r.claimed" @click="claim(r)">兌換小獎勵</button>
+</div>
+</template>
+<p class="note mt-3" x-show="!rewards.length">請家長一起設定一個小約定吧。</p>
+</article>
+</aside>
+</section>
+<!-- Parent: concrete observations, not motivation or mental-health labels. -->
+<section x-show="role==='parent' && screen==='home'" x-cloak class="stack" id="parent-view">
+<div class="feature-strip">
+<h2>Before “Why is this wrong?”, try “I see you tried.”</h2>
+<p>不是替孩子判定「夠不夠努力」，而是讓每一次嘗試，都有機會被理解。</p>
+</div>
+<div class="layout">
+<article class="card" id="parent-evidence">
+<div class="card-head">
+<div>
+<h2>The story behind the answer.</h2>
+<p class="sub">改了幾次？劃掉什麼？又換成什麼？</p>
+</div>
+<span class="pill" x-text="uploaded?'Alex · English':'範例預覽'">
+</span>
+</div>
+<div class="metrics">
+<div>
+<b x-text="editCount('an')">
+</b>
+<span>偵測修改 · 估計</span>
+</div>
+<div>
+<b x-text="reviewedCount('an')+' / 3'">
+</b>
+<span>老師已複核</span>
+</div>
+<div>
+<b>Q4</b>
+<span>尚未完成</span>
+</div>
+</div>
+<div class="mt-4">
+<template x-for="e in evidence('an')" :key="e.id">
+<div class="evidence-row">
+<span class="q-num" x-text="e.q">
+</span>
+<div>
+<b class="text-xs" x-text="e.skill">
+</b>
+<div class="diff">
+<s x-text="e.before">
+</s>
+<span class="muted">→</span>
+<ins x-text="e.after">
+</ins>
+</div>
+<p class="note" x-text="e.observation">
+</p>
+<span class="pill mt-2" :class="e.status==='pending'?'amber':'green'" x-text="reviewLabel(e)">
+</span>
+<p x-show="e.note" class="note mt-2" x-text="'老師：'+e.note">
+</p>
+</div>
+<span class="count" x-text="e.count+' 次修改'+(e.status==='pending'?'（估計）':'（複核）')">
+</span>
+</div>
+</template>
+</div>
+<p class="note mt-3">“go → goed → went” 是示範重建，不是真實時間紀錄。擦掉的字可能無法辨認；次數只是線索，不能證明認真程度或心理狀態。</p>
+</article>
+<div class="stack">
+<article class="card">
+<h2>Less blame. More understanding.</h2>
+<p class="sub">先肯定具體行為，再問孩子需要什麼</p>
+<div class="quote old mt-5">
+<p class="text-[11px]">Instead of saying</p>
+<p class="mt-1">「怎麼又寫錯？你是不是根本沒用心？」</p>
+</div>
+<div class="quote new mt-3">
+<p class="text-[11px]">Try saying this</p>
+<p id="encouragement" class="mt-1 font-medium" x-text="encouragement">
+</p>
+</div>
+<div class="action-row mt-4">
+<button class="btn secondary" @click="wordIndex=(wordIndex+1)%3">換一句鼓勵</button>
+<button class="btn outline" @click="copyText(encouragement)">複製建議</button>
+</div>
+<p class="note mt-3">依據 Q1 修改、Q4 停頓和孩子自述。老師更正辨識後，建議也會更新。</p>
+</article>
+<article class="card" id="parent-checkin">
+<div class="card-head">
+<h2>Ask, don't assume.</h2>
+<span class="pill green" x-text="moodLabel">
+</span>
+</div>
+<p class="text-sm mt-3 leading-7" x-text="mood==='unsure'?'孩子說自己有點不確定。可以問：「是還不熟悉 went，還是擔心再次寫錯？」先聽答案，再一起決定下一步。':mood==='tired'?'孩子說有點累了。這時才適合問：「要不要先休息一下，再一起完成一小題？」':'我們看見孩子回頭修正答案，但還不知道他當時怎麼想。請先問：「你改這個字時，是怎麼想的？」'">
+</p>
+<p class="note mt-3">情緒由孩子自我回報，絕不根據塗改推測焦慮分數或「不夠努力」。</p>
+</article>
+</div>
+</div>
+<article class="card">
+<div class="card-head">
+<div>
+<h2>Give effort something to look forward to.</h2>
+<p class="sub">自訂家長獎勵 · 學生頁即時同步</p>
+</div>
+<button class="btn primary" @click="openReward()">＋ 新增獎勵</button>
+</div>
+<template x-for="r in rewards" :key="r.id">
+<div class="reward-row flex flex-wrap justify-between items-center gap-3">
+<div>
+<b x-text="r.title">
+</b>
+<p class="sub" x-text="(r.kind==='streak'?'連續上傳：':'累積上傳：')+Math.min(progress(r),r.target)+' / '+r.target+(r.claimed?' · 已兌換':'')">
+</p>
+</div>
+<div class="action-row">
+<button class="btn outline" @click="openReward(r)">編輯</button>
+<button class="btn outline" @click="deleteId=r.id;openModal('delete')">刪除</button>
+</div>
+</div>
+</template>
+<p class="note mt-3">初始包含 2 天示範紀錄；每日只累計一次。獎勵嘗試與參與，不鼓勵為了點數故意改錯。</p>
+</article>
+</section>
+
+<section x-show="role==='teacher' && screen==='home'" x-cloak class="stack" id="teacher-view">
+<article class="card">
+<div class="card-head">
+<div>
+<h2>One class. Many ways of trying.</h2>
+<p class="sub">Class 4A · English practice · 示範班級資料</p>
+</div>
+<label class="text-xs muted">作業篩選<select id="reviewFilter" x-model="reviewFilter" class="!py-2 mt-1">
+<option value="all">全部作業</option>
+<option value="pending">仍需複核</option>
+<option value="done">複核完成</option>
+</select>
+</label>
+</div>
+<div class="roster mt-4">
+<template x-for="s in filteredRoster" :key="s.id">
+<button @click="selectedId=s.id" :class="{active:selectedId===s.id}" :aria-label="'查看 '+s.name">
+<b x-text="s.name">
+</b>
+<span class="block note" x-text="s.id==='an'?(uploaded?'已模擬上傳':'範例預覽'):'示範作業已上傳'">
+</span>
+<span class="pill mt-2" x-text="reviewedCount(s.id)+' / '+evidence(s.id).length+' 已複核'">
+</span>
+</button>
+</template>
+</div>
+<p x-show="!filteredRoster.length" class="empty">目前沒有符合條件的作業。</p>
+</article>
+<div class="layout">
+<article class="card">
+<div class="card-head">
+<div>
+<h2>
+<span x-text="studentName(selectedId)">
+</span> · A closer look</h2>
+<p class="sub">AI 提出線索，老師保留最後判斷</p>
+</div>
+<span class="pill amber">Human in the loop</span>
+</div>
+<template x-for="e in evidence(selectedId)" :key="selectedId+e.id">
+<div class="review-box">
+<div class="flex justify-between gap-3">
+<b class="text-xs" x-text="e.q+' · '+e.skill">
+</b>
+<span class="pill" x-text="reviewLabel(e)">
+</span>
+</div>
+<div class="review-original mt-3">
+<span class="block note">原始辨識／示意作業摘錄（保留不覆寫）</span>
+<s x-text="original(selectedId,e.id).before">
+</s> → <b x-text="original(selectedId,e.id).after">
+</b>
+</div>
+<div class="flex flex-wrap justify-between items-center gap-3 mt-3">
+<div>
+<p class="text-xs" x-text="'目前紀錄：'+e.before+' → '+e.after">
+</p>
+<p class="note" x-text="e.count+' 次修改'+(e.status==='pending'?'（AI 估計）':'（老師複核紀錄）')">
+</p>
+</div>
+<button class="btn secondary" @click="openReview(e)" x-text="'複核 '+e.q">
+</button>
+</div>
+<p x-show="e.note" class="review-note" x-text="e.note">
+</p>
+</div>
+</template>
+<div class="mt-4 p-4 rounded-xl bg-[#edf5ef] text-xs text-[#4c7758]" x-text="selectedId==='an'?'解題中斷：Q4「I went to …」尚未完成。先請孩子口述目的地，再選一個地點詞。':'先請學生解釋修改原因，再判斷是否需要更多英文例句。'">
+</div>
+<p class="note mt-3">不清楚就標記「無法辨認」，不把模糊字跡當作學生的錯誤。家長頁會同步複核結果。</p>
+</article>
+<div class="stack">
+<article class="card">
+<h2>A kinder next step.</h2>
+<p class="sub">針對性教學建議與學生回饋</p>
+<div x-show="!feedbacks[selectedId]" class="empty my-5">根據目前選取學生的紀錄，生成一個可討論的下一步。</div>
+<div x-show="feedbacks[selectedId]" class="quote new my-5 whitespace-pre-line text-sm" x-text="feedbacks[selectedId]">
+</div>
+<button class="btn primary" @click="generate()" :disabled="generating" x-text="generating?'整理回饋中…':'一鍵生成教學回饋'">
+</button>
+<button class="btn outline mt-2" x-show="feedbacks[selectedId]" @click="copyText(feedbacks[selectedId])">複製回饋</button>
+<p class="note mt-3">本機規則式模擬，不會自動對外發送。更改複核後，舊建議會清除，避免引用過期資訊。</p>
+</article>
+<article class="card">
+<h2>Give a task. Not a label.</h2>
+<p class="sub">派發一個可完成的小步驟，而不是要求一次完美</p>
+<form @submit.prevent="assignTask()">
+<label class="field" for="taskTitle">Task title</label>
+<input id="taskTitle" x-model="taskDraft.title" maxlength="80" required placeholder="My weekend story">
+<label class="field" for="taskInstructions">Instructions (English)</label>
+<textarea id="taskInstructions" x-model="taskDraft.instructions" required maxlength="600" placeholder="Write one sentence with went. Tell me how you chose the word.">
+</textarea>
+<div class="form-grid">
+<div>
+<label class="field" for="taskTarget">派發對象</label>
+<select id="taskTarget" x-model="taskDraft.target">
+<option value="all">全班學生</option>
+<template x-for="s in roster" :key="s.id">
+<option :value="s.id" x-text="s.name">
+</option>
+</template>
+</select>
+</div>
+<div>
+<label class="field" for="taskPoints">努力積分（5–50）</label>
+<input id="taskPoints" type="number" min="5" max="50" step="1" x-model.number="taskDraft.points" required>
+</div>
+</div>
+<label class="field" for="taskDue">截止日期（選填）</label>
+<input id="taskDue" type="date" x-model="taskDraft.due" :min="localDay()">
+<p class="error" x-text="taskError">
+</p>
+<button type="submit" class="btn primary mt-4">派發任務</button>
+<p class="note mt-3">積分獎勵真實嘗試，由老師閱讀提交內容後確認；不以塗改次數給分。</p>
+</form>
+</article>
+</div>
+</div>
+<article class="card">
+<h2>Little steps, followed through.</h2>
+<p class="sub">任務追蹤 · 此原型僅模擬 Alex 的學生端</p>
+<template x-for="t in tasks" :key="t.id">
+<div class="reward-row">
+<div class="card-head">
+<div>
+<h3 x-text="t.title">
+</h3>
+<p class="note" x-text="t.targets.map(id=>studentName(id)).join('、')+' · ✦ '+t.points+(t.due?' · 截止 '+t.due:'')">
+</p>
+</div>
+<span class="pill" x-text="Object.keys(t.submissions).length+' / '+t.targets.length+' 已提交'">
+</span>
+</div>
+<p class="sub mt-2 whitespace-pre-line" x-text="t.instructions">
+</p>
+<template x-for="entry in Object.entries(t.submissions)" :key="entry[0]">
+<div class="p-4 rounded-xl bg-[#f6f5fa] mt-3" :data-submission-id="t.id+'-'+entry[0]">
+<b class="text-xs" x-text="studentName(entry[0])">
+</b>
+<p class="text-sm my-3 whitespace-pre-line break-words" x-text="entry[1].answer">
+</p>
+<button class="btn secondary" x-show="entry[1].status==='submitted'" @click="approveTask(t.id,entry[0])">確認努力並給分</button>
+<span x-show="entry[1].status==='approved'" class="pill green">已確認 · 已給分</span>
+</div>
+</template>
+</div>
+</template>
+</article>
+</section>
+
+
+<section x-show="screen==='club'" x-cloak class="stack" id="club-view">
+<div class="club-banner">
+<div>
+<div class="action-row mb-3">
+<span class="pill bg-white">Class 4A · Every Friday</span>
+<span class="pill green" x-show="clubOpen">Pet Club is open</span>
+<span class="pill amber" x-show="!clubOpen">星期五開放參加</span>
+</div>
+<h2>Bring your buddy.<br>Celebrate everybody.</h2>
+<p class="text-sm text-[#7b6893] mt-3">每個人都能帶自己的寵物來，不需要最高分才值得被看見。看看同學的小夥伴，送上一句「你願意再試一次，真好」。</p>
+<div class="action-row mt-4">
+<button x-show="role==='student'" class="btn primary" @click="joinClub()" :disabled="!clubOpen || joined" x-text="joined?'Milo 已在展示中':'讓 Milo 參加展示'">
+</button>
+<span x-show="role!=='student'" class="note">學生可自行選擇是否展示 · 只分享暱稱和寵物</span>
+</div>
+</div>
+<div class="pet-render" x-html="petMarkup(['scarf','hat'],'cream',true)">
+</div>
+</div>
+<div class="club-toolbar">
+<div class="weekly-track">
+<span x-text="'本週 '+activeWeek+' 起'">
+</span>
+<span>·</span>
+<span x-text="demoFriday?'Demo: Friday 已開啟（不改變系統日期）':'按裝置當地時間，每逢星期五開放'">
+</span>
+</div>
+<button class="btn outline text-xs" @click="demoFriday=!demoFriday" :aria-pressed="demoFriday" x-text="demoFriday?'返回真實日期':'模擬星期五'">
+</button>
+</div>
+<div class="club-grid">
+<article class="card">
+<div class="card-head">
+<div>
+<h2>Meet the little crew.</h2>
+<p class="sub" x-text="showcaseEntries.length+' 位小夥伴 · 示範班級展示'">
+</p>
+</div>
+<span class="pill green">No homework shared</span>
+</div>
+<p class="note mt-3" x-show="!clubOpen">現在是展示預覽。星期五可讓 Milo 正式加入；也可按「模擬星期五」體驗。</p>
+<div class="pet-gallery">
+<template x-for="s in showcaseEntries" :key="s.id">
+<div class="pet-card" :class="{mine:s.id==='an'}" :data-pet-owner="s.id">
+<div class="pet-stage">
+<div class="pet-render" x-html="petMarkup(s.accessories,s.coat,false)">
+</div>
+</div>
+<div class="flex justify-between items-center gap-1">
+<b class="text-sm" x-text="s.pet">
+</b>
+<span class="pill !p-1 !text-[9px]" x-show="s.id==='an'">You</span>
+</div>
+<p class="note" x-text="studentName(s.id)">
+</p>
+<p class="note mt-2 min-h-[39px]" x-text="s.motto">
+</p>
+<button x-show="s.id!=='an' && role==='student'" class="btn secondary mt-2" @click="cheer(s.id)" :disabled="!clubOpen || cheers.includes(s.id)" :aria-label="'給 '+studentName(s.id)+' 一個鼓勵'" x-text="cheers.includes(s.id)?'♥ 已送出鼓勵':'♡ 你今天也很棒'">
+</button>
+<button x-show="s.id==='an' && role==='student'" class="quiet text-xs" @click="withdrawClub()">收起我的展示</button>
+<span x-show="role!=='student'" class="pill green mt-2">一起為嘗試喝采</span>
+</div>
+</template>
+</div>
+<p class="note mt-4">其他學生與寵物為示範資料。鼓勵不是人氣競賽，不影響積分或冠軍；同一週每位同學只送一次。</p>
+</article>
+<aside class="stack">
+<article class="card">
+<div class="card-head">
+<div>
+<h2>This week's effort.</h2>
+<p class="sub">本週獲得積分，不是帳戶餘額</p>
+</div>
+<span class="text-[#c1a054]">✦</span>
+</div>
+<template x-for="(s,index) in rankedStudents" :key="s.id">
+<div class="leader-row">
+<span class="rank" x-text="rankOf(s.id)">
+</span>
+<div class="flex-1">
+<b class="text-xs" x-text="s.name">
+</b>
+<span class="block note" x-text="s.id==='an'?'你的每一步，都有累積':'示範本週紀錄'">
+</span>
+</div>
+<b class="text-sm text-[#8868b1]" x-text="s.points">
+</b>
+</div>
+</template>
+<p class="note mt-3">初始積分含示範紀錄。只獎勵每日上傳及老師確認的任務；購買配件不扣排名分，塗改次數與鼓勵數不計分。</p>
+</article>
+<div class="exclusive">
+<div class="flex justify-between items-center">
+<b class="text-sm text-[#937239]">Starlight Jacket</b>
+<span class="pill amber">Weekly exclusive</span>
+</div>
+<div class="pet-render" x-html="petMarkup(['champion'],'peach',false)">
+</div>
+<p class="text-xs text-[#8c774e]">本週最高積分的小夥伴，獲得一件專屬星光外套。同分者一起得獎，永久保留。</p>
+<div x-show="currentResult" class="mt-3">
+<span class="pill green">本週已結算</span>
+<p class="text-xs mt-2" x-text="currentResult?'得獎：'+currentResult.winners.map(id=>studentName(id)).join('、'):''">
+</p>
+<p class="note mt-1">依結算當時的積分快照頒獎，之後增加的點數不追溯改獎。</p>
+</div>
+<button x-show="role==='teacher'" class="btn primary w-full mt-4" :disabled="!clubOpen || !!currentResult" @click="openModal('settle')">結算本週獎勵</button>
+<p x-show="role!=='teacher' && !currentResult" class="note mt-3">由老師在星期五確認本週結果。</p>
+</div>
+<article class="card">
+<h3>Everyone belongs here.</h3>
+<ul class="rules mt-3">
+<li>展示開放全班，不以積分限制加入。</li>
+<li>每週重新累計，衣櫃收藏永久保留。</li>
+<li>本機原型會模擬全班；沒有真實多人連線。</li>
+</ul>
+</article>
+</aside>
+</div>
+</section>
+
+<footer class="flex flex-wrap justify-between items-center gap-3">
+<span>
+<b>MindBridge AI</b> · Smarter homework support for students, parents and teachers.</span>
+<button class="quiet" @click="openModal('reset')">重設體驗資料</button>
+<span>Demo data · 本機儲存 · 無真實 AI／跨裝置同步</span>
+</footer>
+</main>
+<div class="modal" x-show="modal" x-cloak @click.self="closeModal()" x-ref="modalRoot">
+<div class="card" role="dialog" aria-modal="true" aria-label="操作視窗">
+<form x-show="modal==='reward'" @submit.prevent="saveReward()">
+<h2 x-text="editingId?'編輯小約定':'新增小約定'">
+</h2>
+<label class="field" for="rewardName">獎勵內容</label>
+<input id="rewardName" x-model="draft.title" required maxlength="40">
+<label class="field" for="rewardKind">達成條件</label>
+<select id="rewardKind" x-model="draft.kind">
+<option value="streak">連續上傳天數</option>
+<option value="total">累積上傳天數</option>
+</select>
+<label class="field" for="rewardTarget">目標（1–30）</label>
+<input id="rewardTarget" x-model.number="draft.target" type="number" min="1" max="30" step="1" required>
+<p class="error" x-text="formError">
+</p>
+<div class="action-row justify-end mt-5">
+<button type="button" class="btn outline" @click="closeModal()">取消</button>
+<button class="btn primary" type="submit">儲存獎勵</button>
+</div>
+</form>
+<div x-show="modal==='delete'">
+<h2>刪除這個小約定？</h2>
+<p class="sub mt-3">學生頁會同步移除，積分不受影響。</p>
+<div class="action-row justify-end mt-5">
+<button class="btn outline" @click="closeModal()">取消</button>
+<button class="btn primary" @click="deleteReward()">確認刪除</button>
+</div>
+</div>
+<div x-show="modal==='reset'">
+<h2>重新開始這次體驗？</h2>
+<p class="sub mt-3">清除 v2 的積分、複核、任務、換裝與活動紀錄，恢復示範資料。v1 備份不受影響。</p>
+<div class="action-row justify-end mt-5">
+<button class="btn outline" @click="closeModal()">取消</button>
+<button class="btn primary" @click="reset()">確認重設</button>
+</div>
+</div>
+
+<form x-show="modal==='review'" @submit.prevent="saveReview()">
+<h2>Teacher second look</h2>
+<p class="sub">複核修改，不替孩子猜測感受。</p>
+<div class="form-grid">
+<div>
+<label class="field" for="reviewBefore">原寫法</label>
+<input id="reviewBefore" x-model="reviewDraft.before" maxlength="80">
+</div>
+<div>
+<label class="field" for="reviewAfter">修改後</label>
+<input id="reviewAfter" x-model="reviewDraft.after" maxlength="80" required>
+</div>
+</div>
+<div class="form-grid">
+<div>
+<label class="field" for="reviewCount">修改次數（0–20）</label>
+<input id="reviewCount" x-model.number="reviewDraft.count" type="number" min="0" max="20" step="1" required>
+</div>
+<div>
+<label class="field" for="reviewStatus">複核結果</label>
+<select id="reviewStatus" x-model="reviewDraft.status">
+<option value="confirmed">確認辨識</option>
+<option value="corrected">更正辨識</option>
+<option value="unreadable">原字無法辨認</option>
+</select>
+</div>
+</div>
+<label class="field" for="reviewNote">補充說明</label>
+<textarea id="reviewNote" x-model="reviewDraft.note" maxlength="300" placeholder="例如：已與學生確認，只修改一次。">
+</textarea>
+<p class="error" x-text="formError">
+</p>
+<div class="action-row justify-end mt-5">
+<button type="button" class="btn outline" @click="closeModal()">取消</button>
+<button type="submit" class="btn primary">儲存複核</button>
+</div>
+</form>
+<form x-show="modal==='answer'" @submit.prevent="submitTask()">
+<h2>One brave try.</h2>
+<p class="sub" x-text="tasks.find(t=>t.id===answerTaskId)?.instructions">
+</p>
+<label class="field" for="taskAnswer">Your answer & thinking</label>
+<textarea id="taskAnswer" x-model="taskAnswer" required maxlength="1200" placeholder="I went to… I was unsure about…">
+</textarea>
+<p class="error" x-text="formError">
+</p>
+<p class="note mt-2">提交不會立即得分；老師確認你的嘗試後，積分會同步入帳。</p>
+<div class="action-row justify-end mt-5">
+<button type="button" class="btn outline" @click="closeModal()">取消</button>
+<button type="submit" class="btn primary">提交給老師</button>
+</div>
+</form>
+<div x-show="modal==='settle'">
+<h2>Celebrate this week's effort?</h2>
+<p class="sub mt-3">以目前「本週獲得積分」結算。最高分同分者都會得到星光外套；本週不能重複結算。</p>
+<p class="p-4 bg-[#faf4e6] rounded-xl text-sm mt-4" x-text="'目前最高：'+leaders.map(s=>s.name).join('、')+' · '+(leaders[0]?.points||0)+' 分'">
+</p>
+<p class="note mt-2">請先確認已處理本週任務。未確認任務不計入本次獎勵快照。</p>
+<div class="action-row justify-end mt-5">
+<button class="btn outline" @click="closeModal()">取消</button>
+<button class="btn primary" @click="settleWeek()">確認結算</button>
+</div>
+</div>
+<!-- EXTRA_MODALS -->
+
+</div>
+</div>
+<div class="toast" x-show="toast" x-transition.opacity x-cloak role="status" aria-live="polite" x-text="toast">
+</div>
+<noscript>
+<p style="padding:30px">請啟用 JavaScript 及網路連線。</p>
+</noscript>
+<script>
+/* Original MindBridge companion. Classic script: petSVG() returns standalone SVG. */
+function petSVG(accessories = [], coat = 'peach', happy = false) {
+  const palettes = {
+    peach: ['#F6C6A6', '#BF8C77', '#FFF1DF', '#E8AC8C', 'peach'],
+    cream: ['#F5DEB5', '#BA9B77', '#FFF8E9', '#E4C79C', 'cream'],
+    gray: ['#C5CDDB', '#8892AB', '#EDF0F8', '#ABB6CC', 'gray'],
+    cocoa: ['#C59B83', '#865D57', '#F1D6BF', '#AC7C68', 'cocoa'],
+    lavender: ['#D8CAF0', '#AA92C5', '#F6EEFF', '#C1AFE0', 'lavender'],
+    mint: ['#C1E0CE', '#83AC9D', '#EDF9ED', '#A2C9B7', 'mint']
+  };
+  const p = typeof coat === 'string' && Object.prototype.hasOwnProperty.call(palettes, coat)
+    ? palettes[coat] : palettes.peach;
+  const smiling = happy === true;
+  const a = new Set(Array.isArray(accessories) ? accessories : []);
+  const labels = { glasses: 'round glasses', scarf: 'a purple scarf', hat: 'a golden star hat', wand: 'a star wand', champion: 'a blue-purple champion star jacket' };
+  const worn = Object.keys(labels).filter(id => a.has(id)).map(id => labels[id]);
+  const star = 'M0-11L3-4L11-3L5 3L7 11L0 7L-7 11L-5 3L-11-3L-3-4Z';
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 280" role="img" aria-label="A fluffy ${p[4]} kitten learning companion${smiling ? ', smiling happily' : ''}${worn.length ? ' with ' + worn.join(', ') : ''}" focusable="false">
+  <ellipse cx="151" cy="256" rx="78" ry="10" fill="#493457" opacity=".09"/>
+  <g stroke="${p[1]}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M185 226C222 248 258 231 244 207C237 195 220 200 225 211" fill="none" stroke-width="27"/>
+    <path d="M185 226C222 248 258 231 244 207C237 195 220 200 225 211" fill="none" stroke="${p[0]}" stroke-width="21"/>
+    <path d="M244 207C237 195 220 200 225 211" fill="none" stroke="${p[2]}" stroke-width="19"/>
+    <path d="M114 174C101 192 101 219 108 237C114 253 182 253 191 237C200 218 195 190 183 174Z" fill="${p[0]}"/>
+    <ellipse cx="150" cy="220" rx="28" ry="27" fill="${p[2]}" stroke="none"/>
+    ${a.has('wand') ? `<g data-accessory="wand">
+      <path d="M42 188L109 225" stroke="#A68163" stroke-width="7"/>
+      <path d="M42 188L109 225" stroke="#FFE4A7" stroke-width="3"/>
+      <path d="${star}" transform="translate(38 181) scale(1.4)" fill="#FFDA78" stroke="#C2984D" stroke-width="1.8"/>
+      <path d="M32 176L35 172" stroke="#FFF7D9" stroke-width="3"/>
+      <path d="M16 155V163M12 159H20" stroke="#D6B161" stroke-width="2"/>
+    </g>` : ''}
+    <path d="M111 193C96 198 95 223 108 227C119 229 123 219 122 207M188 193C203 198 204 223 191 227C180 229 176 219 177 207" fill="${p[0]}"/>
+    ${a.has('champion') ? `<g data-accessory="champion" stroke="#655AAB" stroke-width="2.5">
+      <path d="M116 184L104 194Q98 203 101 215L119 219L117 237Q150 248 184 237L181 219L200 215Q203 204 196 194L183 184Z" fill="#779DE5"/>
+      <path d="M150 190L183 184L196 194Q203 204 200 215L181 219L184 237Q167 243 150 242Z" fill="#9380DC"/>
+      <path d="M130 190L150 207L170 190" fill="#E2E6FF"/>
+      <path d="M150 208V239M103 213L118 216M182 216L198 212M120 236Q150 245 181 236" fill="none" stroke="#D8D6FF" stroke-width="3"/>
+      <path d="${star}" transform="translate(131 219) scale(.65)" fill="#FFE49B" stroke="none"/>
+      <path d="${star}" transform="translate(173 215) scale(.42)" fill="#F4E9FF" stroke="none"/>
+      <circle cx="150" cy="212" r="2" fill="#FFF1B9" stroke="none"/>
+    </g>` : ''}
+    <ellipse cx="124" cy="244" rx="23" ry="14" fill="${p[0]}"/>
+    <ellipse cx="177" cy="244" rx="23" ry="14" fill="${p[0]}"/>
+    <path d="M115 245V249M123 246V250M178 246V250M186 245V249" fill="none" stroke-width="2"/>
+    <path d="M69 96C57 80 54 39 66 31C76 24 101 43 114 60M187 60C201 42 226 24 236 33C246 43 238 80 229 96" fill="${p[0]}"/>
+    <path d="M72 72C68 62 65 46 70 43C75 41 90 52 97 64ZM204 64C212 52 226 42 230 46C234 50 230 67 226 74Z" fill="#F0A6AE" stroke="none"/>
+    <path d="M60 110C60 78 84 59 117 56L128 44L138 52Q148 35 157 50Q170 43 181 56C217 58 239 80 240 111L250 124L245 135L255 146L247 154L250 165C236 184 210 191 185 193Q150 202 115 193C86 192 61 181 50 166L54 155L46 146L55 134L50 124Z" fill="${p[0]}"/>
+    <path d="M65 152C75 179 104 188 132 188M172 188C198 189 225 180 236 165" fill="none" stroke="${p[3]}" stroke-width="7" opacity=".45"/>
+    <path d="M122 67Q129 77 136 69M145 61Q150 74 155 63M164 68Q170 77 178 67" fill="none" stroke="${p[3]}" stroke-width="5"/>
+  </g>
+  ${a.has('scarf') ? `<g data-accessory="scarf" stroke="#8160B9" stroke-width="2.5" stroke-linejoin="round">
+    <path d="M161 199L180 197L192 227Q181 234 170 228L157 207Z" fill="#9B77D6"/>
+    <path d="M170 218L186 215M173 224L189 221" stroke="#CEB9ED" stroke-width="3"/>
+    <path d="M112 187Q150 203 188 187L191 201Q150 218 109 201Z" fill="#AE8CE5"/>
+    <path d="M121 198Q145 207 161 203" fill="none" stroke="#D5C1F1" stroke-width="3" stroke-linecap="round"/>
+    <ellipse cx="172" cy="201" rx="10" ry="9" fill="#9B77D6"/>
+  </g>` : ''}
+  ${a.has('hat') ? `<g data-accessory="hat" stroke="#C29A4D" stroke-width="2.5" stroke-linejoin="round">
+    <path d="M130 53L154 15Q159 8 165 16L184 54Z" fill="#FFD881"/>
+    <path d="M158 17L177 52" fill="none" stroke="#FFE9B7" stroke-width="6" stroke-linecap="round"/>
+    <ellipse cx="157" cy="54" rx="33" ry="8" fill="#FFE6A5"/>
+    <path d="${star}" transform="translate(157 34) scale(.64)" fill="#FFF6D9" stroke-width="2"/>
+  </g>` : ''}
+  <ellipse cx="150" cy="163" rx="35" ry="25" fill="${p[2]}"/>
+  ${smiling ? '<path d="M95 129Q111 107 127 129M173 129Q189 107 205 129" fill="none" stroke="#382D43" stroke-width="5" stroke-linecap="round"/>' : `<g fill="#382D43">
+    <ellipse cx="111" cy="126" rx="18" ry="23"/>
+    <ellipse cx="189" cy="126" rx="18" ry="23"/>
+  </g>
+  <g fill="#79617E">
+    <ellipse cx="113" cy="138" rx="10" ry="6"/>
+    <ellipse cx="191" cy="138" rx="10" ry="6"/>
+  </g>
+  <g fill="#FFFFFF">
+    <ellipse cx="105" cy="117" rx="6" ry="8"/>
+    <ellipse cx="183" cy="117" rx="6" ry="8"/>
+    <circle cx="117" cy="132" r="3"/><circle cx="195" cy="132" r="3"/>
+  </g>`}
+  <g fill="#EE8F9E" opacity=".65">
+    <ellipse cx="83" cy="153" rx="15" ry="9"/>
+    <ellipse cx="217" cy="153" rx="15" ry="9"/>
+  </g>
+  <g stroke="#FFF0EB" stroke-width="2.5" stroke-linecap="round" opacity=".8">
+    <path d="M77 152L76 155M84 152L83 155M211 152L210 155M218 152L217 155"/>
+  </g>
+  <path d="M150 152C142 143 135 153 150 161C165 153 158 143 150 152Z" fill="#CE778B"/>
+  <path d="M150 161V165M150 165Q143 176 136 167M150 165Q157 176 164 167" fill="none" stroke="#80596A" stroke-width="2.5" stroke-linecap="round"/>
+  <g stroke="${p[1]}" stroke-width="2" stroke-linecap="round" opacity=".75">
+    <path d="M66 141L77 144M65 151L76 151M223 144L234 141M224 151L235 151"/>
+  </g>
+  ${a.has('glasses') ? `<g data-accessory="glasses" fill="none" stroke="#74638F" stroke-width="4" stroke-linecap="round">
+    <circle cx="111" cy="126" r="27"/><circle cx="189" cy="126" r="27"/>
+    <path d="M138 124Q150 116 162 124M84 122L73 118M216 122L227 118"/>
+    <path d="M94 111L101 106M172 111L179 106" stroke="#FFFFFF" stroke-width="3" opacity=".8"/>
+  </g>` : ''}
+</svg>`;
+}
+
+// Keep immutable AI samples separate from teacher overrides.
+function sampleEvidence(id){
+ if(id==='an')return [
+ {id:'q1',q:'Q1',skill:'Past tense · 過去式',before:'go → goed',after:'went',count:2,observation:'回頭嘗試兩種寫法，最後改成不規則過去式。順序為示意。',status:'pending',note:''},
+ {id:'q2',q:'Q2',skill:'Subject–verb agreement · 主詞動詞一致',before:'have',after:'has',count:1,observation:'將 she 後的動詞改為 has，呈現自我檢查的線索。',status:'pending',note:''},
+ {id:'q3',q:'Q3',skill:'Present continuous · 現在進行式',before:'is?（擦拭不清）',after:'are',count:1,observation:'擦拭區的原字不確定，不能當成已確認的錯誤。',status:'pending',note:''}];
+ const data={mia:['goes','went','Past tense'],leo:['She have','She has','Subject–verb agreement'],zoe:['We is','We are','Present continuous'],noah:['play','played','Regular past tense'],ava:['goed','went','Irregular past tense']};
+ const v=data[id]||data.mia;return [{id:'q1',q:'Q1',skill:v[2],before:v[0],after:v[1],count:1,observation:'示範作業可見修改；需老師確認原稿與學生說明。',status:'pending',note:''}];
+}
+function mindBridge(){return {
+ role:'student',screen:'home',roleOptions:[{id:'student',label:'Student 學生'},{id:'parent',label:'Parent 家長'},{id:'teacher',label:'Teacher 老師'}],mode:'app',uploaded:false,loading:false,stage:'',points:120,owned:[],equipped:[],petHappy:false,
+ mood:'',moods:[{id:'good',face:'😊',label:'有成就感'},{id:'unsure',face:'🥺',label:'有點不確定'},{id:'tired',face:'😮‍💨',label:'有點累了'}],wordIndex:0,total:2,streak:2,lastDate:'',
+ rewards:[{id:'icecream',title:'一起吃冰淇淋',kind:'streak',target:3,claimed:false}],reviews:{},items:[{id:'glasses',name:'黑框眼鏡',price:40,art:'👓'},{id:'scarf',name:'紫色領巾',price:60,art:'🧣'},{id:'hat',name:'金星帽子',price:80,art:'🌟'},{id:'wand',name:'魔法杖',price:100,art:'🪄'}],
+ toast:'',toastTimer:null,modal:'',returnFocus:null,editingId:null,deleteId:null,draft:{title:'',kind:'streak',target:3},formError:'',storageWarning:false,
+ 
+ roster:[{id:'an',name:'Alex 小安'},{id:'mia',name:'Mia'},{id:'leo',name:'Leo'},{id:'zoe',name:'Zoe'},{id:'noah',name:'Noah'},{id:'ava',name:'Ava'}],selectedId:'an',reviewFilter:'all',reviewDraft:{before:'',after:'',count:1,status:'confirmed',note:''},reviewTarget:null,feedbacks:{},generating:false,
+ tasks:[{id:'starter',title:'One sentence, one brave try',instructions:'Finish Q4: Write one sentence about your weekend. Start with I went to… Then tell your teacher which word you were unsure about.',targets:['an'],points:20,due:'',submissions:{}}],taskDraft:{title:'',instructions:'',target:'an',points:20,due:''},taskError:'',answerTaskId:null,taskAnswer:'',
+
+ 
+ demoFriday:false,clockDay:new Date().getDay(),activeWeek:'',weeklyEarned:{an:120,mia:180,leo:150,zoe:130,noah:100,ava:90},joinedWeeks:{},cheers:[],championOwners:[],weeklyResults:{},
+ peerPets:[{id:'mia',pet:'Boba',coat:'cream',accessories:['scarf','hat'],motto:'One more try, one more smile.'},{id:'leo',pet:'Pepper',coat:'gray',accessories:['glasses'],motto:'Curiosity looks good on you.'},{id:'zoe',pet:'Mochi',coat:'lavender',accessories:['wand'],motto:'Little steps are magic.'},{id:'noah',pet:'Coco',coat:'cocoa',accessories:['hat'],motto:'Today I asked for help.'},{id:'ava',pet:'Bean',coat:'mint',accessories:['scarf'],motto:'Learning at my own pace.'}],
+
+ get moodLabel(){return this.moods.find(m=>m.id===this.mood)?.label||'尚未分享感受'},
+ get encouragement(){const q=this.evidence('an')[0];if(q.status==='unreadable')return '「這裡看不清楚，不用急著判斷對錯。你願意告訴我，你原本想寫什麼嗎？」';return [`「我看到你把 “${q.before}” 改成 “${q.after}”，你有回頭試著修正。你是怎樣想到這個寫法的？我們再一起看看第 4 題，好嗎？」`,`「這頁不只留下答案，也留下你嘗試的痕跡。你改成 “${q.after}” 時，是更確定了，還是仍有疑問？」`,this.mood==='tired'?'「你說今天有點累。謝謝你還願意嘗試。我們先休息，再選一小題一起看看，好嗎？」':`「你願意回頭檢查 “${q.after}”，值得被肯定。第 4 題想寫的故事是什麼？你可以先說，我們一起找英文。」`][this.wordIndex]},
+ evidence(id){return sampleEvidence(id).map(e=>({...e,...(this.reviews[id]?.[e.id]||{})}))},editCount(id){return this.evidence(id).reduce((sum,e)=>sum+e.count,0)},reviewedCount(id){return this.evidence(id).filter(e=>e.status!=='pending').length},reviewLabel(e){return {pending:'待老師複核',confirmed:'老師已確認',corrected:'老師已更正',unreadable:'無法辨認，不作判斷'}[e.status]},
+ petMarkup(a,c,h){return typeof petSVG==='function'?petSVG(a,c,h):''},
+ boot(){try{const d=JSON.parse(localStorage.getItem('mindbridge-v2')||'null');if(d?.version===2){for(const k of this.persistKeys())if(d[k]!==undefined)this[k]=d[k]}}catch(e){this.notify('本機資料無法讀取，已載入示範資料。')}this.ensureWeek();this.save();setInterval(()=>{this.clockDay=new Date().getDay();if(this.activeWeek!==this.weekKey()){this.ensureWeek();this.save()}},30000);this.$nextTick(()=>window.lucide?.createIcons())},
+ persistKeys(){return ['points','owned','equipped','uploaded','mood','total','streak','lastDate','rewards','reviews' ,'feedbacks' ,'tasks' ,'activeWeek','weeklyEarned','joinedWeeks','cheers','championOwners','weeklyResults' /* PERSIST_KEYS */]},
+ save(){try{const d={version:2};for(const k of this.persistKeys())d[k]=this[k];localStorage.setItem('mindbridge-v2',JSON.stringify(d))}catch(e){this.storageWarning=true;this.notify('儲存失敗；互動可繼續，但重整後不保留。')}},notify(t){clearTimeout(this.toastTimer);this.toast=t;this.toastTimer=setTimeout(()=>this.toast='',4200)},
+ shopLabel(i){return this.equipped.includes(i.id)?'已穿戴 · 卸下':this.owned.includes(i.id)?'已擁有 · 穿戴':'✦ '+i.price},
+ equip(i){if(this.equipped.includes(i.id)){this.equipped=this.equipped.filter(x=>x!==i.id);this.notify('已卸下'+i.name)}else{if(!this.owned.includes(i.id)){if(this.points<i.price){this.notify('還差 '+(i.price-this.points)+' 積分。完成學習小步驟再來吧！');return}this.points-=i.price;this.owned.push(i.id)}this.equipped.push(i.id);this.notify('Milo 穿上了'+i.name+'！')}this.save()},
+ localDay(d=new Date()){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')},addPoints(n,reason){this.points+=n; this.ensureWeek();this.weeklyEarned.an=(this.weeklyEarned.an||0)+n;},
+ upload(){if(this.loading)return;this.loading=true;this.stage=this.mode==='device'?'模擬拍攝架定位作業…':'模擬拍照上傳…';setTimeout(()=>this.stage='整理塗改、擦拭與未完成句子…',550);setTimeout(()=>{this.uploaded=true;this.loading=false;const today=this.localDay();let awarded=false;if(today!==this.lastDate){const y=new Date();y.setDate(y.getDate()-1);this.streak=!this.lastDate||this.lastDate===this.localDay(y)?this.streak+1:1;this.total++;this.lastDate=today;this.addPoints(30,'每日上傳');awarded=true}this.save();this.notify(awarded?'今天的努力已記錄！+30 積分。':'已更新範例；今天的上傳積分已領過。')},1100)},
+ progress(r){return r.kind==='streak'?this.streak:this.total},claim(r){if(r.claimed||this.progress(r)<r.target)return;r.claimed=true;this.save();this.notify('已記錄兌換，和家人約好享受小獎勵吧！')},
+ openModal(name){this.returnFocus=document.activeElement;this.modal=name;this.$nextTick(()=>[...this.$refs.modalRoot.querySelectorAll('input,textarea,select,button')].find(e=>e.offsetParent!==null)?.focus())},closeModal(){this.modal='';this.$nextTick(()=>this.returnFocus?.focus())},
+ trapFocus(event){if(!this.modal)return;const els=[...this.$refs.modalRoot.querySelectorAll('input,textarea,select,button')].filter(e=>e.offsetParent!==null&&!e.disabled);if(!els.length)return;const first=els[0],last=els[els.length-1];if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus()}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus()}},
+ openReward(r=null){this.editingId=r?.id||null;this.draft=r?{title:r.title,kind:r.kind,target:r.target}:{title:'',kind:'streak',target:3};this.formError='';this.openModal('reward')},
+ saveReward(){const title=this.draft.title.trim(),target=Number(this.draft.target);if(!title||!Number.isInteger(target)||target<1||target>30){this.formError='請輸入名稱及 1–30 的整數目標。';return}if(this.editingId)Object.assign(this.rewards.find(x=>x.id===this.editingId),{title,kind:this.draft.kind,target});else this.rewards.push({id:crypto.randomUUID(),title,kind:this.draft.kind,target,claimed:false});this.save();this.closeModal();this.notify('獎勵已儲存，學生頁已同步。')},deleteReward(){this.rewards=this.rewards.filter(r=>r.id!==this.deleteId);this.deleteId=null;this.save();this.closeModal();this.notify('已刪除獎勵。')},
+ async copyText(t){try{await navigator.clipboard.writeText(t);this.notify('已複製到剪貼簿。')}catch(e){this.notify('瀏覽器無法自動複製，請選取文字手動複製。')}},
+ 
+ get filteredRoster(){return this.roster.filter(s=>this.reviewFilter==='all'||(this.reviewFilter==='done'?this.reviewedCount(s.id)===this.evidence(s.id).length:this.reviewedCount(s.id)<this.evidence(s.id).length))},
+ studentName(id){return this.roster.find(s=>s.id===id)?.name||id},
+ original(id,eid){return sampleEvidence(id).find(e=>e.id===eid)},
+ openReview(e){this.reviewTarget={studentId:this.selectedId,eid:e.id};this.reviewDraft={before:e.before,after:e.after,count:e.count,status:e.status==='pending'?'confirmed':e.status,note:e.note};this.formError='';this.openModal('review')},
+ saveReview(){const d=this.reviewDraft,count=Number(d.count);if(!Number.isInteger(count)||count<0||count>20||!d.after.trim()||(d.status!=='unreadable'&&!d.before.trim())){this.formError='請填寫辨識文字與 0–20 的整數次數。';return}const {studentId,eid}=this.reviewTarget;
+ const before=d.status==='unreadable'?'無法辨認':d.before.trim();const orig=this.original(studentId,eid);const changed=before!==orig.before||d.after.trim()!==orig.after||count!==orig.count;
+ const status=d.status==='confirmed'&&changed?'corrected':d.status;
+ this.reviews[studentId]={...(this.reviews[studentId]||{}),[eid]:{before,after:d.after.trim(),count,status,note:d.note.trim(),observation:status==='unreadable'?'原字無法辨認；僅保留可見修改區，不推測原答案。':status==='corrected'?'老師已修正辨識，請以複核紀錄與學生說明為準。':orig.observation}};
+ delete this.feedbacks[studentId];this.save();this.closeModal();this.notify('複核已儲存；家長頁同步更新。')},
+ generate(){if(this.generating)return;const id=this.selectedId,e=this.evidence(id)[0],snapshot=JSON.stringify(this.evidence(id));this.generating=true;setTimeout(()=>{if(JSON.stringify(this.evidence(id))!==snapshot){this.generating=false;this.notify('複核資料已更新，請重新生成。');return}this.feedbacks[id]=e.status==='unreadable'?'觀察：原字無法辨認。\n教學建議：先與學生確認想表達的意思，不據此判定對錯。\n回饋：Tell me what you wanted to say. We can find the words together.':`觀察：${e.before} → ${e.after}（${this.reviewLabel(e)}）。\n教學建議：請學生說明 ${e.skill} 中，為什麼改成「${e.after}」，再練習一個相近句子。\n回饋：I noticed you tried again. Can you tell me why you chose “${e.after}”?`;
+ this.generating=false;this.save();this.notify(this.studentName(id)+' 的示範回饋已生成。')},700)},
+ get myTasks(){return this.tasks.filter(t=>t.targets.includes('an'))},
+ assignTask(){const d=this.taskDraft,n=Number(d.points);if(!d.title.trim()||!d.instructions.trim()||!Number.isInteger(n)||n<5||n>50){this.taskError='請填寫任務及 5–50 的整數積分。';return}if(d.due&&d.due<this.localDay()){this.taskError='請選擇今天或之後的截止日期。';return}const targets=d.target==='all'?this.roster.map(s=>s.id):[d.target];if(!targets.every(id=>this.roster.some(s=>s.id===id)))return;this.tasks.push({id:crypto.randomUUID(),title:d.title.trim(),instructions:d.instructions.trim(),points:n,due:d.due,targets,submissions:{}});this.taskDraft={title:'',instructions:'',target:'an',points:20,due:''};this.taskError='';this.save();this.notify('任務已派發，學生頁已同步。')},
+ openTask(t){if(t.submissions.an)return;this.answerTaskId=t.id;this.taskAnswer='';this.formError='';this.openModal('answer')},
+ submitTask(){const t=this.tasks.find(t=>t.id===this.answerTaskId);if(!t||!t.targets.includes('an')||t.submissions.an)return;if(!this.taskAnswer.trim()){this.formError='請先寫下你的嘗試或思考。';return}t.submissions.an={answer:this.taskAnswer.trim(),status:'submitted',submittedAt:this.localDay()};this.save();this.closeModal();this.notify('已提交給老師。謝謝你願意試試看！')},
+ approveTask(id,studentId){const t=this.tasks.find(t=>t.id===id),s=t?.submissions[studentId];if(!s||s.status!=='submitted')return;s.status='approved';if(studentId==='an')this.addPoints(t.points,'老師確認任務');else { this.ensureWeek();this.weeklyEarned[studentId]=(this.weeklyEarned[studentId]||0)+t.points; }this.save();this.notify('已確認努力，積分只會發放一次。')},
+
+ 
+ weekKey(d=new Date()){const x=new Date(d.getFullYear(),d.getMonth(),d.getDate());x.setDate(x.getDate()-((x.getDay()+6)%7));return this.localDay(x)},
+ ensureWeek(){const key=this.weekKey();if(!this.activeWeek){this.activeWeek=key;return}if(this.activeWeek!==key){this.activeWeek=key;this.weeklyEarned=Object.fromEntries(this.roster.map(s=>[s.id,0]));this.cheers=[];this.demoFriday=false}},
+ get clubOpen(){return this.clockDay===5||this.demoFriday},get joined(){return !!this.joinedWeeks[this.activeWeek]},get currentResult(){return this.weeklyResults[this.activeWeek]||null},
+ get rankedStudents(){return this.roster.map(s=>({...s,points:Number(this.weeklyEarned[s.id]||0)})).sort((a,b)=>b.points-a.points||a.id.localeCompare(b.id))},get leaders(){const top=this.rankedStudents[0]?.points||0;return top>0?this.rankedStudents.filter(s=>s.points===top):[]},rankOf(id){const s=this.rankedStudents.find(s=>s.id===id);return 1+this.rankedStudents.filter(x=>x.points>s.points).length},
+ get showcaseEntries(){const peers=this.peerPets.map(s=>({...s,accessories:[...s.accessories,...(this.championOwners.includes(s.id)?['champion']:[])]}));return this.joined?[{id:'an',pet:'Milo',coat:'peach',accessories:this.equipped,motto:'Every try tells a story.'},...peers]:peers},
+ joinClub(){this.ensureWeek();if(!this.clubOpen||this.role!=='student')return;this.joinedWeeks[this.activeWeek]=true;this.save();this.notify('Milo 加入了 Friday Pet Club！你的穿戴會即時同步展示。')},withdrawClub(){delete this.joinedWeeks[this.activeWeek];this.save();this.notify('已收起你的展示，隨時可以再加入。')},
+ cheer(id){if(!this.clubOpen||this.role!=='student'||id==='an'||this.cheers.includes(id))return;this.cheers.push(id);this.save();this.notify('已送出鼓勵。每個願意嘗試的人，都值得被看見。')},
+ settleWeek(){this.ensureWeek();if(this.role!=='teacher'||!this.clubOpen||this.currentResult)return;if(!this.leaders.length){this.notify('本週尚無已獲得積分，暫不頒發冠軍。');this.closeModal();return}const winners=this.leaders.map(s=>s.id);this.weeklyResults[this.activeWeek]={winners,scores:this.rankedStudents.map(s=>({id:s.id,points:s.points})),settledAt:this.localDay()};for(const id of winners)if(!this.championOwners.includes(id))this.championOwners.push(id);this.save();this.closeModal();this.notify('星光外套已頒發給 '+winners.map(id=>this.studentName(id)).join('、')+'！')},
+ toggleChampion(){if(!this.championOwners.includes('an'))return;if(this.equipped.includes('champion'))this.equipped=this.equipped.filter(x=>x!=='champion');else this.equipped.push('champion');this.save()},
+
+ reset(){try{localStorage.removeItem('mindbridge-v2')}catch(e){}location.reload()}
+}}
+</script></body></html>
