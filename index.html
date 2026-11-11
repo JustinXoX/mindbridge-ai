@@ -1,1088 +1,1021 @@
 <!DOCTYPE html>
-<html lang="zh-Hant"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>MindBridge AI — Every try tells a story.</title><script src="https://cdn.tailwindcss.com/3.4.17"></script><script defer src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script><script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.8/dist/cdn.min.js"></script><style>
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&display=swap');
-:root{--ink:#30364d;--muted:#74798c;--purple:#7461bd;--line:#e9e8f1;--green:#38785d}
+<html lang="zh-Hant"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"><title>MindBridge AI · 功課冒險島</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Huninn&family=Lilita+One&display=swap" rel="stylesheet">
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.8/dist/cdn.min.js"></script>
+<script src="pet-art.js"></script>
+<style>
+:root{--ink:#26224A;--ink2:#5A5680;--sky:#7FCBFF;--sky2:#CFEEFF;--sun:#FFCB3D;--sun-d:#D99A00;--tang:#FF7B4A;--leaf:#38C07A;--leaf-d:#1F8E55;--paper:#FFF9EE;--berry:#F06BA8;--line:#EADFC9;
+--display:'Lilita One','Huninn',system-ui,sans-serif;--body:'Huninn','PingFang TC','Microsoft JhengHei',system-ui,sans-serif}
 *{box-sizing:border-box}
-body{margin:0;background:#f7f8fc;color:var(--ink);font-family:'DM Sans','Noto Sans TC',sans-serif;font-size:14px}
-button,input,select{font:inherit}
-button{cursor:pointer;transition:background .15s,transform .15s}
-button:disabled{cursor:not-allowed;opacity:.5}
-button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #b8a5ed;outline-offset:3px}
-button:active:not(:disabled){transform:translateY(1px)}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.6;background:var(--paper)}
+h1,h2,h3,p,ol,ul{margin:0}ol,ul{padding:0;list-style:none}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;background:none;border:0;padding:0}
+button:disabled{cursor:not-allowed;opacity:.55}
+:focus-visible{outline:4px solid #2F7DF6;outline-offset:3px;border-radius:12px}
 [x-cloak]{display:none!important}
-.shell{max-width:1280px;margin:auto;padding:0 34px}
-.topbar{background:#fff;border-bottom:1px solid var(--line)}
-.brand-icon{background:var(--purple);width:39px;height:39px;border-radius:13px;display:grid;place-items:center;color:white}
-.roles{display:flex;background:#f3f3f8;padding:5px;border-radius:13px;gap:3px}
-.roles button{padding:10px 17px;border-radius:9px;color:#72768b}
-.roles button.active{background:white;color:#6650ad;box-shadow:0 2px 6px #3532500c}
-.card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:25px}
-.section-title{font-weight:700;font-size:18px;letter-spacing:-.4px}
-.sub{font-size:12px;color:var(--muted);margin-top:4px}
-.btn{min-height:44px;padding:10px 17px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:600}
-.primary{background:var(--purple);color:white}
-.primary:hover{background:#6250a7}
-.secondary{background:#f0edf8;color:#6550aa}
-.outline{border:1px solid var(--line);background:white}
-.badge{font-size:11px;border-radius:7px;padding:5px 9px;background:#f1eef9;color:#6b55a6;white-space:nowrap}
-.muted{color:var(--muted)}
-.icon{width:19px;height:19px}
-.dashboard{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(330px,1fr);gap:22px}
-.stack{display:flex;flex-direction:column;gap:22px}
-.upload-zone{background:#faf9fe;border:1.5px dashed #c7bce4;border-radius:14px;padding:32px 18px;text-align:center}
-.mode{display:flex;gap:6px;background:#f6f6fa;border-radius:10px;padding:4px;margin:20px 0 16px}
-.mode button{flex:1;min-height:44px;border-radius:8px;color:#777b8c;font-size:12px}
-.mode button.selected{background:white;box-shadow:0 1px 5px #30364d10;color:#6951ad}
-.pet-scene{height:245px;position:relative;display:grid;place-items:center;background:#f1eff9;border-radius:16px;overflow:hidden;margin:18px 0}
-.pet-scene:before{content:'';position:absolute;width:210px;height:210px;border-radius:50%;background:#e6e1f3;top:16px}
-.pet-scene svg{position:relative;width:260px;height:235px}
-.item-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-.shop-item{border:1px solid var(--line);border-radius:12px;padding:10px 4px;text-align:center;min-height:100px}
-.shop-item.equipped{background:#f3effb;border-color:#aa95d9}
-.item-art{display:block;font-size:26px;height:37px}
-.progress{height:7px;background:#eeedf3;border-radius:9px;overflow:hidden}
-.progress>span{display:block;height:100%;background:#ac9bd5;border-radius:9px}
-.paper-wrap{background:#f2f1ee;padding:18px;border-radius:12px;margin-top:16px}
-.paper{background:#fffef9;padding:25px 18px;border-radius:4px;box-shadow:0 4px 15px #3835220a;position:relative}
-.paper-row{padding:12px 7px;border-bottom:1px solid #eeece6;font-family:Georgia,'Noto Sans TC',serif;font-size:16px;position:relative}
-.mark{border-radius:5px;border:1.5px dashed;padding:3px 7px;display:inline-block}
-.strike{color:#90632e;border-color:#dca64c;background:#fff4df}
-.erase{color:#6554a0;border-color:#b49bdc;background:#f4effc}
-.unfinished{color:#387c6d;border-color:#7db7a4;background:#edf8f2}
-.checkin{display:flex;gap:9px;margin-top:16px}
-.checkin button{flex:1;border:1px solid var(--line);border-radius:12px;padding:12px 4px}
-.checkin button.selected{background:#f1edf9;border-color:#9d88cf}
-.notice{font-size:12px;color:#757888;line-height:1.8}
-.metric{background:#f7f8fb;border-radius:13px;padding:17px}
-.reward-row{padding:15px 0;border-bottom:1px solid var(--line)}
-.reward-row:last-child{border:0}
-.table-wrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse;text-align:left}
-th{color:var(--muted);font-size:12px;font-weight:500;background:#f8f8fb}
-td,th{padding:15px 13px;border-bottom:1px solid var(--line);white-space:nowrap}
-tr.chosen td{background:#f5f1fc}
-.quote{padding:22px;border-radius:13px;line-height:1.9}
-.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%);background:#30364d;color:white;padding:14px 24px;border-radius:12px;box-shadow:0 5px 25px #30364d22;z-index:70;max-width:90vw}
-.modal{position:fixed;inset:0;background:#24243f66;display:grid;place-items:center;padding:20px;z-index:60}
-.modal .card{max-width:460px;width:100%}
-label.field{display:block;margin:16px 0 6px;font-weight:600;font-size:13px}
-input,select{width:100%;padding:12px;border:1px solid #dad9e5;border-radius:9px;background:white}
-footer{border-top:1px solid var(--line);margin-top:30px;padding:22px 0;color:#818496;font-size:11px}
-.spinner{animation:spin 1s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* ---------- Demo role strip (prototype chrome, deliberately quiet) ---------- */
+.demo-strip{position:sticky;top:0;z-index:40;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 18px;background:var(--ink);color:#fff;font-size:13px}
+.demo-strip .brand{display:flex;align-items:center;gap:8px;font-family:var(--display);font-size:18px;letter-spacing:.3px}
+.demo-strip .brand i{width:26px;height:26px;border-radius:9px;background:var(--sun);display:grid;place-items:center;font-style:normal;font-size:15px}
+.roles{display:flex;gap:4px;background:#ffffff1a;border-radius:12px;padding:3px}
+.roles button{padding:6px 14px;border-radius:9px;color:#d8d6f0;min-height:36px}
+.roles button.active{background:#fff;color:var(--ink)}
+.demo-note{color:#b9b6d9;font-size:12px}
+
+/* ---------- Student world ---------- */
+.world{min-height:calc(100vh - 52px);padding-bottom:120px;position:relative;overflow:hidden;
+background:
+ radial-gradient(120% 60% at 50% 118%,#7ED38B 0 38%,transparent 38.2%),
+ radial-gradient(90% 40% at 12% 112%,#5EC273 0 40%,transparent 40.3%),
+ radial-gradient(90% 40% at 92% 112%,#62C677 0 40%,transparent 40.3%),
+ linear-gradient(#7FCBFF,#BDE7FF 70%,#DDF3FF)}
+.cloud{position:absolute;background:#fff;border-radius:999px;opacity:.9;pointer-events:none}
+.cloud:before,.cloud:after{content:'';position:absolute;background:#fff;border-radius:50%}
+.cloud.c1{width:150px;height:44px;top:96px;left:4%}.cloud.c1:before{width:62px;height:62px;left:24px;top:-30px}.cloud.c1:after{width:46px;height:46px;left:76px;top:-18px}
+.cloud.c2{width:110px;height:34px;top:60px;right:8%}.cloud.c2:before{width:48px;height:48px;left:18px;top:-24px}.cloud.c2:after{width:36px;height:36px;left:58px;top:-14px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px;position:relative;z-index:1}
+
+.hud{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 0 8px}
+.player{display:flex;align-items:center;gap:12px;background:#fff;border:3px solid var(--ink);border-radius:999px;padding:4px 18px 4px 4px;box-shadow:0 4px 0 var(--ink)}
+.player .face{width:48px;height:48px;border-radius:50%;background:#FFE6CF;overflow:hidden;border:2px solid var(--ink)}
+.player .face svg{width:150%;height:150%;margin:-6% 0 0 -25%}
+.player b{font-family:var(--display);font-size:18px;line-height:1;display:block;font-weight:400}
+.xp{width:120px;height:10px;border-radius:9px;background:#E9E4F7;border:2px solid var(--ink);overflow:hidden;margin-top:4px}
+.xp span{display:block;height:100%;background:var(--leaf)}
+.chips{display:flex;gap:8px}
+.chip{display:flex;align-items:center;gap:6px;background:#fff;border:3px solid var(--ink);border-radius:16px;padding:4px 12px;box-shadow:0 4px 0 var(--ink);font-family:var(--display);font-size:20px;min-height:44px}
+.chip small{font-family:var(--body);font-size:12px;color:var(--ink2)}
+.chip.bump{animation:bump .5s}
+@keyframes bump{40%{transform:scale(1.18)}}
+
+/* Hero quest */
+.quest{display:grid;grid-template-columns:minmax(0,1fr) 340px;align-items:end;gap:10px;margin-top:22px}
+.quest-text{padding:12px 0 40px}
+.quest-kicker{display:inline-flex;align-items:center;gap:8px;background:var(--tang);color:#fff;border:3px solid var(--ink);border-radius:12px;padding:3px 12px;font-size:15px;transform:rotate(-2deg)}
+.quest h1{font-family:var(--display);font-weight:400;font-size:clamp(38px,6vw,68px);line-height:1.02;margin:16px 0 12px;color:var(--ink);text-shadow:0 4px 0 #fff}
+.quest p.lead{font-size:18px;max-width:30em;color:#2F3B63}
+.quest-actions{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-top:24px}
+.quest-pet{position:relative;height:330px}
+.quest-pet .pet{position:absolute;inset:auto 0 0 0;height:300px;filter:drop-shadow(0 6px 0 #26224A22)}
+.quest-pet .pet svg{width:100%;height:100%}
+.bubble{position:relative;background:#fff;border:3px solid var(--ink);border-radius:22px;padding:12px 16px;font-size:16px;box-shadow:0 4px 0 var(--ink)}
+.bubble:after{content:'';position:absolute;width:18px;height:18px;background:#fff;border:3px solid var(--ink);border-top:0;border-left:0;transform:rotate(45deg);bottom:-11px;left:40px}
+.quest-pet .bubble{position:absolute;top:0;left:10px;right:20px;z-index:2}
+
+/* Chunky game buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:10px 22px;border:3px solid var(--ink);border-radius:18px;background:#fff;font-size:17px;box-shadow:0 6px 0 var(--ink);transition:transform .08s,box-shadow .08s;white-space:nowrap}
+.btn:active:not(:disabled){transform:translateY(4px);box-shadow:0 2px 0 var(--ink)}
+.btn.sun{background:var(--sun)}
+.btn.leaf{background:var(--leaf);color:#fff}
+.btn.tang{background:var(--tang);color:#fff}
+.btn.big{font-family:var(--display);font-size:26px;min-height:72px;padding:12px 34px;border-radius:24px;letter-spacing:.5px}
+.btn.small{min-height:44px;font-size:15px;padding:6px 14px;border-radius:14px;box-shadow:0 4px 0 var(--ink)}
+.link{color:var(--ink);text-decoration:underline;text-underline-offset:4px;min-height:44px;font-size:15px}
+.pulse{animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:0 6px 0 var(--ink),0 0 0 0 #FFCB3D99}50%{box-shadow:0 6px 0 var(--ink),0 0 0 14px #FFCB3D00}}
+
+/* Daily quest board */
+.board{margin-top:-6px;background:var(--paper);border:3px solid var(--ink);border-radius:30px;box-shadow:0 8px 0 var(--ink);padding:22px}
+.board-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:14px}
+.board h2{font-family:var(--display);font-weight:400;font-size:28px}
+.quests{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.qitem{text-align:left;background:#fff;border:3px solid var(--ink);border-radius:20px;padding:14px;display:flex;flex-direction:column;gap:6px;min-height:150px;position:relative}
+.qitem .qi{font-size:30px;line-height:1}
+.qitem b{font-size:17px;font-weight:400}
+.qitem small{color:var(--ink2);font-size:13px;line-height:1.45}
+.qitem .reward{margin-top:auto;font-family:var(--display);font-size:16px;color:#B57A00}
+.qitem.done{background:#E7F8EE}
+.qitem.done:after{content:'✓';position:absolute;top:10px;right:12px;width:30px;height:30px;border-radius:50%;background:var(--leaf);color:#fff;border:3px solid var(--ink);display:grid;place-items:center;font-size:16px}
+.bar{height:12px;background:#EFE7D6;border:2px solid var(--ink);border-radius:9px;overflow:hidden}
+.bar span{display:block;height:100%;background:var(--sun)}
+.teacher-note{margin-top:18px;display:flex;gap:14px;align-items:flex-start;background:#fff;border:3px dashed var(--ink);border-radius:20px;padding:14px 16px}
+.teacher-note .t{font-size:30px}
+
+/* Dock */
+.dock{position:fixed;left:50%;transform:translateX(-50%);bottom:max(14px,env(safe-area-inset-bottom));z-index:30;display:flex;gap:6px;background:#fff;border:3px solid var(--ink);border-radius:26px;padding:6px;box-shadow:0 6px 0 var(--ink)}
+.dock button{display:flex;flex-direction:column;align-items:center;gap:0;min-width:78px;padding:6px 10px;border-radius:18px;font-size:13px}
+.dock button span{font-size:26px;line-height:1.1}
+.dock button.active{background:var(--sun);box-shadow:inset 0 0 0 3px var(--ink)}
+
+/* Generic student page */
+.page-title{display:flex;align-items:center;gap:14px;margin:18px 0 16px}
+.page-title h1{font-family:var(--display);font-weight:400;font-size:clamp(32px,5vw,46px);line-height:1.05;text-shadow:0 3px 0 #fff}
+.panel{background:var(--paper);border:3px solid var(--ink);border-radius:28px;box-shadow:0 8px 0 var(--ink);padding:22px}
+.panel h2{font-family:var(--display);font-weight:400;font-size:24px;line-height:1.2}
+.muted{color:var(--ink2)}
+.tiny{font-size:13px;color:var(--ink2);line-height:1.6}
+
+/* Pet house */
+.house{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:20px}
+.room{position:relative;min-height:420px;border:3px solid var(--ink);border-radius:28px;box-shadow:0 8px 0 var(--ink);overflow:hidden;background:linear-gradient(#FFE9C9 0 64%,#E8B884 64% 66%,#F2C994 66%)}
+.room:before{content:'';position:absolute;left:8%;top:12%;width:110px;height:90px;border:3px solid var(--ink);border-radius:14px;background:linear-gradient(90deg,transparent 48%,var(--ink) 48% 52%,transparent 52%),linear-gradient(transparent 48%,var(--ink) 48% 52%,transparent 52%),var(--sky2)}
+.room .pet-btn{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);width:min(340px,90%);height:320px}
+.room .pet-btn svg{width:100%;height:100%;overflow:visible}
+.room .pet-btn:hover{transform:translateX(-50%) rotate(-2deg)}
+.room .bubble{position:absolute;right:18px;top:18px;max-width:230px}
+.room .bubble:after{left:auto;right:60px}
+.hearts{position:absolute;left:50%;top:40%;pointer-events:none}
+.hearts i{position:absolute;font-style:normal;font-size:28px;animation:float 1.6s ease-out forwards}
+@keyframes float{from{opacity:1;transform:translate(0,0) scale(.6)}to{opacity:0;transform:translate(var(--x),-140px) scale(1.2)}}
+.shop{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}
+.item{display:flex;align-items:center;gap:12px;text-align:left;background:#fff;border:3px solid var(--ink);border-radius:20px;padding:12px;box-shadow:0 4px 0 var(--ink);min-height:76px}
+.item .art{font-size:34px;width:48px;height:48px;display:grid;place-items:center;background:#FFF2CF;border-radius:14px}
+.item b{font-weight:400;display:block}
+.item .price{font-family:var(--display);color:#B57A00}
+.item.on{background:#E7F8EE}
+.item.on .price{color:var(--leaf-d);font-family:var(--body);font-size:14px}
+.item:active{transform:translateY(3px);box-shadow:0 1px 0 var(--ink)}
+.jacket{margin-top:16px;display:flex;gap:12px;align-items:center;background:#F0ECFF;border:3px dashed var(--ink);border-radius:20px;padding:12px 14px}
+
+/* Quests page */
+.qgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px}
+.task{background:#fff;border:3px solid var(--ink);border-radius:22px;padding:16px;margin-top:14px}
+.task-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.task h3{font-size:19px;font-weight:400}
+.star-tag{font-family:var(--display);background:var(--sun);border:3px solid var(--ink);border-radius:12px;padding:0 10px;white-space:nowrap}
+.status{display:inline-flex;align-items:center;gap:6px;border-radius:12px;padding:4px 12px;font-size:14px;background:#E7F8EE;color:var(--leaf-d);border:2px solid currentColor}
+.status.wait{background:#FFF4D6;color:#9A6700}
+.promise{display:flex;gap:14px;align-items:center;background:#fff;border:3px solid var(--ink);border-radius:22px;padding:14px;margin-top:14px}
+.promise .gift{font-size:38px;width:62px;height:62px;display:grid;place-items:center;border-radius:18px;background:#FFE3EF;border:3px solid var(--ink);flex:none}
+.promise.ready .gift{animation:wiggle 1.2s ease-in-out infinite}
+@keyframes wiggle{0%,100%{transform:rotate(0)}25%{transform:rotate(-8deg)}75%{transform:rotate(8deg)}}
+.diary li{display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:2px dashed var(--line)}
+.diary li:last-child{border:0}
+.diary .d-ico{font-size:24px;width:44px;height:44px;display:grid;place-items:center;border-radius:14px;background:#fff;border:2px solid var(--ink)}
+
+/* ---------- Mission overlay ---------- */
+.mission{position:fixed;inset:0;z-index:60;display:flex;flex-direction:column;background:
+ radial-gradient(circle at 20% 10%,#ffffff55 0 8%,transparent 8.5%),radial-gradient(circle at 85% 30%,#ffffff44 0 6%,transparent 6.5%),linear-gradient(#8ED2FF,#D9F1FF);overflow:hidden}
+.mission[data-step="scan"],.mission[data-step="reward"]{background:radial-gradient(circle at 50% 40%,#3B3576,#1E1A3F 70%)}
+.m-top{display:flex;align-items:center;gap:12px;padding:12px 16px}
+.icon-btn{width:48px;height:48px;border-radius:16px;border:3px solid var(--ink);background:#fff;box-shadow:0 4px 0 var(--ink);font-size:20px;flex:none}
+.stones{flex:1;display:flex;align-items:center;justify-content:center;gap:4px}
+.stones li{display:flex;align-items:center;gap:4px}
+.stones li span{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:#ffffffaa;border:3px solid #26224A55;font-size:17px;transition:transform .3s}
+.stones li b{font-weight:400;font-size:13px;color:var(--ink);display:none}
+.stones li.now span{background:var(--sun);border-color:var(--ink);transform:scale(1.15)}
+.stones li.now b{display:inline}
+.stones li.done span{background:var(--leaf);border-color:var(--ink);color:#fff}
+.stones li+li:before{content:'';width:18px;height:4px;border-radius:4px;background:#26224A33;margin-right:4px}
+.mission[data-step="scan"] .stones li b,.mission[data-step="reward"] .stones li b{color:#fff}
+.m-body{flex:1;overflow-y:auto;padding:8px 18px 40px}
+.step{max-width:980px;margin:0 auto;animation:stepIn .35s cubic-bezier(.2,.9,.3,1.2)}
+@keyframes stepIn{from{opacity:0;transform:translateY(18px) scale(.98)}}
+.step-title{font-family:var(--display);font-weight:400;font-size:clamp(30px,5vw,48px);line-height:1.08;text-align:center;margin:6px 0 6px;text-shadow:0 3px 0 #fff}
+.step-sub{text-align:center;font-size:17px;color:#2F3B63;margin-bottom:20px}
+.guide{display:flex;align-items:flex-end;gap:10px;justify-content:center;margin-bottom:8px}
+.guide .gpet{width:120px;height:110px}.guide .gpet svg{width:100%;height:100%}
+.guide .bubble{max-width:360px;margin-bottom:40px}
+.guide .bubble:after{left:-10px;bottom:18px;transform:rotate(135deg)}
+
+.islands{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.island{position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;padding:22px 10px 18px;border:3px solid var(--ink);border-radius:32px 32px 40px 40px;background:var(--c);box-shadow:0 8px 0 var(--ink);transition:transform .15s}
+.island:hover{transform:translateY(-4px) rotate(-1deg)}
+.island .ii{font-size:56px;line-height:1.1;filter:drop-shadow(0 4px 0 #26224A33)}
+.island b{font-family:var(--display);font-weight:400;font-size:28px}
+.island small{font-size:14px;opacity:.85}
+.island.picked{animation:pick .45s}
+@keyframes pick{50%{transform:scale(1.08) rotate(2deg)}}
+
+.sources{display:flex;justify-content:center;gap:10px;margin-bottom:18px;flex-wrap:wrap}
+.sources button{display:flex;align-items:center;gap:8px;padding:8px 18px;border:3px solid var(--ink);border-radius:999px;background:#fff;min-height:50px;font-size:16px}
+.sources button.active{background:var(--ink);color:#fff}
+.viewfinder{position:relative;max-width:560px;margin:0 auto;aspect-ratio:3/4;max-height:58vh;background:#1E1A3F;border:4px solid var(--ink);border-radius:32px;overflow:hidden;box-shadow:0 8px 0 var(--ink)}
+.viewfinder video{width:100%;height:100%;object-fit:cover;display:block}
+.corner{position:absolute;width:56px;height:56px;border:6px solid var(--sun);pointer-events:none}
+.corner.tl{top:22px;left:22px;border-right:0;border-bottom:0;border-radius:18px 0 0 0}.corner.tr{top:22px;right:22px;border-left:0;border-bottom:0;border-radius:0 18px 0 0}
+.corner.bl{bottom:22px;left:22px;border-right:0;border-top:0;border-radius:0 0 0 18px}.corner.br{bottom:22px;right:22px;border-left:0;border-top:0;border-radius:0 0 18px 0}
+.vf-hint{position:absolute;left:50%;top:18px;transform:translateX(-50%);background:#26224Acc;color:#fff;border-radius:999px;padding:4px 14px;font-size:14px;white-space:nowrap}
+.vf-msg{position:absolute;inset:0;display:grid;place-items:center;text-align:center;color:#fff;padding:30px}
+.vf-msg .em{font-size:56px}
+.shutter-row{display:flex;justify-content:center;align-items:center;gap:22px;margin-top:22px}
+.shutter{width:86px;height:86px;border-radius:50%;background:#fff;border:4px solid var(--ink);box-shadow:0 6px 0 var(--ink),inset 0 0 0 8px var(--sun);font-size:0}
+.shutter:active:not(:disabled){transform:translateY(4px);box-shadow:0 2px 0 var(--ink),inset 0 0 0 8px var(--sun)}
+.flash{position:fixed;inset:0;background:#fff;z-index:70;pointer-events:none;animation:flash .45s forwards}
+@keyframes flash{from{opacity:.95}to{opacity:0}}
+.dropzone{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;max-width:560px;margin:0 auto;min-height:330px;border:4px dashed var(--ink);border-radius:32px;background:#ffffffcc;text-align:center;padding:24px;cursor:pointer}
+.dropzone.over{background:#FFF2CF}
+.dropzone .em{font-size:72px;line-height:1}
+.dropzone input{position:absolute;opacity:0;width:1px;height:1px}
+.scanner{max-width:560px;margin:0 auto;text-align:center}
+.machine{position:relative;width:280px;height:230px;margin:10px auto 22px}
+.machine .arm{position:absolute;left:50%;top:0;width:20px;height:140px;transform:translateX(-50%);background:#9C8BF2;border:3px solid var(--ink);border-radius:10px}
+.machine .head{position:absolute;left:50%;top:0;transform:translateX(-50%);width:120px;height:46px;background:#7B6CF6;border:3px solid var(--ink);border-radius:18px}
+.machine .head:after{content:'';position:absolute;left:50%;bottom:-12px;transform:translateX(-50%);width:30px;height:16px;background:#26224A;border-radius:0 0 12px 12px}
+.machine .base{position:absolute;left:0;right:0;bottom:0;height:90px;background:#B4A8FF;border:3px solid var(--ink);border-radius:22px}
+.machine .sheet{position:absolute;left:50%;bottom:26px;transform:translateX(-50%) rotate(-3deg);width:150px;height:96px;background:#fff;border:3px solid var(--ink);border-radius:6px}
+.machine .light{position:absolute;left:50%;top:58px;transform:translateX(-50%);width:0;height:0;border-left:70px solid transparent;border-right:70px solid transparent;border-top:120px solid #FFF3A066;opacity:0}
+.machine.busy .light{animation:beam 1s ease-in-out 2}
+@keyframes beam{50%{opacity:1}}
+
+.preview{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:26px;align-items:start}
+.desk{background:#E8B884;border:3px solid var(--ink);border-radius:30px;padding:26px;box-shadow:0 8px 0 var(--ink);display:grid;place-items:center;min-height:360px}
+.photo{max-width:100%;max-height:56vh;transition:transform .35s;border:3px solid var(--ink);border-radius:8px;background:#fff;box-shadow:0 6px 0 #26224A33}
+.photo img{display:block;max-width:100%;max-height:52vh}
+.checks{display:flex;flex-direction:column;gap:10px}
+.check{display:flex;align-items:center;gap:12px;text-align:left;background:#fff;border:3px solid var(--ink);border-radius:18px;padding:12px 14px;min-height:60px}
+.check .box{width:32px;height:32px;border-radius:10px;border:3px solid var(--ink);display:grid;place-items:center;flex:none;font-size:18px}
+.check.on .box{background:var(--leaf);color:#fff}
+.row{display:flex;gap:12px;flex-wrap:wrap}
+
+.launch{max-width:640px;margin:0 auto;background:var(--paper);border:3px solid var(--ink);border-radius:34px;box-shadow:0 8px 0 var(--ink);padding:26px;text-align:center}
+.ticket{display:grid;grid-template-columns:150px 1fr;gap:20px;align-items:center;text-align:left;margin:8px 0 22px}
+.thumb{width:150px;height:190px;border:3px solid var(--ink);border-radius:14px;overflow:hidden;background:#fff;transform:rotate(-3deg);box-shadow:0 5px 0 var(--ink)}
+.thumb img{width:100%;height:100%;object-fit:cover}
+.thumb .ws{transform:scale(.33);transform-origin:0 0;width:300%}
+.ticket dl{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;margin:0}
+.ticket dt{color:var(--ink2)}.ticket dd{margin:0}
+.prize{display:inline-flex;align-items:center;gap:8px;background:var(--sun);border:3px solid var(--ink);border-radius:14px;padding:4px 14px;font-family:var(--display);font-size:20px}
+.prize.got{background:#fff;font-family:var(--body);font-size:15px}
+
+/* scan */
+.scan{max-width:760px;margin:0 auto;text-align:center;color:#fff}
+.scan .step-title{color:#fff;text-shadow:0 3px 0 #000}
+.scan-stage{position:relative;width:min(380px,82vw);margin:10px auto 0;aspect-ratio:3/4}
+.scan-paper{position:absolute;inset:0;border:4px solid #fff;border-radius:14px;overflow:hidden;background:#fff;box-shadow:0 0 0 10px #ffffff18,0 20px 60px #0008}
+.scan-paper img{width:100%;height:100%;object-fit:cover}
+.scan-paper .ws{transform:scale(.62);transform-origin:0 0;width:161%}
+.beam{position:absolute;left:-4%;right:-4%;height:70px;top:0;background:linear-gradient(#FFCB3D00,#FFCB3D88 70%,#FFE58A);border-bottom:4px solid #FFE58A;animation:sweep 1.8s ease-in-out infinite alternate;mix-blend-mode:screen}
+@keyframes sweep{to{top:calc(100% - 70px)}}
+.lens{position:absolute;font-size:64px;animation:lens 3.6s ease-in-out infinite;filter:drop-shadow(0 6px 10px #0006)}
+@keyframes lens{0%{left:8%;top:12%}25%{left:62%;top:28%}50%{left:20%;top:55%}75%{left:60%;top:70%}100%{left:8%;top:12%}}
+.found{position:absolute;font-size:30px;animation:pop .5s cubic-bezier(.2,1.6,.4,1) both}
+@keyframes pop{from{transform:scale(0)}}
+.scan-pet{position:absolute;right:-110px;bottom:-26px;width:170px;height:160px;animation:bob 1.2s ease-in-out infinite}
+.scan-pet svg{width:100%;height:100%}
+@keyframes bob{50%{transform:translateY(-8px)}}
+.scan-steps{display:flex;justify-content:center;gap:10px;margin:28px 0 8px;flex-wrap:wrap}
+.scan-steps li{display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:999px;background:#ffffff14;color:#ffffff88;font-size:14px;transition:all .3s}
+.scan-steps li.lit{background:var(--sun);color:var(--ink)}
+.scan-steps li.lit i{animation:pop .4s}
+.scan-steps i{font-style:normal}
+.scan-say{font-size:20px;min-height:32px}
+
+/* worksheet (sample homework) */
+.ws{background:#FFFEF7;padding:26px 24px;font-family:Georgia,'Huninn',serif;color:#2b2b38;text-align:left;background-image:repeating-linear-gradient(transparent 0 37px,#DCE8F5 37px 38px);background-position:0 92px}
+.ws-head{display:flex;justify-content:space-between;font:13px var(--body);color:#777;border-bottom:2px solid #F0B5B5;padding-bottom:8px;margin-bottom:6px}
+.ws h4{font-size:20px;margin:6px 0 10px;font-weight:700}
+.ws .q{font-size:18px;line-height:38px;position:relative}
+.ws s{color:#8a8a8a;text-decoration-thickness:2px}
+.ws .pencil{font-family:'Comic Sans MS','Huninn',cursive;color:#3B4C8A}
+.ws .smudge{opacity:.3;filter:blur(.4px)}
+.ws .hl{border-radius:8px;padding:0 4px;transition:background .3s,box-shadow .3s}
+.ws.marked .hl.a{background:#FFF0C2;box-shadow:0 0 0 3px #FFCB3D}
+.ws.marked .hl.b{background:#EDE7FF;box-shadow:0 0 0 3px #9C8BF2}
+.ws.marked .hl.c{background:#DDF6E8;box-shadow:0 0 0 3px #38C07A}
+.sticker{position:absolute;right:-6px;top:-4px;font-family:var(--body);font-size:12px;line-height:1.2;background:#fff;border:2px solid var(--ink);border-radius:12px;padding:3px 8px;transform:rotate(4deg);animation:pop .5s cubic-bezier(.2,1.6,.4,1) both;white-space:nowrap;color:var(--ink)}
+
+/* reveal */
+.reveal{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;align-items:start}
+.reveal .paperbox{border:3px solid var(--ink);border-radius:20px;overflow:hidden;box-shadow:0 8px 0 var(--ink);background:#fff}
+.reveal .paperbox img{width:100%;display:block}
+.clues{display:flex;flex-direction:column;gap:12px}
+.clue{display:flex;gap:12px;align-items:flex-start;background:#fff;border:3px solid var(--ink);border-radius:20px;padding:14px;box-shadow:0 5px 0 var(--ink);animation:flip .55s cubic-bezier(.2,1.3,.4,1) both}
+@keyframes flip{from{opacity:0;transform:perspective(600px) rotateX(70deg) translateY(-10px)}}
+.clue .ci{font-size:28px;width:52px;height:52px;flex:none;display:grid;place-items:center;border-radius:16px;border:3px solid var(--ink)}
+.clue.retry .ci{background:#FFF0C2}.clue.fixed .ci{background:#DDF6E8}.clue.check .ci{background:#EDE7FF}.clue.next .ci{background:#FFE0D3}
+.clue b{font-weight:400;font-size:17px;display:block}
+.clue p{font-size:15px;color:#3A3F63}
+
+/* feelings */
+.feel{max-width:900px;margin:0 auto;text-align:center}
+.faces{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;margin:18px 0 18px}
+.face-btn{display:flex;flex-direction:column;align-items:center;gap:6px;padding:18px 6px 14px;background:#fff;border:3px solid var(--ink);border-radius:26px;box-shadow:0 6px 0 var(--ink);font-size:16px;transition:transform .15s}
+.face-btn .f{font-size:58px;line-height:1;transition:transform .25s cubic-bezier(.2,1.6,.4,1)}
+.face-btn:hover .f{transform:scale(1.1) rotate(-6deg)}
+.face-btn.on{background:var(--c);transform:translateY(-6px)}
+.face-btn.on .f{transform:scale(1.2)}
+.share{display:inline-flex;align-items:center;gap:10px;background:#ffffffcc;border:2px solid var(--ink);border-radius:999px;padding:6px 16px 6px 8px;font-size:15px;min-height:48px}
+.switch{width:46px;height:28px;border-radius:999px;background:#C9C4E0;border:2px solid var(--ink);position:relative;flex:none}
+.switch:after{content:'';position:absolute;left:2px;top:2px;width:20px;height:20px;border-radius:50%;background:#fff;border:2px solid var(--ink);transition:left .2s}
+.switch.on{background:var(--leaf)}.switch.on:after{left:18px}
+
+/* reward */
+.reward{max-width:620px;margin:0 auto;text-align:center;color:#fff;position:relative}
+.chest{position:relative;width:200px;height:170px;margin:10px auto 0}
+.chest .lid{position:absolute;left:0;right:0;top:20px;height:62px;background:#FF9E4A;border:4px solid var(--ink);border-radius:40px 40px 8px 8px;transform-origin:10% 100%;animation:lid .7s .3s cubic-bezier(.3,1.6,.5,1) forwards;z-index:2}
+.chest .box{position:absolute;left:0;right:0;bottom:0;height:96px;background:#E7772E;border:4px solid var(--ink);border-radius:8px 8px 22px 22px}
+.chest .box:after{content:'';position:absolute;left:50%;top:-6px;transform:translateX(-50%);width:34px;height:40px;background:var(--sun);border:4px solid var(--ink);border-radius:8px}
+.chest .glow{position:absolute;left:50%;top:60px;width:10px;height:10px;transform:translate(-50%,-50%);border-radius:50%;box-shadow:0 0 80px 70px #FFE58A99;opacity:0;animation:glow .6s .5s forwards}
+@keyframes lid{to{transform:rotate(-38deg) translateY(-14px)}}
+@keyframes glow{to{opacity:1}}
+.burst{position:absolute;left:50%;top:150px;pointer-events:none}
+.burst i{position:absolute;font-style:normal;font-size:26px;opacity:0;animation:burst 1.3s .55s cubic-bezier(.1,.8,.3,1) forwards}
+@keyframes burst{0%{opacity:1;transform:translate(0,0) scale(.3)}80%{opacity:1}100%{opacity:0;transform:translate(var(--x),var(--y)) scale(1.1) rotate(200deg)}}
+.plus{font-family:var(--display);font-size:72px;line-height:1;color:var(--sun);text-shadow:0 5px 0 var(--ink);margin-top:10px;animation:pop .6s .7s cubic-bezier(.2,1.6,.4,1) both}
+.reward .card{background:var(--paper);color:var(--ink);border:3px solid var(--ink);border-radius:28px;padding:18px 20px;text-align:left;margin-top:18px;display:grid;grid-template-columns:110px 1fr;gap:14px;align-items:center;box-shadow:0 8px 0 #000}
+.reward .card .gpet{width:110px;height:100px}.reward .card .gpet svg{width:100%;height:100%}
+
+/* ---------- Parent & teacher: calm, same brand ---------- */
+.calm{background:var(--paper);min-height:calc(100vh - 52px);padding:26px 0 60px}
+.calm .wrap{max-width:1180px}
+.calm-head{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:22px}
+.calm-head h1{font-family:var(--display);font-weight:400;font-size:clamp(30px,4vw,42px);line-height:1.1}
+.calm-head p{color:var(--ink2);margin-top:6px}
+.tabs{display:flex;gap:4px;background:#F1E7D3;border-radius:14px;padding:4px}
+.tabs button{padding:8px 16px;border-radius:11px;min-height:44px;color:var(--ink2)}
+.tabs button.active{background:#fff;color:var(--ink);box-shadow:0 1px 0 #0001}
+.sheet{background:#fff;border:2px solid var(--line);border-radius:22px;padding:22px}
+.sheet h2{font-size:21px;font-weight:400;font-family:var(--body)}
+.sheet .sub{color:var(--ink2);font-size:14px;margin-top:2px}
+.sheet-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.cols{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(320px,1fr);gap:20px;align-items:start}
+.stack{display:flex;flex-direction:column;gap:20px}
+.cbtn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:8px 16px;border-radius:12px;background:#F4EEFF;color:#4B3FA0;font-size:15px}
+.cbtn.primary{background:var(--ink);color:#fff}
+.cbtn.line{background:#fff;border:2px solid var(--line);color:var(--ink)}
+.cbtn:hover{filter:brightness(.97)}
+.tag{display:inline-flex;align-items:center;gap:6px;border-radius:9px;padding:3px 10px;font-size:13px;background:#F4EEFF;color:#4B3FA0;white-space:nowrap}
+.tag.green{background:#E3F6EB;color:#1C7A47}.tag.amber{background:#FFF1CC;color:#8A5B00}.tag.rose{background:#FFE6E0;color:#A43F22}
+.letter{display:grid;grid-template-columns:150px minmax(0,1fr);gap:22px;align-items:center;background:#FFF1CC;border-radius:26px;padding:22px 26px;margin-bottom:20px}
+.letter .gpet{width:150px;height:135px}.letter .gpet svg{width:100%;height:100%}
+.letter h2{font-family:var(--display);font-weight:400;font-size:28px;line-height:1.15}
+.facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:14px}
+.fact{background:#fff;border-radius:16px;padding:10px 14px}
+.fact b{font-family:var(--display);font-weight:400;font-size:26px;display:block;line-height:1.1}
+.fact span{font-size:13px;color:var(--ink2)}
+.ev{display:grid;grid-template-columns:44px 1fr auto;gap:12px;padding:14px 0;border-bottom:2px solid #F3EADA}
+.ev:last-child{border:0}
+.qn{width:40px;height:40px;border-radius:12px;background:#F4EEFF;color:#4B3FA0;display:grid;place-items:center;font-size:14px}
+.diff{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:4px 0}
+.diff s{background:#FFE6E0;color:#A43F22;padding:0 8px;border-radius:7px}
+.diff ins{background:#E3F6EB;color:#1C7A47;text-decoration:none;padding:0 8px;border-radius:7px}
+.say{border-radius:18px;padding:16px 18px;line-height:1.8}
+.say.old{background:#FFF0EC;color:#8E4A36}
+.say.new{background:#E7F7EE;color:#1E5E3C}
+.say small{display:block;font-size:12px;opacity:.75}
+.week{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;align-items:end;height:130px;margin-top:16px}
+.week div{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:12px;color:var(--ink2);height:100%;justify-content:flex-end}
+.week i{display:block;width:100%;max-width:34px;border-radius:10px 10px 4px 4px;background:#EFE5D2}
+.week i.on{background:var(--sun)}
+.row-item{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:14px 0;border-bottom:2px solid #F3EADA}
+.row-item:last-child{border:0}
+.pbar{height:10px;background:#F1E7D3;border-radius:9px;overflow:hidden;margin-top:6px}
+.pbar span{display:block;height:100%;background:var(--leaf);border-radius:9px}
+.roster{display:flex;flex-direction:column;gap:6px;margin-top:12px}
+.roster button{display:grid;grid-template-columns:40px 1fr auto;gap:10px;align-items:center;text-align:left;padding:10px 12px;border-radius:14px;border:2px solid transparent}
+.roster button:hover{background:#FBF5EA}
+.roster button.active{border-color:var(--ink);background:#FFF9EE}
+.avatar{width:40px;height:40px;border-radius:50%;background:#FFE6CF;overflow:hidden}
+.avatar svg{width:150%;height:150%;margin:-8% 0 0 -25%}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:20px}
+.kpi{background:#fff;border:2px solid var(--line);border-radius:18px;padding:14px 16px}
+.kpi b{font-family:var(--display);font-weight:400;font-size:32px;line-height:1.1;display:block}
+.kpi span{font-size:14px;color:var(--ink2)}
+.kpi.flag{background:#FFF1CC;border-color:#F3D98A}
+.support{display:flex;gap:12px;align-items:flex-start;padding:12px;border-radius:14px;background:#FFF9EE;margin-top:10px}
+.review{border:2px solid var(--line);border-radius:16px;padding:14px;margin-top:12px}
+.orig{background:#FBF5EA;padding:10px 12px;border-radius:10px;font-family:Georgia,serif;margin-top:10px}
+label.field{display:block;margin:14px 0 6px;font-size:14px}
+input:not([type=checkbox]):not([type=file]),select,textarea{width:100%;padding:11px 12px;border:2px solid var(--line);border-radius:12px;background:#fff}
+textarea{min-height:96px;resize:vertical}
+.form2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.error{color:#B33A2B;font-size:14px;margin-top:6px;min-height:1px}
+.empty{padding:22px;border-radius:16px;background:#FBF5EA;text-align:center;color:var(--ink2)}
+
+/* club */
+.stage{position:relative;border:3px solid var(--ink);border-radius:30px;box-shadow:0 8px 0 var(--ink);overflow:hidden;background:radial-gradient(60% 80% at 50% 0,#FFF3B8,transparent 70%),linear-gradient(#5B4FC9,#3A3290);color:#fff;padding:26px;display:grid;grid-template-columns:minmax(0,1fr) 240px;gap:16px;align-items:center}
+.stage:after{content:'';position:absolute;left:0;right:0;top:0;height:22px;background:repeating-linear-gradient(90deg,#FF7B4A 0 40px,#FFCB3D 40px 80px);border-bottom:3px solid var(--ink)}
+.stage h2{font-family:var(--display);font-weight:400;font-size:clamp(30px,4vw,42px);line-height:1.1;margin-top:14px}
+.stage .gpet{height:210px}.stage .gpet svg{width:100%;height:100%}
+.club-grid{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:20px;margin-top:20px;align-items:start}
+.gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:14px}
+.petcard{background:#fff;border:3px solid var(--ink);border-radius:22px;padding:10px;box-shadow:0 5px 0 var(--ink);min-width:0}
+.petcard.mine{background:#FFF2CF}
+.petcard .pst{height:140px;border-radius:16px;background:#EAF6FF;display:grid;place-items:center}
+.petcard:nth-child(3n+2) .pst{background:#EAF8EF}.petcard:nth-child(3n) .pst{background:#FFF0E8}
+.petcard .pst>div{width:150px;height:140px}.petcard .pst svg{width:100%;height:100%}
+.petcard b{font-family:var(--display);font-weight:400;font-size:20px}
+.lead-row{display:flex;gap:12px;align-items:center;padding:9px 0;border-bottom:2px dashed var(--line)}
+.lead-row:last-child{border:0}
+.rank{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:#fff;border:2px solid var(--ink);font-family:var(--display)}
+.rank.r1{background:var(--sun)}
+
+/* modal + toast */
+.modal{position:fixed;inset:0;background:#26224A88;display:grid;place-items:center;padding:20px;z-index:80}
+.modal .sheet{max-width:520px;width:100%;max-height:90vh;overflow:auto}
+.toast{position:fixed;left:50%;bottom:110px;transform:translateX(-50%);z-index:90;background:var(--ink);color:#fff;border-radius:16px;padding:12px 20px;max-width:90vw;box-shadow:0 8px 24px #0003;text-align:center}
+.calm ~ .toast{bottom:28px}
+
+.world.short{min-height:0;padding-bottom:0}
+.club-student{background:linear-gradient(#DDF3FF,#EAF8EF);padding:10px 0 130px}
+.cols.t-main{grid-template-columns:320px minmax(0,1fr)}
+.cols.t-half{grid-template-columns:1fr 1fr}
+/* ---------- responsive ---------- */
+@media(max-width:980px){
+ .quest{grid-template-columns:1fr 230px}.quest-pet{height:260px}.quest-pet .pet{height:220px}
+ .quests{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .islands{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .preview,.reveal,.house,.qgrid,.cols,.cols.t-main,.club-grid{grid-template-columns:1fr}
+ .facts,.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .gallery{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
-@media(max-width:900px){.dashboard{grid-template-columns:1fr}
-.shell{padding:0 20px}
-.header-inner{flex-wrap:wrap!important;gap:14px!important}
-.roles{order:3;width:100%;justify-content:center}
-.roles button{flex:1}
-.page-heading{align-items:flex-start!important}
-.parent-grid{grid-template-columns:1fr!important}
+@media(max-width:640px){
+ body{font-size:15px}
+ .demo-note,.demo-strip .brand span{display:none}
+ .roles button{padding:6px 10px;font-size:13px}
+ .hud{padding-top:12px}.player{padding-right:12px}.xp{width:76px}.chip{font-size:17px;padding:2px 10px}.chip small{display:none}
+ .quest{grid-template-columns:1fr;margin-top:6px}
+ .quest-text{padding-bottom:0}
+ .quest-pet{height:210px;order:-1;margin:0 auto;width:260px}.quest-pet .pet{height:180px}.quest-pet .bubble{font-size:14px;padding:8px 12px;left:0;right:0}
+ .quest-actions .btn.big{width:100%}
+ .board{padding:16px;border-radius:24px}
+ .qitem{min-height:132px;padding:12px}
+ .dock button{min-width:62px;padding:4px 6px;font-size:12px}.dock button span{font-size:22px}
+ .stones li span{width:30px;height:30px;font-size:14px}.stones li+li:before{width:8px;margin-right:2px}.stones li.now b{display:none}
+ .island{padding:16px 6px 12px}.island .ii{font-size:42px}.island b{font-size:22px}
+ .guide .gpet{width:84px;height:78px}.guide .bubble{font-size:14px;margin-bottom:24px}
+ .faces{grid-template-columns:repeat(3,minmax(0,1fr))}.face-btn .f{font-size:46px}
+ .ticket{grid-template-columns:1fr;justify-items:center;text-align:center}
+ .ticket dl{text-align:left}
+ .scan-pet{right:-24px;bottom:-40px;width:110px;height:100px}
+ .letter{grid-template-columns:1fr;text-align:left}.letter .gpet{display:none}
+ .form2,.cols.t-half{grid-template-columns:1fr}
+ .stage{grid-template-columns:1fr}.stage .gpet{display:none}
+ .gallery{gap:10px}.petcard .pst{height:118px}.petcard .pst>div{width:128px;height:118px}
+ .ev{grid-template-columns:40px 1fr}.ev>.cnt{grid-column:2}
+ .room{min-height:360px}.room .pet-btn{height:260px}
+ .shop{grid-template-columns:1fr}
 }
-@media(max-width:480px){.shell{padding:0 14px}
-.card{padding:19px}
-.roles button{padding:10px 8px;font-size:12px}
-.page-heading{flex-direction:column;gap:12px!important}
-.checkin button{font-size:12px}
-.item-grid{gap:5px}
-.shop-item{font-size:11px}
-.metric-grid{grid-template-columns:1fr!important}
-.header-tag{display:none}
-.paper-row{font-size:13px}
-}
-@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}
-}
-
-
-/* V2 visual system: a homework studio, evidence inspector and pet club. */
-body{font-size:14px;line-height:1.65}
-.shell{max-width:1320px}
-body h1{font-size:30px;letter-spacing:-.8px;font-weight:700;line-height:1.25}
-body h2{font-size:19px;font-weight:700}
-body h3{font-weight:600}
-.layout{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(340px,1fr);gap:22px}
-.card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px}
-.toplinks{display:flex;gap:24px;border-bottom:1px solid var(--line);margin:20px 0 26px}
-.toplinks button{min-height:48px;border-bottom:2px solid transparent;color:var(--muted);font-size:13px}
-.toplinks button.active{border-color:var(--purple);color:var(--purple);font-weight:600}
-.pill{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:8px;background:#f0ebfa;color:#7156aa;font-size:11px}
-.pill.green{background:#eaf4ed;color:#39765b}
-.pill.amber{background:#fff4dd;color:#91671d}
-.note{font-size:11px;line-height:1.8;color:var(--muted)}
-.btn{font-size:13px}
-.quiet{color:#78638e;font-size:12px;min-height:44px;text-decoration:underline;text-underline-offset:4px}
-.action-row{display:flex;gap:9px;align-items:center;flex-wrap:wrap}
-.feature-strip{background:#eeebf8;border:1px solid #e3dcf1;border-radius:17px;padding:19px 23px}
-.feature-strip h2{color:#614b89;font-size:17px}
-.feature-strip p{font-size:12px;color:#837294;margin-top:5px}
-.mode button.active{background:#fff;color:var(--purple);box-shadow:0 2px 5px #30233d09}
-.worksheet{background:#f3f2ef;border-radius:13px;padding:16px;margin:17px 0}
-.paper-header{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid #e9e7df;padding-bottom:12px}
-.paper h3{font:19px Georgia,serif}
-.paper-row{font-size:17px;line-height:1.9;padding:12px 0}
-.paper-label{display:block;font:10px/1.6 'DM Sans',sans-serif;color:#87838c;margin-top:4px}
-.scribble{font-style:italic;color:#657083}
-.upload-foot{display:flex;justify-content:space-between;align-items:center;gap:15px}
-.metrics{display:flex;background:#f7f6fa;border-radius:13px;padding:15px 0;margin-top:18px}
-.metrics>div{flex:1;padding:0 15px;border-right:1px solid #e7e4ee}
-.metrics>div:last-child{border:0}
-.metrics b{font-size:23px;font-weight:600}
-.metrics span{display:block;font-size:11px;color:var(--muted)}
-.evidence-row{display:grid;grid-template-columns:36px 1fr auto;gap:12px;padding:16px 0;border-bottom:1px solid var(--line)}
-.evidence-row:last-child{border:0}
-.q-num{width:32px;height:32px;display:grid;place-items:center;border-radius:9px;background:#f3f0f8;color:#856baf;font-size:11px}
-.diff{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:6px 0}
-.diff s{background:#fbefeb;color:#9d6f62;padding:1px 7px;border-radius:5px}
-.diff ins{background:#edf5ef;color:#467c5d;text-decoration:none;padding:1px 7px;border-radius:5px}
-.count{font-size:11px;color:#96712f}
-.quote.old{background:#faf1ed;color:#9a7669}
-.quote.new{background:#edf5ef;color:#426e53}
-.pet-scene{height:280px}
-.pet-scene:before{width:230px;height:230px;top:20px}
-.pet-render{position:relative;width:265px;max-width:100%;height:245px;z-index:1}
-.pet-render svg{width:100%;height:100%;overflow:visible}
-.pet-button{border:0;background:transparent}
-.pet-button:hover{transform:rotate(-2deg)}
-.pet-label{position:absolute;top:12px;left:12px;z-index:2;background:white}
-.pet-floor{position:absolute;bottom:12px;font-size:11px;color:#827093;z-index:2}
-.wardrobe{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
-.shop{border:1px solid var(--line);padding:10px 3px;border-radius:12px;min-height:96px}
-.shop.active{background:#f2edfa;border-color:#a48bcf}
-.shop .art{font-size:25px;display:block}
-.shop .name{font-size:11px;display:block}
-.shop .price{font-size:10px;color:#7d5fa7;display:block;margin-top:3px}
-.checkin button.active{background:#f1edf9;border-color:#9d88cf}
-.checkin span{display:block;font-size:25px;margin-bottom:5px}
-.mini-banner{background:#fff6e7;border:1px solid #f3e6cb;border-radius:17px;padding:21px}
-.mini-banner h3{color:#82642f}
-.mini-banner p{font-size:12px;color:#9a865e}
-.field{display:block;font-weight:600;font-size:12px;margin:15px 0 6px}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-textarea{width:100%;min-height:90px;resize:vertical;font:inherit;border:1px solid #dedbe8;border-radius:9px;padding:11px;color:var(--ink)}
-.error{font-size:12px;color:#b44848;margin-top:8px}
-.modal .card{max-width:510px;max-height:90vh;overflow-y:auto}
-.empty{padding:26px;border-radius:13px;background:#f8f7fb;text-align:center;color:var(--muted);font-size:13px}
-
-.roster{display:flex;gap:8px;overflow-x:auto;padding:4px 0 12px}
-.roster button{min-width:140px;text-align:left;border:1px solid var(--line);border-radius:12px;padding:13px}
-.roster button.active{border-color:#aa90d2;background:#f3effa}
-.review-box{border:1px solid var(--line);border-radius:12px;padding:16px;margin-top:13px}
-.review-original{background:#faf8f3;padding:12px;border-radius:8px;font:16px/1.8 Georgia,serif}
-.review-note{font-size:12px;color:#56735c;margin-top:10px}
-
-
-.club-banner{display:grid;grid-template-columns:1fr 220px;gap:20px;align-items:center;background:#ede8f6;border:1px solid #e0d7ee;border-radius:21px;padding:25px 28px}
-.club-banner h2{font-size:27px;line-height:1.25;color:#59427c;letter-spacing:-.7px}
-.club-banner .pet-render{width:190px;height:170px;margin:auto}
-.club-banner p{max-width:580px}
-.club-grid{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:22px}
-.pet-gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:19px}
-.pet-card{border:1px solid var(--line);border-radius:16px;padding:13px 12px;background:#fff;min-width:0}
-.pet-card.mine{border-color:#b59ad9;background:#fcfaff}
-.pet-stage{height:148px;border-radius:12px;background:#f4eff9;display:flex;align-items:center;justify-content:center;margin-bottom:9px}
-.pet-stage .pet-render{width:158px;height:148px}
-.pet-card:nth-child(2n) .pet-stage{background:#eff5f1}
-.pet-card:nth-child(3n) .pet-stage{background:#fbf3e8}
-.pet-card .btn{width:100%;font-size:11px;padding:8px 4px}
-.leader-row{display:flex;gap:11px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
-.leader-row:last-child{border:0}
-.rank{background:#f4f1f9;color:#9779bc;width:27px;height:27px;display:grid;place-items:center;font-size:11px;border-radius:8px}
-.exclusive{background:#faf5e9;border:1px solid #eee0be;border-radius:15px;padding:17px}
-.exclusive .pet-render{height:143px;width:160px;margin:auto}
-.weekly-track{font-size:11px;color:#8d7e9e;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
-.club-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
-.rules{font-size:12px;line-height:1.9;color:#76798a;padding-left:18px;list-style:disc}
-.sparkle{position:absolute;color:#ceb672;font-size:19px;pointer-events:none}
-.champion-slot{margin-top:12px;padding:12px;background:#fcf6e9;border:1px solid #eee0c3;border-radius:11px}
-
-@media(max-width:1100px){.club-grid{grid-template-columns:1fr 290px}
-.pet-gallery{grid-template-columns:repeat(2,minmax(0,1fr))}
-}
-
-@media(max-width:800px){.club-grid{grid-template-columns:1fr}
-.club-banner{grid-template-columns:1fr}
-.club-banner>.pet-render{display:none}
-.club-banner h2{font-size:24px}
-}
-
-@media(max-width:420px){.pet-gallery{gap:9px}
-.pet-card{padding:10px 8px}
-.pet-stage{height:125px}
-.pet-stage .pet-render{width:137px;height:125px}
-}
-
-
-@media(max-width:1000px){.layout{grid-template-columns:1fr}
-.header-inner{flex-wrap:wrap}
-.roles{order:3;width:100%}
-.roles button{flex:1}
-}
-
-@media(max-width:540px){body h1{font-size:25px}
-.pill.header-tag{display:none}
-.paper-header{flex-direction:column;gap:2px}
-.paper{padding:16px}
-.paper-row{font-size:15px}
-.upload-foot{align-items:flex-start;flex-direction:column}
-.upload-foot .btn{width:100%}
-.evidence-row{grid-template-columns:30px 1fr;gap:10px}
-.evidence-row>.count{grid-column:2}
-.metrics>div{padding:0 10px}
-.card-head{flex-wrap:wrap}
-.form-grid{grid-template-columns:1fr}
-.welcome-badge{display:none}
-}
-
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition:none!important}.beam,.lens{display:none}}
 </style></head>
 
-<body x-data="mindBridge()" x-init="boot()" @keydown.escape.window="closeModal()" @keydown.tab.window="trapFocus($event)">
-<header class="topbar">
-<div class="shell header-inner flex items-center justify-between py-5 gap-6">
-<a href="#" @click.prevent="role='student';screen='home'" class="flex items-center gap-3" aria-label="MindBridge 首頁">
-<span class="brand-icon">
-<i data-lucide="sprout">
-</i>
-</span>
-<span class="text-xl font-bold tracking-tight">MindBridge <span class="text-[#8065b9]">AI</span>
-<span class="block text-[10px] muted font-medium tracking-normal">Every try tells a story.</span>
-</span>
-</a>
-<nav class="roles" aria-label="角色切換">
-<template x-for="r in roleOptions" :key="r.id">
-<button @click="role=r.id;screen='home'" :class="{active:role===r.id}" :aria-pressed="role===r.id" x-text="r.label">
-</button>
-</template>
-</nav>
-<span class="pill header-tag">Interactive prototype</span>
-</div>
-</header>
-<main class="shell">
-<div class="flex items-center justify-between gap-4 pt-8">
-<div>
-<p class="sub mb-2" x-text="screen==='club'?'Class 4A / Together we grow':role==='student'?'My learning space / 我的學習小天地':role==='parent'?'Family space / 陪伴，而不是責備':'Teaching space / 看見每一種努力'">
-</p>
-<h1 x-text="screen==='club'?'A little show. A lot of heart.':role==='student'?'Small steps. Big little victories.':role==='parent'?'See the effort. Not just the errors.':'A second look can change everything.'">
-</h1>
-<p class="sub mt-2" x-text="screen==='club'?'每個星期五，讓全班的小夥伴一起見面。':role==='student'?'嗨，小安！不用一次答對，Milo 陪你再試一次。':role==='parent'?'先看他改了什麼、試了什麼，再決定怎樣幫他。':'AI 找出線索，老師複核，再給一個剛剛好的下一步。'">
-</p>
-</div>
-<span class="pill green welcome-badge">Effort over perfection</span>
-</div>
-<nav class="toplinks" aria-label="功能頁面">
-<button @click="screen='home'" :class="{active:screen==='home'}" x-text="role==='student'?'My dashboard':role==='parent'?'Understand & encourage':'Review & assign'">
-</button>
-<button @click="screen='club'" :class="{active:screen==='club'}">Friday Pet Club <span class="pill amber ml-1">New</span>
-</button>
-</nav>
-<!-- Student: an English worksheet, effort evidence and companion. -->
-<section x-show="role==='student' && screen==='home'" x-cloak class="layout" id="student-view">
-<div class="stack">
-<article class="card">
-<div class="card-head">
-<div>
-<h2>Every try counts.</h2>
-<p class="sub">Homework studio · 把努力留下來</p>
-</div>
-<span class="pill amber">✦ 每日首次 +30</span>
-</div>
-<div class="mode">
-<button @click="mode='app'" :class="{active:mode==='app'}">App 拍照上傳</button>
-<button @click="mode='device'" :class="{active:mode==='device'}">3D Print 裝置拍照</button>
-</div>
-<div class="worksheet">
-<div class="paper" role="img" aria-label="英文示意作業，含塗改、擦拭及未完成句子">
-<div class="paper-header">
-<div>
-<p class="note mb-1">English practice · Grade 4</p>
-<h3>A little better, every day.</h3>
-</div>
-<span class="note">Name: Alex (小安)<br>示意作業 / Sample</span>
-</div>
-<div class="paper-row">1. Yesterday, I <span :class="uploaded?'mark strike':'scribble'">
-<s>go</s> <s>goed</s> <b>went</b>
-</span> to the park.<span class="paper-label" x-show="uploaded">2 detected changes · go → goed → went</span>
-</div>
-<div class="paper-row">2. She <span :class="uploaded?'mark strike':'scribble'">
-<s>have</s> <b>has</b>
-</span> two cats.<span class="paper-label" x-show="uploaded">1 strikethrough · have → has</span>
-</div>
-<div class="paper-row">3. We <span :class="uploaded?'mark erase':'scribble'">
-<span style="opacity:.32">is</span> <b>are</b>
-</span> playing outside.<span class="paper-label" x-show="uploaded">1 possible erasure · original word needs teacher review</span>
-</div>
-<div class="paper-row">4. Write one sentence about your weekend.<br>
-<span :class="uploaded?'mark unfinished':'scribble'">I went to …</span>
-<span class="paper-label" x-show="uploaded">Unfinished answer · ask what they wanted to say next</span>
-</div>
-</div>
-</div>
-<div x-show="!loading" class="upload-foot">
-<div>
-<p class="text-xs font-medium" x-text="uploaded?'已找到值得被看見的努力':'不是找錯誤，是看見你怎樣再試一次。'">
-</p>
-<p class="note" x-text="mode==='device'?'模擬拍攝架，不連接真實硬體。':'使用英文範例，不上傳個人照片。'">
-</p>
-</div>
-<button class="btn primary" @click="upload()">
-<i data-lucide="scan-line" class="icon">
-</i>
-<span x-text="uploaded?'重新模擬分析':mode==='app'?'模擬拍照上傳':'模擬裝置拍攝'">
-</span>
-</button>
-</div>
-<div x-show="loading" class="p-5 text-center text-[#8565ad]" role="status" x-text="stage">
-</div>
-<div x-show="uploaded && !loading" class="mt-5">
-<div class="p-4 rounded-xl bg-[#edf5ef] text-[#416b50] text-sm">你把 “goed” 改成了 “went”。再試一次，就是進步。<p class="text-xs mt-1">第 4 題可以先說說，你去了哪裡？</p>
-</div>
-<div class="metrics">
-<div>
-<b x-text="editCount('an')">
-</b>
-<span>偵測修改 · 估計</span>
-</div>
-<div>
-<b>3</b>
-<span>重新嘗試的題目</span>
-</div>
-<div>
-<b>1</b>
-<span>下一個小步驟</span>
-</div>
-</div>
-<p class="note mt-3">單張照片不能還原確切次數與先後；這是示範重建，老師可更正。塗改多不等於更認真，也不直接代表焦慮。</p>
-</div>
-</article>
-<article class="card">
-<div class="card-head">
-<div>
-<h2>Your next little adventure.</h2>
-<p class="sub">老師給你的小任務 · 嘗試後由老師確認積分</p>
-</div>
-<span class="pill" x-text="myTasks.length+' tasks'">
-</span>
-</div>
-<template x-for="t in myTasks" :key="t.id">
-<div class="reward-row" :data-task-id="t.id">
-<div class="flex justify-between gap-3">
-<h3 x-text="t.title">
-</h3>
-<span class="pill amber" x-text="'✦ '+t.points">
-</span>
-</div>
-<p class="text-xs muted mt-2 whitespace-pre-line" x-text="t.instructions">
-</p>
-<p x-show="t.due" class="note mt-2" x-text="'截止日期：'+t.due">
-</p>
-<div class="mt-3">
-<button x-show="!t.submissions.an" class="btn secondary" @click="openTask(t)">開始任務</button>
-<span x-show="t.submissions.an" class="pill green" x-text="t.submissions.an?.status==='approved'?'已確認 · 積分已入帳':'等待老師確認'">
-</span>
-</div>
-</div>
-</template>
-<p x-show="!myTasks.length" class="empty mt-4">老師還沒有派發任務。</p>
-</article>
-<article class="card">
-<h2>How did it feel?</h2>
-<p class="sub">今天的感受，不需要標準答案</p>
-<div class="checkin">
-<template x-for="m in moods" :key="m.id">
-<button @click="mood=m.id;save();notify('謝謝你分享。家長頁已同步你的感受。')" :class="{active:mood===m.id}" :aria-pressed="mood===m.id" :aria-label="m.label">
-<span x-text="m.face">
-</span>
-<b class="font-normal" x-text="m.label">
-</b>
-</button>
-</template>
-</div>
-<p class="note mt-3">感受由你親自分享，不讓筆跡替你說話。這個回報會讓家長知道。</p>
-</article>
-</div>
-<aside class="stack">
-<article class="card">
-<div class="card-head">
-<div>
-<h2>A tiny friend. A big fan.</h2>
-<p class="sub">Milo 永遠站在你這一邊</p>
-</div>
-<div class="text-right">
-<b class="text-xl text-[#af7a2e]">✦ <span id="points" x-text="points">
-</span>
-</b>
-<p class="note">可用積分</p>
-</div>
-</div>
-<div class="pet-scene">
-<span class="pet-label pill">Milo · Your study buddy</span>
-<button class="pet-render pet-button" aria-label="摸摸 Milo" @click="petHappy=true;notify('Milo：你的每一次嘗試，我都有看見！');setTimeout(()=>petHappy=false,1800)" x-html="petMarkup(equipped,'peach',petHappy)">
-</button>
-<span class="pet-floor" x-text="petHappy?'♥ Purr-fectly proud of you!':'點一下 Milo，收下今天的小鼓勵。'">
-</span>
-</div>
-<div class="flex justify-between items-center mb-3">
-<h3>Little wardrobe</h3>
-<span class="note">買一次，隨時穿</span>
-</div>
-<div class="wardrobe">
-<template x-for="i in items" :key="i.id">
-<button class="shop" :class="{active:equipped.includes(i.id)}" @click="equip(i)" :aria-pressed="equipped.includes(i.id)" :aria-label="i.name+'，'+shopLabel(i)">
-<span class="art" x-text="i.art">
-</span>
-<span class="name" x-text="i.name">
-</span>
-<span class="price" x-text="shopLabel(i)">
-</span>
-</button>
-</template>
-</div>
-<div class="champion-slot">
-<div class="flex justify-between gap-2">
-<b class="text-xs text-[#957438]">✦ Starlight Jacket</b>
-<span class="pill amber">Weekly exclusive</span>
-</div>
-<p class="note mt-1" x-text="championOwners.includes('an')?'你的每週冠軍紀念外套，永久保留。':'本週積分冠軍獎勵；不能用積分購買。'">
-</p>
-<button x-show="championOwners.includes('an')" @click="toggleChampion()" class="btn secondary mt-2" x-text="equipped.includes('champion')?'卸下星光外套':'穿上星光外套'">
-</button>
-</div>
-<p class="note mt-3">首次購買扣點，卸下／重穿免費。花掉的點數不影響每週努力排名。</p>
-</article>
-<div class="mini-banner">
-<h3>Fridays are for little friends.</h3>
-<p class="mt-2">帶 Milo 去見同學的小夥伴。每週努力冠軍還能解鎖星光外套！</p>
-<button class="quiet" @click="screen='club'">探索 Friday Pet Club</button>
-</div>
-<article class="card">
-<h2>Little promises, together.</h2>
-<p class="sub">和家人的小約定</p>
-<template x-for="r in rewards" :key="r.id">
-<div class="reward-row">
-<div class="flex justify-between items-center gap-2">
-<b x-text="r.title" class="text-sm">
-</b>
-<span class="pill" x-text="r.claimed?'已兌換':Math.min(progress(r),r.target)+' / '+r.target">
-</span>
-</div>
-<p class="note mt-1" x-text="r.kind==='streak'?'連續 '+r.target+' 天上傳功課':'累積 '+r.target+' 天上傳功課'">
-</p>
-<div class="progress">
-<span :style="'width:'+Math.min(100,progress(r)/r.target*100)+'%'">
-</span>
-</div>
-<button class="btn secondary mt-3" x-show="progress(r)>=r.target && !r.claimed" @click="claim(r)">兌換小獎勵</button>
-</div>
-</template>
-<p class="note mt-3" x-show="!rewards.length">請家長一起設定一個小約定吧。</p>
-</article>
-</aside>
-</section>
-<!-- Parent: concrete observations, not motivation or mental-health labels. -->
-<section x-show="role==='parent' && screen==='home'" x-cloak class="stack" id="parent-view">
-<div class="feature-strip">
-<h2>Before “Why is this wrong?”, try “I see you tried.”</h2>
-<p>不是替孩子判定「夠不夠努力」，而是讓每一次嘗試，都有機會被理解。</p>
-</div>
-<div class="layout">
-<article class="card" id="parent-evidence">
-<div class="card-head">
-<div>
-<h2>The story behind the answer.</h2>
-<p class="sub">改了幾次？劃掉什麼？又換成什麼？</p>
-</div>
-<span class="pill" x-text="uploaded?'Alex · English':'範例預覽'">
-</span>
-</div>
-<div class="metrics">
-<div>
-<b x-text="editCount('an')">
-</b>
-<span>偵測修改 · 估計</span>
-</div>
-<div>
-<b x-text="reviewedCount('an')+' / 3'">
-</b>
-<span>老師已複核</span>
-</div>
-<div>
-<b>Q4</b>
-<span>尚未完成</span>
-</div>
-</div>
-<div class="mt-4">
-<template x-for="e in evidence('an')" :key="e.id">
-<div class="evidence-row">
-<span class="q-num" x-text="e.q">
-</span>
-<div>
-<b class="text-xs" x-text="e.skill">
-</b>
-<div class="diff">
-<s x-text="e.before">
-</s>
-<span class="muted">→</span>
-<ins x-text="e.after">
-</ins>
-</div>
-<p class="note" x-text="e.observation">
-</p>
-<span class="pill mt-2" :class="e.status==='pending'?'amber':'green'" x-text="reviewLabel(e)">
-</span>
-<p x-show="e.note" class="note mt-2" x-text="'老師：'+e.note">
-</p>
-</div>
-<span class="count" x-text="e.count+' 次修改'+(e.status==='pending'?'（估計）':'（複核）')">
-</span>
-</div>
-</template>
-</div>
-<p class="note mt-3">“go → goed → went” 是示範重建，不是真實時間紀錄。擦掉的字可能無法辨認；次數只是線索，不能證明認真程度或心理狀態。</p>
-</article>
-<div class="stack">
-<article class="card">
-<h2>Less blame. More understanding.</h2>
-<p class="sub">先肯定具體行為，再問孩子需要什麼</p>
-<div class="quote old mt-5">
-<p class="text-[11px]">Instead of saying</p>
-<p class="mt-1">「怎麼又寫錯？你是不是根本沒用心？」</p>
-</div>
-<div class="quote new mt-3">
-<p class="text-[11px]">Try saying this</p>
-<p id="encouragement" class="mt-1 font-medium" x-text="encouragement">
-</p>
-</div>
-<div class="action-row mt-4">
-<button class="btn secondary" @click="wordIndex=(wordIndex+1)%3">換一句鼓勵</button>
-<button class="btn outline" @click="copyText(encouragement)">複製建議</button>
-</div>
-<p class="note mt-3">依據 Q1 修改、Q4 停頓和孩子自述。老師更正辨識後，建議也會更新。</p>
-</article>
-<article class="card" id="parent-checkin">
-<div class="card-head">
-<h2>Ask, don't assume.</h2>
-<span class="pill green" x-text="moodLabel">
-</span>
-</div>
-<p class="text-sm mt-3 leading-7" x-text="mood==='unsure'?'孩子說自己有點不確定。可以問：「是還不熟悉 went，還是擔心再次寫錯？」先聽答案，再一起決定下一步。':mood==='tired'?'孩子說有點累了。這時才適合問：「要不要先休息一下，再一起完成一小題？」':'我們看見孩子回頭修正答案，但還不知道他當時怎麼想。請先問：「你改這個字時，是怎麼想的？」'">
-</p>
-<p class="note mt-3">情緒由孩子自我回報，絕不根據塗改推測焦慮分數或「不夠努力」。</p>
-</article>
-</div>
-</div>
-<article class="card">
-<div class="card-head">
-<div>
-<h2>Give effort something to look forward to.</h2>
-<p class="sub">自訂家長獎勵 · 學生頁即時同步</p>
-</div>
-<button class="btn primary" @click="openReward()">＋ 新增獎勵</button>
-</div>
-<template x-for="r in rewards" :key="r.id">
-<div class="reward-row flex flex-wrap justify-between items-center gap-3">
-<div>
-<b x-text="r.title">
-</b>
-<p class="sub" x-text="(r.kind==='streak'?'連續上傳：':'累積上傳：')+Math.min(progress(r),r.target)+' / '+r.target+(r.claimed?' · 已兌換':'')">
-</p>
-</div>
-<div class="action-row">
-<button class="btn outline" @click="openReward(r)">編輯</button>
-<button class="btn outline" @click="deleteId=r.id;openModal('delete')">刪除</button>
-</div>
-</div>
-</template>
-<p class="note mt-3">初始包含 2 天示範紀錄；每日只累計一次。獎勵嘗試與參與，不鼓勵為了點數故意改錯。</p>
-</article>
-</section>
+<body x-data="mindBridge()" x-init="boot()" @keydown.escape.window="onEscape()" @keydown.tab.window="trapFocus($event)">
 
-<section x-show="role==='teacher' && screen==='home'" x-cloak class="stack" id="teacher-view">
-<article class="card">
-<div class="card-head">
-<div>
-<h2>One class. Many ways of trying.</h2>
-<p class="sub">Class 4A · English practice · 示範班級資料</p>
+<!-- Prototype role switcher: kept small so the student side reads as a game, not a dashboard -->
+<div class="demo-strip">
+ <a href="#" class="brand" @click.prevent="go('student','home')" aria-label="MindBridge 首頁" style="color:#fff;text-decoration:none"><i>🌱</i><span>MindBridge AI</span></a>
+ <nav class="roles" aria-label="角色切換">
+  <template x-for="r in roleOptions" :key="r.id"><button @click="go(r.id,'home')" :class="{active:role===r.id}" :aria-pressed="role===r.id" x-text="r.label"></button></template>
+ </nav>
+ <span class="demo-note">原型示範 · 本機資料</span>
 </div>
-<label class="text-xs muted">作業篩選<select id="reviewFilter" x-model="reviewFilter" class="!py-2 mt-1">
-<option value="all">全部作業</option>
-<option value="pending">仍需複核</option>
-<option value="done">複核完成</option>
-</select>
-</label>
-</div>
-<div class="roster mt-4">
-<template x-for="s in filteredRoster" :key="s.id">
-<button @click="selectedId=s.id" :class="{active:selectedId===s.id}" :aria-label="'查看 '+s.name">
-<b x-text="s.name">
-</b>
-<span class="block note" x-text="s.id==='an'?(uploaded?'已模擬上傳':'範例預覽'):'示範作業已上傳'">
-</span>
-<span class="pill mt-2" x-text="reviewedCount(s.id)+' / '+evidence(s.id).length+' 已複核'">
-</span>
-</button>
-</template>
-</div>
-<p x-show="!filteredRoster.length" class="empty">目前沒有符合條件的作業。</p>
-</article>
-<div class="layout">
-<article class="card">
-<div class="card-head">
-<div>
-<h2>
-<span x-text="studentName(selectedId)">
-</span> · A closer look</h2>
-<p class="sub">AI 提出線索，老師保留最後判斷</p>
-</div>
-<span class="pill amber">Human in the loop</span>
-</div>
-<template x-for="e in evidence(selectedId)" :key="selectedId+e.id">
-<div class="review-box">
-<div class="flex justify-between gap-3">
-<b class="text-xs" x-text="e.q+' · '+e.skill">
-</b>
-<span class="pill" x-text="reviewLabel(e)">
-</span>
-</div>
-<div class="review-original mt-3">
-<span class="block note">原始辨識／示意作業摘錄（保留不覆寫）</span>
-<s x-text="original(selectedId,e.id).before">
-</s> → <b x-text="original(selectedId,e.id).after">
-</b>
-</div>
-<div class="flex flex-wrap justify-between items-center gap-3 mt-3">
-<div>
-<p class="text-xs" x-text="'目前紀錄：'+e.before+' → '+e.after">
-</p>
-<p class="note" x-text="e.count+' 次修改'+(e.status==='pending'?'（AI 估計）':'（老師複核紀錄）')">
-</p>
-</div>
-<button class="btn secondary" @click="openReview(e)" x-text="'複核 '+e.q">
-</button>
-</div>
-<p x-show="e.note" class="review-note" x-text="e.note">
-</p>
-</div>
-</template>
-<div class="mt-4 p-4 rounded-xl bg-[#edf5ef] text-xs text-[#4c7758]" x-text="selectedId==='an'?'解題中斷：Q4「I went to …」尚未完成。先請孩子口述目的地，再選一個地點詞。':'先請學生解釋修改原因，再判斷是否需要更多英文例句。'">
-</div>
-<p class="note mt-3">不清楚就標記「無法辨認」，不把模糊字跡當作學生的錯誤。家長頁會同步複核結果。</p>
-</article>
-<div class="stack">
-<article class="card">
-<h2>A kinder next step.</h2>
-<p class="sub">針對性教學建議與學生回饋</p>
-<div x-show="!feedbacks[selectedId]" class="empty my-5">根據目前選取學生的紀錄，生成一個可討論的下一步。</div>
-<div x-show="feedbacks[selectedId]" class="quote new my-5 whitespace-pre-line text-sm" x-text="feedbacks[selectedId]">
-</div>
-<button class="btn primary" @click="generate()" :disabled="generating" x-text="generating?'整理回饋中…':'一鍵生成教學回饋'">
-</button>
-<button class="btn outline mt-2" x-show="feedbacks[selectedId]" @click="copyText(feedbacks[selectedId])">複製回饋</button>
-<p class="note mt-3">本機規則式模擬，不會自動對外發送。更改複核後，舊建議會清除，避免引用過期資訊。</p>
-</article>
-<article class="card">
-<h2>Give a task. Not a label.</h2>
-<p class="sub">派發一個可完成的小步驟，而不是要求一次完美</p>
-<form @submit.prevent="assignTask()">
-<label class="field" for="taskTitle">Task title</label>
-<input id="taskTitle" x-model="taskDraft.title" maxlength="80" required placeholder="My weekend story">
-<label class="field" for="taskInstructions">Instructions (English)</label>
-<textarea id="taskInstructions" x-model="taskDraft.instructions" required maxlength="600" placeholder="Write one sentence with went. Tell me how you chose the word.">
-</textarea>
-<div class="form-grid">
-<div>
-<label class="field" for="taskTarget">派發對象</label>
-<select id="taskTarget" x-model="taskDraft.target">
-<option value="all">全班學生</option>
-<template x-for="s in roster" :key="s.id">
-<option :value="s.id" x-text="s.name">
-</option>
-</template>
-</select>
-</div>
-<div>
-<label class="field" for="taskPoints">努力積分（5–50）</label>
-<input id="taskPoints" type="number" min="5" max="50" step="1" x-model.number="taskDraft.points" required>
-</div>
-</div>
-<label class="field" for="taskDue">截止日期（選填）</label>
-<input id="taskDue" type="date" x-model="taskDraft.due" :min="localDay()">
-<p class="error" x-text="taskError">
-</p>
-<button type="submit" class="btn primary mt-4">派發任務</button>
-<p class="note mt-3">積分獎勵真實嘗試，由老師閱讀提交內容後確認；不以塗改次數給分。</p>
-</form>
-</article>
-</div>
-</div>
-<article class="card">
-<h2>Little steps, followed through.</h2>
-<p class="sub">任務追蹤 · 此原型僅模擬 Alex 的學生端</p>
-<template x-for="t in tasks" :key="t.id">
-<div class="reward-row">
-<div class="card-head">
-<div>
-<h3 x-text="t.title">
-</h3>
-<p class="note" x-text="t.targets.map(id=>studentName(id)).join('、')+' · ✦ '+t.points+(t.due?' · 截止 '+t.due:'')">
-</p>
-</div>
-<span class="pill" x-text="Object.keys(t.submissions).length+' / '+t.targets.length+' 已提交'">
-</span>
-</div>
-<p class="sub mt-2 whitespace-pre-line" x-text="t.instructions">
-</p>
-<template x-for="entry in Object.entries(t.submissions)" :key="entry[0]">
-<div class="p-4 rounded-xl bg-[#f6f5fa] mt-3" :data-submission-id="t.id+'-'+entry[0]">
-<b class="text-xs" x-text="studentName(entry[0])">
-</b>
-<p class="text-sm my-3 whitespace-pre-line break-words" x-text="entry[1].answer">
-</p>
-<button class="btn secondary" x-show="entry[1].status==='submitted'" @click="approveTask(t.id,entry[0])">確認努力並給分</button>
-<span x-show="entry[1].status==='approved'" class="pill green">已確認 · 已給分</span>
-</div>
-</template>
-</div>
-</template>
-</article>
-</section>
 
+<!-- ===================== STUDENT ===================== -->
+<div class="world" :class="{short:screen==='club'}" x-show="role==='student'" x-cloak id="student-view">
+ <span class="cloud c1"></span><span class="cloud c2"></span>
+ <div class="wrap">
+  <div class="hud">
+   <div class="player">
+    <div class="face" x-html="petMarkup(equipped,'peach',false)"></div>
+    <div><b>小安 · Lv <span x-text="level"></span></b><div class="xp" role="progressbar" aria-label="探險經驗" :aria-valuenow="xp%100" aria-valuemin="0" aria-valuemax="100"><span :style="'width:'+(xp%100)+'%'"></span></div></div>
+   </div>
+   <div class="chips">
+    <div class="chip" :class="{bump:bumpStars}" title="可用星星">⭐ <span id="points" x-text="displayPoints"></span><small>星星</small></div>
+    <div class="chip" title="連續交功課天數">🔥 <span x-text="streak"></span><small>天</small></div>
+   </div>
+  </div>
 
-<section x-show="screen==='club'" x-cloak class="stack" id="club-view">
-<div class="club-banner">
-<div>
-<div class="action-row mb-3">
-<span class="pill bg-white">Class 4A · Every Friday</span>
-<span class="pill green" x-show="clubOpen">Pet Club is open</span>
-<span class="pill amber" x-show="!clubOpen">星期五開放參加</span>
+  <!-- MAP / HOME -->
+  <section x-show="screen==='home'" id="student-home">
+   <div class="quest">
+    <div class="quest-text">
+     <span class="quest-kicker" x-text="doneToday?'🏅 今日任務完成':'🗺️ 今日主線任務'"></span>
+     <h1 x-text="doneToday?'做得好！Milo 為你驕傲':'把功課交給 Milo，一起找找努力的痕跡'"></h1>
+     <p class="lead" x-text="doneToday?'今天的星星已經領了。還想再交一科嗎？也可以去幫 Milo 換新衣服。':'拍一張功課照片，Milo 會幫你找出改過、試過的地方。答錯不要緊，每次再試都算數。'"></p>
+     <div class="quest-actions">
+      <button class="btn sun big" :class="{pulse:!doneToday}" @click="openMission()" id="start-mission">📸 <span x-text="doneToday?'再交一份功課':'開始任務'"></span></button>
+      <span class="prize" x-show="!doneToday">+30 ⭐</span>
+     </div>
+    </div>
+    <div class="quest-pet">
+     <p class="bubble" x-text="petLine"></p>
+     <button class="pet" aria-label="摸摸 Milo" @click="pat()" x-html="petMarkup(equipped,'peach',petHappy)"></button>
+    </div>
+   </div>
+
+   <div class="board">
+    <div class="board-head"><h2>今日小冒險</h2><span class="tiny" x-text="questDone+' / 4 完成'"></span></div>
+    <div class="quests">
+     <button class="qitem" :class="{done:doneToday}" @click="openMission()"><span class="qi">📸</span><b>交一份功課</b><small>相機、相簿或掃描機都可以</small><span class="reward">+30 ⭐</span></button>
+     <button class="qitem" :class="{done:moodToday}" @click="moodToday?notify('今天已經分享過心情，謝謝你！'):openMission()"><span class="qi">💬</span><b>說說今天的感受</b><small>交完功課後，告訴 Milo 你的心情</small><span class="reward" x-text="moodToday?moodFace+' '+moodLabel:'5 種心情'"></span></button>
+     <button class="qitem" :class="{done:myTasks.length && myTasks.every(t=>t.submissions.an)}" @click="screen='quests'"><span class="qi">🎯</span><b>老師的小任務</b><small x-text="openTasks+' 個等你挑戰'"></small><span class="reward" x-text="'+'+myTasks.reduce((s,t)=>s+t.points,0)+' ⭐'"></span></button>
+     <button class="qitem" :class="{done:rewards.length && rewards.every(r=>r.claimed)}" @click="screen='quests'"><span class="qi">🎁</span><b x-text="rewards[0]?.title||'家庭小約定'"></b><small x-text="rewards[0]?('還差 '+Math.max(0,rewards[0].target-progress(rewards[0]))+' 天'):'請爸媽設定一個'"></small><div class="bar" x-show="rewards[0]"><span :style="'width:'+(rewards[0]?Math.min(100,progress(rewards[0])/rewards[0].target*100):0)+'%'"></span></div></button>
+    </div>
+    <div class="teacher-note" x-show="approved.an"><span class="t">👩‍🏫</span><div><b style="font-weight:400">陳老師給你的話</b><p class="tiny" style="color:var(--ink);font-size:15px;white-space:pre-line" x-text="approved.an"></p></div></div>
+   </div>
+  </section>
+
+  <!-- MILO'S HOUSE -->
+  <section x-show="screen==='pet'" id="student-pet">
+   <div class="page-title"><h1>Milo 的小屋</h1></div>
+   <div class="house">
+    <div class="room">
+     <p class="bubble" x-text="petHappy?'嘻嘻！你每一次嘗試我都看見了 ♥':'點我一下，或幫我挑一件新衣服！'"></p>
+     <button class="pet-btn" aria-label="摸摸 Milo" @click="pat()" x-html="petMarkup(equipped,'peach',petHappy)"></button>
+     <div class="hearts" aria-hidden="true"><template x-for="h in hearts" :key="h.id"><i :style="'--x:'+h.x+'px'">💛</i></template></div>
+    </div>
+    <div class="panel">
+     <div class="board-head"><h2>衣櫃小店</h2><span class="chip" style="box-shadow:none">⭐ <span x-text="points"></span></span></div>
+     <p class="tiny">買一次就是你的，之後穿上、脫下都免費。</p>
+     <div class="shop">
+      <template x-for="i in items" :key="i.id">
+       <button class="item" :class="{on:equipped.includes(i.id)}" @click="equip(i)" :aria-pressed="equipped.includes(i.id)" :aria-label="i.name+'，'+shopLabel(i)">
+        <span class="art" x-text="i.art"></span><span><b x-text="i.name"></b><span class="price" x-text="shopLabel(i)"></span></span>
+       </button>
+      </template>
+     </div>
+     <div class="jacket"><span style="font-size:34px">🧥</span><div style="flex:1"><b style="font-weight:400">星光外套 · 每週限定</b><p class="tiny" x-text="championOwners.includes('an')?'你是每週冠軍！外套永遠是你的。':'本週星星最多的同學才能得到，不能用星星買。'"></p></div>
+      <button x-show="championOwners.includes('an')" class="btn small" @click="toggleChampion()" x-text="equipped.includes('champion')?'脫下':'穿上'"></button></div>
+    </div>
+   </div>
+  </section>
+
+  <!-- QUESTS & GOALS -->
+  <section x-show="screen==='quests'" id="student-quests">
+   <div class="page-title"><h1>任務板</h1></div>
+   <div class="qgrid">
+    <div class="panel">
+     <h2>🎯 老師的小任務</h2><p class="tiny">完成後交給老師，老師看過就會送你星星。</p>
+     <template x-for="t in myTasks" :key="t.id">
+      <div class="task" :data-task-id="t.id">
+       <div class="task-top"><h3 x-text="t.title"></h3><span class="star-tag" x-text="'+'+t.points+' ⭐'"></span></div>
+       <p class="tiny" style="margin-top:6px;color:#3A3F63" x-text="t.instructions"></p>
+       <p class="tiny" x-show="t.due" x-text="'截止：'+t.due"></p>
+       <div style="margin-top:12px">
+        <button x-show="!t.submissions.an" class="btn sun small" @click="openTask(t)">開始挑戰</button>
+        <span x-show="t.submissions.an" class="status" :class="{wait:t.submissions.an?.status!=='approved'}" x-text="t.submissions.an?.status==='approved'?'✓ 老師已確認，星星到手':'⏳ 等老師看看'"></span>
+       </div>
+      </div>
+     </template>
+     <p x-show="!myTasks.length" class="empty" style="margin-top:14px">老師還沒派任務，先去交今天的功課吧！</p>
+    </div>
+    <div class="stack">
+     <div class="panel">
+      <h2>🎁 家庭小約定</h2><p class="tiny">和爸爸媽媽一起定的目標，完成就能兌換。</p>
+      <template x-for="r in rewards" :key="r.id">
+       <div class="promise" :class="{ready:progress(r)>=r.target && !r.claimed}">
+        <span class="gift" x-text="r.claimed?'🎉':'🎁'"></span>
+        <div style="flex:1;min-width:0"><b style="font-weight:400" x-text="r.title"></b>
+         <p class="tiny" x-text="(r.kind==='streak'?'連續 ':'累積 ')+r.target+' 天交功課 · '+(r.claimed?'已兌換':Math.min(progress(r),r.target)+' / '+r.target)"></p>
+         <div class="bar" style="margin-top:6px"><span :style="'width:'+Math.min(100,progress(r)/r.target*100)+'%'"></span></div></div>
+        <button class="btn leaf small" x-show="progress(r)>=r.target && !r.claimed" @click="claim(r)">兌換</button>
+       </div>
+      </template>
+      <p class="empty" style="margin-top:14px" x-show="!rewards.length">請爸爸媽媽一起設定一個小約定吧。</p>
+     </div>
+     <div class="panel">
+      <h2>📔 冒險日記</h2>
+      <ul class="diary" style="margin-top:8px">
+       <template x-for="h in history.slice().reverse().slice(0,5)" :key="h.at">
+        <li><span class="d-ico" x-text="subjectOf(h.subject).icon"></span><div style="flex:1"><b style="font-weight:400" x-text="subjectOf(h.subject).name+'功課'"></b><p class="tiny" x-text="h.date"></p></div><span style="font-size:24px" x-text="moodOf(h.mood)?.face||''"></span></li>
+       </template>
+      </ul>
+      <p class="empty" x-show="!history.length">還沒有紀錄。交第一份功課，日記就會開始！</p>
+     </div>
+    </div>
+   </div>
+  </section>
+
+  <!-- CLUB (student) uses shared club markup below -->
+ </div>
+
+ <nav class="dock" aria-label="學生頁面" x-show="!mOpen">
+  <button :class="{active:screen==='home'}" @click="screen='home'" :aria-current="screen==='home'"><span>🗺️</span>地圖</button>
+  <button :class="{active:screen==='pet'}" @click="screen='pet'" :aria-current="screen==='pet'"><span>🐱</span>Milo</button>
+  <button :class="{active:screen==='quests'}" @click="screen='quests'" :aria-current="screen==='quests'"><span>🎯</span>任務板</button>
+  <button :class="{active:screen==='club'}" @click="screen='club'" :aria-current="screen==='club'"><span>🎪</span>寵物展</button>
+ </nav>
 </div>
-<h2>Bring your buddy.<br>Celebrate everybody.</h2>
-<p class="text-sm text-[#7b6893] mt-3">每個人都能帶自己的寵物來，不需要最高分才值得被看見。看看同學的小夥伴，送上一句「你願意再試一次，真好」。</p>
-<div class="action-row mt-4">
-<button x-show="role==='student'" class="btn primary" @click="joinClub()" :disabled="!clubOpen || joined" x-text="joined?'Milo 已在展示中':'讓 Milo 參加展示'">
-</button>
-<span x-show="role!=='student'" class="note">學生可自行選擇是否展示 · 只分享暱稱和寵物</span>
+
+<!-- ===================== HOMEWORK MISSION ===================== -->
+<div class="mission" x-show="mOpen" x-cloak role="dialog" aria-modal="true" aria-labelledby="mission-title" x-ref="missionRoot" :data-step="mStep" id="mission">
+ <div class="m-top">
+  <button class="icon-btn" @click="exitMission()" aria-label="離開任務" x-show="mStep!=='scan'">✕</button>
+  <ol class="stones" aria-label="任務進度">
+   <template x-for="(s,i) in stepList" :key="s.id">
+    <li :class="{done:stepIndex>i,now:stepIndex===i}" :aria-current="stepIndex===i?'step':false"><span x-text="stepIndex>i?'✓':s.icon"></span><b x-text="s.label"></b></li>
+   </template>
+  </ol>
+  <div class="chip" style="box-shadow:0 4px 0 var(--ink)">⭐ <span x-text="displayPoints"></span></div>
+ </div>
+ <div class="m-body">
+
+  <!-- 1 subject -->
+  <section class="step" x-show="mStep==='subject'" x-transition.opacity>
+   <div class="guide"><div class="gpet" x-html="petMarkup(equipped,'peach',false)"></div><p class="bubble">今天要完成哪一科？選一個島出發吧！</p></div>
+   <h2 class="step-title" id="mission-title">選擇冒險島</h2>
+   <p class="step-sub">每一科都是一座島，交了功課就能點亮它。</p>
+   <div class="islands">
+    <template x-for="s in subjects" :key="s.id">
+     <button class="island" :class="{picked:subject===s.id}" :style="'--c:'+s.color" @click="pickSubject(s.id)" :aria-pressed="subject===s.id" :aria-label="s.name+' · '+s.place">
+      <span class="ii" x-text="s.icon"></span><b x-text="s.name"></b><small x-text="s.place"></small>
+     </button>
+    </template>
+   </div>
+  </section>
+
+  <!-- 2 capture -->
+  <section class="step" x-show="mStep==='capture'">
+   <h2 class="step-title" x-text="'把'+subjectOf(subject).name+'功課放進鏡頭裡'"></h2>
+   <p class="step-sub">整頁放平，光線亮亮的，Milo 會看得更清楚。</p>
+   <div class="sources" role="tablist" aria-label="上傳方式">
+    <button role="tab" :aria-selected="source==='camera'" :class="{active:source==='camera'}" @click="setSource('camera')">📷 相機</button>
+    <button role="tab" :aria-selected="source==='gallery'" :class="{active:source==='gallery'}" @click="setSource('gallery')">🖼️ 相簿</button>
+    <button role="tab" :aria-selected="source==='device'" :class="{active:source==='device'}" @click="setSource('device')">🖨️ 掃描機</button>
+   </div>
+
+   <div x-show="source==='camera'">
+    <div class="viewfinder">
+     <video x-ref="video" playsinline muted autoplay aria-label="相機畫面"></video>
+     <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+     <span class="vf-hint" x-show="camReady">對齊四個角落 📐</span>
+     <div class="vf-msg" x-show="!camReady && !camError"><div><div class="em">📷</div><p>正在叫醒相機…</p></div></div>
+     <div class="vf-msg" x-show="camError"><div><div class="em">🙈</div><p x-text="camError"></p><div class="row" style="justify-content:center;margin-top:14px"><button class="btn sun small" @click="setSource('gallery')">改用相簿</button><button class="btn small" @click="startCamera()">再試一次</button></div></div></div>
+    </div>
+    <div class="shutter-row"><button class="shutter" @click="snap()" :disabled="!camReady" aria-label="拍照">拍照</button></div>
+   </div>
+
+   <div x-show="source==='gallery'">
+    <label class="dropzone" :class="{over:dragOver}" @dragover.prevent="dragOver=true" @dragleave="dragOver=false" @drop.prevent="dragOver=false;readFile($event.dataTransfer.files[0])">
+     <input type="file" accept="image/*" x-ref="file" @change="readFile($event.target.files[0]);$event.target.value=''" id="gallery-input">
+     <span class="em">🖼️</span><b style="font-weight:400;font-size:20px">從相簿選一張功課照片</b><span class="tiny">或者把照片拖到這裡 · JPG、PNG</span>
+     <span class="btn sun small" style="margin-top:6px">選擇照片</span>
+    </label>
+    <p class="error" style="text-align:center" x-text="fileError"></p>
+   </div>
+
+   <div x-show="source==='device'" class="scanner">
+    <div class="machine" :class="{busy:deviceBusy}" aria-hidden="true"><span class="arm"></span><span class="base"></span><span class="sheet"></span><span class="light"></span><span class="head"></span></div>
+    <p x-text="deviceBusy?'嗶——掃描機正在拍照…':'把功課放在掃描機下面，按一下大按鈕。不用手機也可以！'"></p>
+    <div class="shutter-row"><button class="btn tang big" @click="deviceScan()" :disabled="deviceBusy">🔘 按下掃描</button></div>
+    <p class="tiny" style="margin-top:10px">原型模擬：未連接真實裝置，會使用範例功課。</p>
+   </div>
+
+   <p style="text-align:center;margin-top:16px"><button class="link" @click="useSample()">身邊沒有功課？用範例功課試玩</button></p>
+  </section>
+
+  <!-- 3 preview -->
+  <section class="step" x-show="mStep==='preview'">
+   <h2 class="step-title">拍得清楚嗎？</h2>
+   <p class="step-sub">檢查一下，Milo 才不會看錯字。</p>
+   <div class="preview">
+    <div class="desk">
+     <div class="photo" :style="'transform:rotate('+rot+'deg)'">
+      <img x-show="photo && photo!=='sample'" :src="photo && photo!=='sample'?photo:''" alt="你的功課照片">
+      <div x-show="photo==='sample'" x-html="worksheet(false)"></div>
+     </div>
+    </div>
+    <div>
+     <div class="checks">
+      <template x-for="c in checks" :key="c.id"><button class="check" :class="{on:c.on}" @click="c.on=!c.on" :aria-pressed="c.on"><span class="box" x-text="c.on?'✓':''"></span><span x-text="c.label"></span></button></template>
+     </div>
+     <div class="row" style="margin-top:16px">
+      <button class="btn small" @click="retake()">↺ 重拍</button>
+      <button class="btn small" @click="rot=(rot+90)%360" aria-label="旋轉照片">⟳ 轉一轉</button>
+     </div>
+     <button class="btn sun big" style="width:100%;margin-top:18px" @click="mStep='confirm'">看起來很好！</button>
+    </div>
+   </div>
+  </section>
+
+  <!-- 4 confirm -->
+  <section class="step" x-show="mStep==='confirm'">
+   <div class="launch">
+    <h2 class="step-title" style="margin-top:0">準備出發！</h2>
+    <div class="ticket">
+     <div class="thumb"><img x-show="photo && photo!=='sample'" :src="photo && photo!=='sample'?photo:''" alt=""><div x-show="photo==='sample'" x-html="worksheet(false)"></div></div>
+     <dl>
+      <dt>冒險島</dt><dd x-text="subjectOf(subject).icon+' '+subjectOf(subject).name+' · '+subjectOf(subject).place"></dd>
+      <dt>來源</dt><dd x-text="{camera:'📷 相機',gallery:'🖼️ 相簿',device:'🖨️ 掃描機',sample:'📄 範例功課'}[source]"></dd>
+      <dt>獎勵</dt><dd><span class="prize" x-show="!doneToday">+30 ⭐ 今日首次</span><span class="prize got" x-show="doneToday">今天的星星領過了，Milo 仍然想看！</span></dd>
+     </dl>
+    </div>
+    <button class="btn sun big" style="width:100%" @click="submitMission()" id="submit-mission">🚀 送出給 Milo</button>
+    <p style="margin-top:10px"><button class="link" @click="mStep='preview'">再檢查一下</button></p>
+   </div>
+  </section>
+
+  <!-- 5 scanning -->
+  <section class="step scan" x-show="mStep==='scan'" role="status" aria-live="polite">
+   <h2 class="step-title">Milo 正在仔細看…</h2>
+   <div class="scan-stage">
+    <div class="scan-paper"><img x-show="photo && photo!=='sample'" :src="photo && photo!=='sample'?photo:''" alt=""><div x-show="photo==='sample'" x-html="worksheet(false)"></div>
+     <div class="beam"></div>
+     <template x-for="f in foundDots" :key="f.id"><span class="found" :style="'left:'+f.x+'%;top:'+f.y+'%'" x-text="f.e"></span></template>
+    </div>
+    <span class="lens" aria-hidden="true">🔍</span>
+    <div class="scan-pet" x-html="petMarkup(equipped,'peach',false)"></div>
+   </div>
+   <ol class="scan-steps">
+    <template x-for="(s,i) in scanLines" :key="i"><li :class="{lit:scanStep>i}"><i x-text="scanStep>i?'⭐':'☆'"></i><span x-text="s.short"></span></li></template>
+   </ol>
+   <p class="scan-say" x-text="scanLines[Math.min(scanStep,scanLines.length-1)].say"></p>
+  </section>
+
+  <!-- 6 reveal -->
+  <section class="step" x-show="mStep==='reveal'">
+   <h2 class="step-title" x-text="'Milo 找到 '+findings.length+' 個線索！'"></h2>
+   <p class="step-sub">這些都是你思考過、再試過的證據。</p>
+   <div class="reveal">
+    <div class="paperbox">
+     <img x-show="photo && photo!=='sample'" :src="photo && photo!=='sample'?photo:''" alt="你的功課照片">
+     <div x-show="photo==='sample'" x-html="mStep==='reveal'?worksheet(true):''"></div>
+    </div>
+    <div>
+     <div class="clues">
+      <template x-for="(f,i) in findings" :key="i"><div class="clue" :class="f.type" :style="'animation-delay:'+(i*.35)+'s'"><span class="ci" x-text="f.icon"></span><div><b x-text="f.title"></b><p x-text="f.text"></p></div></div></template>
+     </div>
+     <p class="tiny" style="margin-top:12px" x-text="photo==='sample'?'原型模擬：以上是示範分析，老師會再確認一次。':'原型模擬：未接上真實 AI，線索為「'+subjectOf(subject).name+'」示範內容，老師會再確認一次。'"></p>
+     <button class="btn sun big" style="width:100%;margin-top:16px" @click="mStep='feel'">下一步 💬</button>
+    </div>
+   </div>
+  </section>
+
+  <!-- 7 feelings -->
+  <section class="step feel" x-show="mStep==='feel'">
+   <h2 class="step-title">做這份功課時，你覺得怎樣？</h2>
+   <p class="step-sub">沒有對或錯，Milo 只是想知道你的心情。</p>
+   <div class="faces">
+    <template x-for="m in moods" :key="m.id"><button class="face-btn" :class="{on:pendingMood===m.id}" :style="'--c:'+m.color" @click="pendingMood=m.id" :aria-pressed="pendingMood===m.id" :aria-label="m.label"><span class="f" x-text="m.face"></span><span x-text="m.label"></span></button></template>
+   </div>
+   <button class="share" @click="shareMood=!shareMood" :aria-pressed="shareMood"><span class="switch" :class="{on:shareMood}"></span><span x-text="shareMood?'讓爸爸媽媽也知道我的心情':'只給 Milo 和老師知道'"></span></button>
+   <div class="row" style="justify-content:center;margin-top:20px">
+    <button class="btn sun big" @click="finishFeel()" :disabled="!pendingMood" id="feel-done">就是這個感覺</button>
+   </div>
+   <p style="margin-top:6px"><button class="link" @click="pendingMood='';finishFeel()">現在不想說也可以</button></p>
+  </section>
+
+  <!-- 8 reward -->
+  <section class="step reward" x-show="mStep==='reward'">
+   <div class="chest" aria-hidden="true"><span class="glow"></span><span class="box"></span><span class="lid"></span></div>
+   <div class="burst" aria-hidden="true"><template x-for="b in burst" :key="b.id"><i :style="'--x:'+b.x+'px;--y:'+b.y+'px'" x-text="b.e"></i></template></div>
+   <p class="plus" x-text="lastAward?'+30 ⭐':'⭐ 任務完成'"></p>
+   <h2 class="step-title" style="font-size:30px" x-text="lastAward?'星星收到了！':'今天的星星之前已經領過囉'"></h2>
+   <div class="card">
+    <div class="gpet" x-html="petMarkup(equipped,'peach',true)"></div>
+    <div><b style="font-weight:400">Milo 想跟你說</b><p x-text="feedbackText" style="margin-top:4px"></p><p class="tiny" style="margin-top:6px" x-text="'下一小步：'+subjectData().next"></p></div>
+   </div>
+   <div class="row" style="justify-content:center;margin-top:24px">
+    <button class="btn sun" @click="exitMission('pet')">🐱 幫 Milo 換裝</button>
+    <button class="btn" @click="exitMission('home')">🗺️ 回到地圖</button>
+   </div>
+  </section>
+ </div>
 </div>
+<div class="flash" x-show="flash" x-cloak></div>
+<canvas x-ref="canvas" hidden></canvas>
+
+<!-- ===================== PARENT ===================== -->
+<div class="calm" x-show="role==='parent' && screen==='home'" x-cloak id="parent-view">
+ <div class="wrap">
+  <div class="calm-head">
+   <div><h1>小安這星期的學習信</h1><p>先看他改了什麼、試了什麼，再決定怎樣陪他。</p></div>
+   <div class="tabs"><button class="active">學習信</button><button @click="screen='club'">寵物展</button></div>
+  </div>
+  <div class="letter">
+   <div class="gpet" x-html="petMarkup(equipped,'peach',true)"></div>
+   <div>
+    <h2 x-text="lastMission?('最新：'+subjectOf(lastMission.subject).name+'功課，'+lastMission.date+' 上傳'):'小安今天還沒有上傳功課'"></h2>
+    <p class="muted" style="margin-top:4px" x-text="lastMission?'Milo 找到 '+(subjectFindings[lastMission.subject]||[]).length+' 個努力線索，老師仍在複核。':'孩子上傳後，這裡會出現新的功課摘要。'"></p>
+    <div class="facts">
+     <div class="fact"><b x-text="total"></b><span>累積上傳天數</span></div>
+     <div class="fact"><b x-text="streak+' 天'"></b><span>連續上傳</span></div>
+     <div class="fact"><b x-text="editCount('an')"></b><span>修改痕跡 · 估計</span></div>
+     <div class="fact"><b x-text="weeklyEarned.an||0"></b><span>本週獲得星星</span></div>
+    </div>
+   </div>
+  </div>
+  <div class="cols">
+   <div class="stack">
+    <article class="sheet" id="parent-evidence">
+     <div class="sheet-head"><div><h2>答案背後的故事</h2><p class="sub">英文示範作業 · 改了幾次？劃掉什麼？換成什麼？</p></div><span class="tag" x-text="reviewedCount('an')+' / 3 老師已複核'"></span></div>
+     <template x-for="e in evidence('an')" :key="e.id">
+      <div class="ev"><span class="qn" x-text="e.q"></span>
+       <div><b style="font-weight:400" x-text="e.skill"></b><div class="diff"><s x-text="e.before"></s><span class="muted">→</span><ins x-text="e.after"></ins></div><p class="tiny" x-text="e.observation"></p>
+        <span class="tag" style="margin-top:6px" :class="e.status==='pending'?'amber':'green'" x-text="reviewLabel(e)"></span><p x-show="e.note" class="tiny" style="margin-top:6px" x-text="'老師：'+e.note"></p></div>
+       <span class="tiny cnt" x-text="e.count+' 次修改'+(e.status==='pending'?'（估計）':'（複核）')"></span></div>
+     </template>
+     <p class="tiny" style="margin-top:10px">「go → goed → went」是示範重建，不是真實時間紀錄。修改次數只是線索，不能證明認真程度或心理狀態。</p>
+    </article>
+    <article class="sheet">
+     <div class="sheet-head"><div><h2>進步軌跡</h2><p class="sub">最近 7 天有沒有交功課</p></div><span class="tag green" x-text="'本週 '+weekDays.filter(d=>d.on).length+' / 7 天'"></span></div>
+     <div class="week"><template x-for="d in weekDays" :key="d.key"><div><i :class="{on:d.on}" :style="'height:'+(d.on?100:18)+'%'"></i><span x-text="d.label"></span></div></template></div>
+     <div style="margin-top:18px">
+      <template x-for="s in skillTrack" :key="s.name"><div style="margin-top:10px"><div style="display:flex;justify-content:space-between" class="tiny"><span x-text="s.name" style="color:var(--ink)"></span><span x-text="s.note"></span></div><div class="pbar"><span :style="'width:'+s.pct+'%'"></span></div></div></template>
+     </div>
+    </article>
+   </div>
+   <div class="stack">
+    <article class="sheet" id="parent-checkin">
+     <div class="sheet-head"><h2>先問，不假設</h2><span class="tag green" x-text="shareMood?(moodFace+' '+moodLabel):'孩子選擇不分享'"></span></div>
+     <p style="margin-top:10px;line-height:1.8" x-text="parentMoodText"></p>
+     <p class="tiny" style="margin-top:8px">感受由孩子自己選擇是否分享；系統不會從筆跡推測情緒。</p>
+    </article>
+    <article class="sheet">
+     <h2>可以這樣說</h2><p class="sub">先肯定具體行為，再問孩子需要什麼</p>
+     <div class="say old" style="margin-top:14px"><small>與其說</small>「怎麼又寫錯？你是不是根本沒用心？」</div>
+     <div class="say new" style="margin-top:10px"><small>試試說</small><span id="encouragement" x-text="encouragement"></span></div>
+     <div class="row" style="margin-top:12px"><button class="cbtn" @click="wordIndex=(wordIndex+1)%3">換一句</button><button class="cbtn line" @click="copyText(encouragement)">複製</button></div>
+    </article>
+    <article class="sheet">
+     <div class="sheet-head"><div><h2>一起定的小約定</h2><p class="sub">學生任務板會即時同步</p></div><button class="cbtn primary" @click="openReward()">＋ 新增</button></div>
+     <template x-for="r in rewards" :key="r.id">
+      <div class="row-item"><div style="flex:1;min-width:160px"><b style="font-weight:400" x-text="r.title"></b><p class="tiny" x-text="(r.kind==='streak'?'連續上傳 ':'累積上傳 ')+Math.min(progress(r),r.target)+' / '+r.target+' 天'+(r.claimed?' · 已兌換':'')"></p><div class="pbar"><span :style="'width:'+Math.min(100,progress(r)/r.target*100)+'%'"></span></div></div>
+       <div class="row"><button class="cbtn line" @click="openReward(r)">編輯</button><button class="cbtn line" @click="deleteId=r.id;openModal('delete')">刪除</button></div></div>
+     </template>
+     <p class="empty" x-show="!rewards.length" style="margin-top:10px">還沒有約定。設定一個看得見的小目標吧。</p>
+     <p class="tiny" style="margin-top:8px">獎勵嘗試與參與，每天只累計一次。</p>
+    </article>
+   </div>
+  </div>
+ </div>
 </div>
-<div class="pet-render" x-html="petMarkup(['scarf','hat'],'cream',true)">
+
+<!-- ===================== TEACHER ===================== -->
+<div class="calm" x-show="role==='teacher' && screen==='home'" x-cloak id="teacher-view">
+ <div class="wrap">
+  <div class="calm-head">
+   <div><h1>4A 班 · 功課複核台</h1><p>AI 找出線索，老師保留最後判斷，再給一個剛剛好的下一步。</p></div>
+   <div class="tabs"><button class="active">複核台</button><button @click="screen='club'">寵物展</button></div>
+  </div>
+  <div class="kpis">
+   <div class="kpi"><b x-text="uploadedCount+' / '+roster.length"></b><span>今日已上傳</span></div>
+   <div class="kpi"><b x-text="pendingTotal"></b><span>待複核線索</span></div>
+   <div class="kpi flag"><b x-text="supportList.length"></b><span>可能需要多點支持</span></div>
+   <div class="kpi"><b x-text="tasks.reduce((s,t)=>s+Object.values(t.submissions).filter(x=>x.status==='submitted').length,0)"></b><span>待確認任務</span></div>
+  </div>
+  <div class="cols t-main">
+   <div class="stack">
+    <article class="sheet">
+     <div class="sheet-head"><h2>學生</h2>
+      <label class="tiny">篩選<select id="reviewFilter" x-model="reviewFilter" style="padding:8px 10px;margin-top:2px;min-height:44px"><option value="all">全部</option><option value="pending">仍需複核</option><option value="done">複核完成</option></select></label></div>
+     <div class="roster">
+      <template x-for="s in filteredRoster" :key="s.id">
+       <button @click="selectedId=s.id" :class="{active:selectedId===s.id}" :aria-label="'查看 '+s.name">
+        <span class="avatar" x-html="petMarkup(petOf(s.id).accessories,petOf(s.id).coat,false)"></span>
+        <span><b style="font-weight:400" x-text="s.name"></b><span class="pbar" style="display:block;width:100%"><span :style="'width:'+Math.min(100,(weeklyEarned[s.id]||0)/2)+'%'"></span></span></span>
+        <span class="tag" :class="reviewedCount(s.id)===evidence(s.id).length?'green':'amber'" x-text="reviewedCount(s.id)+'/'+evidence(s.id).length"></span>
+       </button>
+      </template>
+     </div>
+     <p x-show="!filteredRoster.length" class="empty">沒有符合條件的學生。</p>
+    </article>
+    <article class="sheet">
+     <h2>可能需要多點支持</h2><p class="sub">根據未完成題目與孩子自述，只作提示</p>
+     <template x-for="s in supportList" :key="s.id"><button class="support" style="width:100%;text-align:left" @click="selectedId=s.id"><span style="font-size:22px">🫶</span><span><b style="font-weight:400" x-text="studentName(s.id)"></b><span class="tiny" style="display:block" x-text="s.why"></span></span></button></template>
+     <p class="empty" x-show="!supportList.length" style="margin-top:10px">目前沒有特別提示。</p>
+    </article>
+   </div>
+   <div class="stack">
+    <article class="sheet">
+     <div class="sheet-head"><div><h2 x-text="studentName(selectedId)+' · 仔細看一次'"></h2><p class="sub">原始辨識保留不覆寫；看不清就標記「無法辨認」</p></div><span class="tag amber">老師把關</span></div>
+     <template x-for="e in evidence(selectedId)" :key="selectedId+e.id">
+      <div class="review">
+       <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><b style="font-weight:400" x-text="e.q+' · '+e.skill"></b><span class="tag" :class="e.status==='pending'?'amber':'green'" x-text="reviewLabel(e)"></span></div>
+       <div class="orig"><span class="tiny" style="display:block;font-family:var(--body)">原始辨識</span><s x-text="original(selectedId,e.id).before"></s> → <b x-text="original(selectedId,e.id).after"></b></div>
+       <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:10px">
+        <p class="tiny" x-text="'目前紀錄：'+e.before+' → '+e.after+' · '+e.count+' 次修改'+(e.status==='pending'?'（AI 估計）':'（老師複核）')"></p>
+        <button class="cbtn" @click="openReview(e)" x-text="'複核 '+e.q"></button>
+       </div>
+       <p x-show="e.note" class="tiny" style="margin-top:6px;color:#1C7A47" x-text="e.note"></p>
+      </div>
+     </template>
+     <div class="say new" style="margin-top:14px;font-size:15px" x-text="selectedId==='an'?'解題中斷：Q4「I went to …」尚未完成。先請孩子口述目的地，再選一個地點詞。':'先請學生解釋修改原因，再判斷是否需要更多英文例句。'"></div>
+    </article>
+    <article class="sheet">
+     <div class="sheet-head"><div><h2>給學生的回饋</h2><p class="sub">生成 → 修改 → 批准後才會送到學生的地圖頁</p></div><span class="tag green" x-show="approved[selectedId]">已送出</span></div>
+     <div x-show="!feedbacks[selectedId]" class="empty" style="margin-top:12px">根據目前的複核紀錄，生成一個可討論的下一步。</div>
+     <div x-show="feedbacks[selectedId]"><label class="field" for="feedbackEdit">回饋內容（可修改）</label><textarea id="feedbackEdit" x-model="feedbacks[selectedId]" @input="save()" style="min-height:130px"></textarea></div>
+     <div class="row" style="margin-top:12px">
+      <button class="cbtn" @click="generate()" :disabled="generating" x-text="generating?'整理中…':(feedbacks[selectedId]?'重新生成':'一鍵生成教學回饋')"></button>
+      <button class="cbtn primary" x-show="feedbacks[selectedId]" @click="approveFeedback()">批准並送給學生</button>
+      <button class="cbtn line" x-show="feedbacks[selectedId]" @click="copyText(feedbacks[selectedId])">複製</button>
+     </div>
+     <p class="tiny" style="margin-top:8px">本機規則式模擬。更改複核後舊建議會清除，避免引用過期資訊。</p>
+    </article>
+    <div class="cols t-half">
+     <article class="sheet">
+      <h2>派一個小任務</h2><p class="sub">一個做得到的小步驟，而不是要求一次完美</p>
+      <form @submit.prevent="assignTask()">
+       <label class="field" for="taskTitle">任務名稱</label><input id="taskTitle" x-model="taskDraft.title" maxlength="80" required placeholder="My weekend story">
+       <label class="field" for="taskInstructions">說明</label><textarea id="taskInstructions" x-model="taskDraft.instructions" required maxlength="600" placeholder="Write one sentence with went."></textarea>
+       <div class="form2"><div><label class="field" for="taskTarget">對象</label><select id="taskTarget" x-model="taskDraft.target"><option value="all">全班</option><template x-for="s in roster" :key="s.id"><option :value="s.id" x-text="s.name"></option></template></select></div>
+        <div><label class="field" for="taskPoints">星星（5–50）</label><input id="taskPoints" type="number" min="5" max="50" step="1" x-model.number="taskDraft.points" required></div></div>
+       <label class="field" for="taskDue">截止日期（選填）</label><input id="taskDue" type="date" x-model="taskDraft.due" :min="localDay()">
+       <p class="error" x-text="taskError"></p>
+       <button type="submit" class="cbtn primary" style="margin-top:10px">派發任務</button>
+      </form>
+     </article>
+     <article class="sheet">
+      <h2>任務追蹤</h2><p class="sub">此原型只模擬 Alex 的學生端</p>
+      <template x-for="t in tasks" :key="t.id">
+       <div class="row-item" style="display:block">
+        <div style="display:flex;justify-content:space-between;gap:8px"><b style="font-weight:400" x-text="t.title"></b><span class="tag" x-text="Object.keys(t.submissions).length+' / '+t.targets.length"></span></div>
+        <p class="tiny" x-text="t.targets.map(id=>studentName(id)).join('、')+' · '+t.points+' ⭐'+(t.due?' · 截止 '+t.due:'')"></p>
+        <template x-for="entry in Object.entries(t.submissions)" :key="entry[0]">
+         <div style="background:#FBF5EA;border-radius:12px;padding:10px 12px;margin-top:8px" :data-submission-id="t.id+'-'+entry[0]">
+          <b class="tiny" style="color:var(--ink)" x-text="studentName(entry[0])"></b><p style="margin:4px 0 8px;white-space:pre-line;word-break:break-word" x-text="entry[1].answer"></p>
+          <button class="cbtn primary" x-show="entry[1].status==='submitted'" @click="approveTask(t.id,entry[0])">確認努力並給星星</button>
+          <span x-show="entry[1].status==='approved'" class="tag green">已確認 · 已給星星</span>
+         </div>
+        </template>
+       </div>
+      </template>
+     </article>
+    </div>
+   </div>
+  </div>
+ </div>
 </div>
-</div>
-<div class="club-toolbar">
-<div class="weekly-track">
-<span x-text="'本週 '+activeWeek+' 起'">
-</span>
-<span>·</span>
-<span x-text="demoFriday?'Demo: Friday 已開啟（不改變系統日期）':'按裝置當地時間，每逢星期五開放'">
-</span>
-</div>
-<button class="btn outline text-xs" @click="demoFriday=!demoFriday" :aria-pressed="demoFriday" x-text="demoFriday?'返回真實日期':'模擬星期五'">
-</button>
-</div>
-<div class="club-grid">
-<article class="card">
-<div class="card-head">
-<div>
-<h2>Meet the little crew.</h2>
-<p class="sub" x-text="showcaseEntries.length+' 位小夥伴 · 示範班級展示'">
-</p>
-</div>
-<span class="pill green">No homework shared</span>
-</div>
-<p class="note mt-3" x-show="!clubOpen">現在是展示預覽。星期五可讓 Milo 正式加入；也可按「模擬星期五」體驗。</p>
-<div class="pet-gallery">
-<template x-for="s in showcaseEntries" :key="s.id">
-<div class="pet-card" :class="{mine:s.id==='an'}" :data-pet-owner="s.id">
-<div class="pet-stage">
-<div class="pet-render" x-html="petMarkup(s.accessories,s.coat,false)">
-</div>
-</div>
-<div class="flex justify-between items-center gap-1">
-<b class="text-sm" x-text="s.pet">
-</b>
-<span class="pill !p-1 !text-[9px]" x-show="s.id==='an'">You</span>
-</div>
-<p class="note" x-text="studentName(s.id)">
-</p>
-<p class="note mt-2 min-h-[39px]" x-text="s.motto">
-</p>
-<button x-show="s.id!=='an' && role==='student'" class="btn secondary mt-2" @click="cheer(s.id)" :disabled="!clubOpen || cheers.includes(s.id)" :aria-label="'給 '+studentName(s.id)+' 一個鼓勵'" x-text="cheers.includes(s.id)?'♥ 已送出鼓勵':'♡ 你今天也很棒'">
-</button>
-<button x-show="s.id==='an' && role==='student'" class="quiet text-xs" @click="withdrawClub()">收起我的展示</button>
-<span x-show="role!=='student'" class="pill green mt-2">一起為嘗試喝采</span>
-</div>
-</template>
-</div>
-<p class="note mt-4">其他學生與寵物為示範資料。鼓勵不是人氣競賽，不影響積分或冠軍；同一週每位同學只送一次。</p>
-</article>
-<aside class="stack">
-<article class="card">
-<div class="card-head">
-<div>
-<h2>This week's effort.</h2>
-<p class="sub">本週獲得積分，不是帳戶餘額</p>
-</div>
-<span class="text-[#c1a054]">✦</span>
-</div>
-<template x-for="(s,index) in rankedStudents" :key="s.id">
-<div class="leader-row">
-<span class="rank" x-text="rankOf(s.id)">
-</span>
-<div class="flex-1">
-<b class="text-xs" x-text="s.name">
-</b>
-<span class="block note" x-text="s.id==='an'?'你的每一步，都有累積':'示範本週紀錄'">
-</span>
-</div>
-<b class="text-sm text-[#8868b1]" x-text="s.points">
-</b>
-</div>
-</template>
-<p class="note mt-3">初始積分含示範紀錄。只獎勵每日上傳及老師確認的任務；購買配件不扣排名分，塗改次數與鼓勵數不計分。</p>
-</article>
-<div class="exclusive">
-<div class="flex justify-between items-center">
-<b class="text-sm text-[#937239]">Starlight Jacket</b>
-<span class="pill amber">Weekly exclusive</span>
-</div>
-<div class="pet-render" x-html="petMarkup(['champion'],'peach',false)">
-</div>
-<p class="text-xs text-[#8c774e]">本週最高積分的小夥伴，獲得一件專屬星光外套。同分者一起得獎，永久保留。</p>
-<div x-show="currentResult" class="mt-3">
-<span class="pill green">本週已結算</span>
-<p class="text-xs mt-2" x-text="currentResult?'得獎：'+currentResult.winners.map(id=>studentName(id)).join('、'):''">
-</p>
-<p class="note mt-1">依結算當時的積分快照頒獎，之後增加的點數不追溯改獎。</p>
-</div>
-<button x-show="role==='teacher'" class="btn primary w-full mt-4" :disabled="!clubOpen || !!currentResult" @click="openModal('settle')">結算本週獎勵</button>
-<p x-show="role!=='teacher' && !currentResult" class="note mt-3">由老師在星期五確認本週結果。</p>
-</div>
-<article class="card">
-<h3>Everyone belongs here.</h3>
-<ul class="rules mt-3">
-<li>展示開放全班，不以積分限制加入。</li>
-<li>每週重新累計，衣櫃收藏永久保留。</li>
-<li>本機原型會模擬全班；沒有真實多人連線。</li>
-</ul>
-</article>
-</aside>
-</div>
+
+<!-- ===================== FRIDAY PET CLUB (all roles) ===================== -->
+<section x-show="screen==='club'" x-cloak id="club-view" :class="role==='student'?'club-student':'calm'">
+ <div class="wrap">
+  <div class="calm-head" x-show="role!=='student'"><div><h1>星期五寵物展</h1><p>每週一次，讓全班的小夥伴見面。</p></div><div class="tabs"><button @click="screen='home'" x-text="role==='parent'?'學習信':'複核台'"></button><button class="active">寵物展</button></div></div>
+  <div class="stage">
+   <div>
+    <div class="row"><span class="tag" style="background:#fff;color:var(--ink)">4A 班 · 每逢星期五</span><span class="tag green" x-show="clubOpen">展覽開放中</span><span class="tag amber" x-show="!clubOpen">星期五開放</span></div>
+    <h2>帶你的小夥伴，<br>為每個人拍拍手</h2>
+    <p style="margin-top:8px;opacity:.9">不需要最高分才值得被看見。看看同學的寵物，送一句「你願意再試一次，真好」。</p>
+    <div class="row" style="margin-top:16px">
+     <button x-show="role==='student'" class="btn sun" @click="joinClub()" :disabled="!clubOpen || joined" x-text="joined?'Milo 已上台':'讓 Milo 上台'"></button>
+     <button class="btn small" @click="demoFriday=!demoFriday" :aria-pressed="demoFriday" x-text="demoFriday?'返回真實日期':'模擬星期五'"></button>
+    </div>
+   </div>
+   <div class="gpet" x-html="petMarkup(equipped,'peach',true)"></div>
+  </div>
+  <div class="club-grid">
+   <div class="panel">
+    <div class="board-head"><h2>今天的小明星</h2><span class="tiny" x-text="showcaseEntries.length+' 位小夥伴'"></span></div>
+    <p class="tiny" x-show="!clubOpen">現在是預覽。星期五才可以讓 Milo 正式加入，也可以按「模擬星期五」試玩。</p>
+    <div class="gallery">
+     <template x-for="s in showcaseEntries" :key="s.id">
+      <div class="petcard" :class="{mine:s.id==='an'}" :data-pet-owner="s.id">
+       <div class="pst"><div x-html="petMarkup(s.accessories,s.coat,false)"></div></div>
+       <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px"><b x-text="s.pet"></b><span class="tag" x-show="s.id==='an'">你</span></div>
+       <p class="tiny" x-text="studentName(s.id)"></p><p class="tiny" style="min-height:42px" x-text="s.motto"></p>
+       <button x-show="s.id!=='an' && role==='student'" class="btn small" style="width:100%;margin-top:6px" @click="cheer(s.id)" :disabled="!clubOpen || cheers.includes(s.id)" :aria-label="'給 '+studentName(s.id)+' 一個鼓勵'" x-text="cheers.includes(s.id)?'💛 已送出':'👏 拍拍手'"></button>
+       <button x-show="s.id==='an' && role==='student'" class="link" @click="withdrawClub()">收起我的展示</button>
+      </div>
+     </template>
+    </div>
+    <p class="tiny" style="margin-top:12px">其他學生與寵物為示範資料。拍手不是人氣比賽，不影響星星或冠軍。</p>
+   </div>
+   <div class="stack">
+    <div class="panel">
+     <h2>本週努力榜</h2><p class="tiny">本週獲得的星星，不是帳戶餘額</p>
+     <template x-for="s in rankedStudents" :key="s.id"><div class="lead-row"><span class="rank" :class="{r1:rankOf(s.id)===1}" x-text="rankOf(s.id)"></span><b style="font-weight:400;flex:1" x-text="s.name"></b><span style="font-family:var(--display)" x-text="s.points+' ⭐'"></span></div></template>
+    </div>
+    <div class="panel" style="background:#F0ECFF">
+     <h2>🧥 星光外套</h2>
+     <div style="height:150px" x-html="petMarkup(['champion'],'peach',false)"></div>
+     <p class="tiny">本週星星最多的小夥伴得到專屬外套，同分一起得獎，永久保留。</p>
+     <div x-show="currentResult" style="margin-top:8px"><span class="tag green">本週已結算</span><p class="tiny" style="margin-top:4px" x-text="currentResult?'得獎：'+currentResult.winners.map(id=>studentName(id)).join('、'):''"></p></div>
+     <button x-show="role==='teacher'" class="btn sun small" style="width:100%;margin-top:10px" :disabled="!clubOpen || !!currentResult" @click="openModal('settle')">結算本週獎勵</button>
+     <p x-show="role!=='teacher' && !currentResult" class="tiny" style="margin-top:6px">老師會在星期五公布。</p>
+    </div>
+   </div>
+  </div>
+ </div>
 </section>
 
-<footer class="flex flex-wrap justify-between items-center gap-3">
-<span>
-<b>MindBridge AI</b> · Smarter homework support for students, parents and teachers.</span>
-<button class="quiet" @click="openModal('reset')">重設體驗資料</button>
-<span>Demo data · 本機儲存 · 無真實 AI／跨裝置同步</span>
-</footer>
-</main>
+<footer class="calm" style="min-height:0;padding:16px 0 120px" x-show="role!=='student'" x-cloak><div class="wrap" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px" ><span class="tiny">MindBridge AI · 學生、家長、老師一起看見努力</span><button class="link" @click="openModal('reset')">重設體驗資料</button></div></footer>
+
+<!-- ===================== MODALS ===================== -->
 <div class="modal" x-show="modal" x-cloak @click.self="closeModal()" x-ref="modalRoot">
-<div class="card" role="dialog" aria-modal="true" aria-label="操作視窗">
-<form x-show="modal==='reward'" @submit.prevent="saveReward()">
-<h2 x-text="editingId?'編輯小約定':'新增小約定'">
-</h2>
-<label class="field" for="rewardName">獎勵內容</label>
-<input id="rewardName" x-model="draft.title" required maxlength="40">
-<label class="field" for="rewardKind">達成條件</label>
-<select id="rewardKind" x-model="draft.kind">
-<option value="streak">連續上傳天數</option>
-<option value="total">累積上傳天數</option>
-</select>
-<label class="field" for="rewardTarget">目標（1–30）</label>
-<input id="rewardTarget" x-model.number="draft.target" type="number" min="1" max="30" step="1" required>
-<p class="error" x-text="formError">
-</p>
-<div class="action-row justify-end mt-5">
-<button type="button" class="btn outline" @click="closeModal()">取消</button>
-<button class="btn primary" type="submit">儲存獎勵</button>
+ <div class="sheet" role="dialog" aria-modal="true" aria-label="操作視窗">
+  <form x-show="modal==='reward'" @submit.prevent="saveReward()">
+   <h2 x-text="editingId?'編輯小約定':'新增小約定'"></h2>
+   <label class="field" for="rewardName">獎勵內容</label><input id="rewardName" x-model="draft.title" required maxlength="40" placeholder="一起去公園踩單車">
+   <label class="field" for="rewardKind">達成條件</label><select id="rewardKind" x-model="draft.kind"><option value="streak">連續上傳天數</option><option value="total">累積上傳天數</option></select>
+   <label class="field" for="rewardTarget">目標（1–30 天）</label><input id="rewardTarget" x-model.number="draft.target" type="number" min="1" max="30" step="1" required>
+   <p class="error" x-text="formError"></p>
+   <div class="row" style="justify-content:flex-end;margin-top:14px"><button type="button" class="cbtn line" @click="closeModal()">取消</button><button class="cbtn primary" type="submit">儲存約定</button></div>
+  </form>
+  <div x-show="modal==='delete'"><h2>刪除這個小約定？</h2><p class="sub" style="margin-top:8px">學生任務板會同步移除，星星不受影響。</p>
+   <div class="row" style="justify-content:flex-end;margin-top:14px"><button class="cbtn line" @click="closeModal()">取消</button><button class="cbtn primary" @click="deleteReward()">確認刪除</button></div></div>
+  <div x-show="modal==='reset'"><h2>重新開始這次體驗？</h2><p class="sub" style="margin-top:8px">清除 v3 的星星、複核、任務、換裝與紀錄，恢復示範資料。</p>
+   <div class="row" style="justify-content:flex-end;margin-top:14px"><button class="cbtn line" @click="closeModal()">取消</button><button class="cbtn primary" @click="reset()">確認重設</button></div></div>
+  <form x-show="modal==='review'" @submit.prevent="saveReview()">
+   <h2>老師複核</h2><p class="sub">複核修改，不替孩子猜測感受。</p>
+   <div class="form2"><div><label class="field" for="reviewBefore">原寫法</label><input id="reviewBefore" x-model="reviewDraft.before" maxlength="80"></div><div><label class="field" for="reviewAfter">修改後</label><input id="reviewAfter" x-model="reviewDraft.after" maxlength="80" required></div></div>
+   <div class="form2"><div><label class="field" for="reviewCount">修改次數（0–20）</label><input id="reviewCount" x-model.number="reviewDraft.count" type="number" min="0" max="20" step="1" required></div>
+    <div><label class="field" for="reviewStatus">複核結果</label><select id="reviewStatus" x-model="reviewDraft.status"><option value="confirmed">確認辨識</option><option value="corrected">更正辨識</option><option value="unreadable">原字無法辨認</option></select></div></div>
+   <label class="field" for="reviewNote">補充說明</label><textarea id="reviewNote" x-model="reviewDraft.note" maxlength="300" placeholder="例如：已與學生確認，只修改一次。"></textarea>
+   <p class="error" x-text="formError"></p>
+   <div class="row" style="justify-content:flex-end;margin-top:14px"><button type="button" class="cbtn line" @click="closeModal()">取消</button><button type="submit" class="cbtn primary">儲存複核</button></div>
+  </form>
+  <form x-show="modal==='answer'" @submit.prevent="submitTask()">
+   <h2>勇敢試一次 💪</h2><p class="sub" x-text="tasks.find(t=>t.id===answerTaskId)?.instructions"></p>
+   <label class="field" for="taskAnswer">你的答案和想法</label><textarea id="taskAnswer" x-model="taskAnswer" required maxlength="1200" placeholder="I went to… I was unsure about…"></textarea>
+   <p class="error" x-text="formError"></p><p class="tiny">交出後老師會看看，確認後星星就會到你的帳戶。</p>
+   <div class="row" style="justify-content:flex-end;margin-top:14px"><button type="button" class="cbtn line" @click="closeModal()">取消</button><button type="submit" class="cbtn primary">交給老師</button></div>
+  </form>
+  <div x-show="modal==='settle'"><h2>結算本週努力？</h2><p class="sub" style="margin-top:8px">以「本週獲得星星」結算，最高分同分者都會得到星光外套。</p>
+   <p class="say new" style="margin-top:12px" x-text="'目前最高：'+leaders.map(s=>s.name).join('、')+' · '+(leaders[0]?.points||0)+' ⭐'"></p>
+   <div class="row" style="justify-content:flex-end;margin-top:14px"><button class="cbtn line" @click="closeModal()">取消</button><button class="cbtn primary" @click="settleWeek()">確認結算</button></div></div>
+ </div>
 </div>
-</form>
-<div x-show="modal==='delete'">
-<h2>刪除這個小約定？</h2>
-<p class="sub mt-3">學生頁會同步移除，積分不受影響。</p>
-<div class="action-row justify-end mt-5">
-<button class="btn outline" @click="closeModal()">取消</button>
-<button class="btn primary" @click="deleteReward()">確認刪除</button>
-</div>
-</div>
-<div x-show="modal==='reset'">
-<h2>重新開始這次體驗？</h2>
-<p class="sub mt-3">清除 v2 的積分、複核、任務、換裝與活動紀錄，恢復示範資料。v1 備份不受影響。</p>
-<div class="action-row justify-end mt-5">
-<button class="btn outline" @click="closeModal()">取消</button>
-<button class="btn primary" @click="reset()">確認重設</button>
-</div>
-</div>
+<div class="toast" x-show="toast" x-transition.opacity x-cloak role="status" aria-live="polite" x-text="toast"></div>
+<noscript><p style="padding:30px">請啟用 JavaScript 及網路連線。</p></noscript>
 
-<form x-show="modal==='review'" @submit.prevent="saveReview()">
-<h2>Teacher second look</h2>
-<p class="sub">複核修改，不替孩子猜測感受。</p>
-<div class="form-grid">
-<div>
-<label class="field" for="reviewBefore">原寫法</label>
-<input id="reviewBefore" x-model="reviewDraft.before" maxlength="80">
-</div>
-<div>
-<label class="field" for="reviewAfter">修改後</label>
-<input id="reviewAfter" x-model="reviewDraft.after" maxlength="80" required>
-</div>
-</div>
-<div class="form-grid">
-<div>
-<label class="field" for="reviewCount">修改次數（0–20）</label>
-<input id="reviewCount" x-model.number="reviewDraft.count" type="number" min="0" max="20" step="1" required>
-</div>
-<div>
-<label class="field" for="reviewStatus">複核結果</label>
-<select id="reviewStatus" x-model="reviewDraft.status">
-<option value="confirmed">確認辨識</option>
-<option value="corrected">更正辨識</option>
-<option value="unreadable">原字無法辨認</option>
-</select>
-</div>
-</div>
-<label class="field" for="reviewNote">補充說明</label>
-<textarea id="reviewNote" x-model="reviewDraft.note" maxlength="300" placeholder="例如：已與學生確認，只修改一次。">
-</textarea>
-<p class="error" x-text="formError">
-</p>
-<div class="action-row justify-end mt-5">
-<button type="button" class="btn outline" @click="closeModal()">取消</button>
-<button type="submit" class="btn primary">儲存複核</button>
-</div>
-</form>
-<form x-show="modal==='answer'" @submit.prevent="submitTask()">
-<h2>One brave try.</h2>
-<p class="sub" x-text="tasks.find(t=>t.id===answerTaskId)?.instructions">
-</p>
-<label class="field" for="taskAnswer">Your answer & thinking</label>
-<textarea id="taskAnswer" x-model="taskAnswer" required maxlength="1200" placeholder="I went to… I was unsure about…">
-</textarea>
-<p class="error" x-text="formError">
-</p>
-<p class="note mt-2">提交不會立即得分；老師確認你的嘗試後，積分會同步入帳。</p>
-<div class="action-row justify-end mt-5">
-<button type="button" class="btn outline" @click="closeModal()">取消</button>
-<button type="submit" class="btn primary">提交給老師</button>
-</div>
-</form>
-<div x-show="modal==='settle'">
-<h2>Celebrate this week's effort?</h2>
-<p class="sub mt-3">以目前「本週獲得積分」結算。最高分同分者都會得到星光外套；本週不能重複結算。</p>
-<p class="p-4 bg-[#faf4e6] rounded-xl text-sm mt-4" x-text="'目前最高：'+leaders.map(s=>s.name).join('、')+' · '+(leaders[0]?.points||0)+' 分'">
-</p>
-<p class="note mt-2">請先確認已處理本週任務。未確認任務不計入本次獎勵快照。</p>
-<div class="action-row justify-end mt-5">
-<button class="btn outline" @click="closeModal()">取消</button>
-<button class="btn primary" @click="settleWeek()">確認結算</button>
-</div>
-</div>
-<!-- EXTRA_MODALS -->
-
-</div>
-</div>
-<div class="toast" x-show="toast" x-transition.opacity x-cloak role="status" aria-live="polite" x-text="toast">
-</div>
-<noscript>
-<p style="padding:30px">請啟用 JavaScript 及網路連線。</p>
-</noscript>
 <script>
-/* Original MindBridge companion. Classic script: petSVG() returns standalone SVG. */
-function petSVG(accessories = [], coat = 'peach', happy = false) {
-  const palettes = {
-    peach: ['#F6C6A6', '#BF8C77', '#FFF1DF', '#E8AC8C', 'peach'],
-    cream: ['#F5DEB5', '#BA9B77', '#FFF8E9', '#E4C79C', 'cream'],
-    gray: ['#C5CDDB', '#8892AB', '#EDF0F8', '#ABB6CC', 'gray'],
-    cocoa: ['#C59B83', '#865D57', '#F1D6BF', '#AC7C68', 'cocoa'],
-    lavender: ['#D8CAF0', '#AA92C5', '#F6EEFF', '#C1AFE0', 'lavender'],
-    mint: ['#C1E0CE', '#83AC9D', '#EDF9ED', '#A2C9B7', 'mint']
-  };
-  const p = typeof coat === 'string' && Object.prototype.hasOwnProperty.call(palettes, coat)
-    ? palettes[coat] : palettes.peach;
-  const smiling = happy === true;
-  const a = new Set(Array.isArray(accessories) ? accessories : []);
-  const labels = { glasses: 'round glasses', scarf: 'a purple scarf', hat: 'a golden star hat', wand: 'a star wand', champion: 'a blue-purple champion star jacket' };
-  const worn = Object.keys(labels).filter(id => a.has(id)).map(id => labels[id]);
-  const star = 'M0-11L3-4L11-3L5 3L7 11L0 7L-7 11L-5 3L-11-3L-3-4Z';
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 280" role="img" aria-label="A fluffy ${p[4]} kitten learning companion${smiling ? ', smiling happily' : ''}${worn.length ? ' with ' + worn.join(', ') : ''}" focusable="false">
-  <ellipse cx="151" cy="256" rx="78" ry="10" fill="#493457" opacity=".09"/>
-  <g stroke="${p[1]}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M185 226C222 248 258 231 244 207C237 195 220 200 225 211" fill="none" stroke-width="27"/>
-    <path d="M185 226C222 248 258 231 244 207C237 195 220 200 225 211" fill="none" stroke="${p[0]}" stroke-width="21"/>
-    <path d="M244 207C237 195 220 200 225 211" fill="none" stroke="${p[2]}" stroke-width="19"/>
-    <path d="M114 174C101 192 101 219 108 237C114 253 182 253 191 237C200 218 195 190 183 174Z" fill="${p[0]}"/>
-    <ellipse cx="150" cy="220" rx="28" ry="27" fill="${p[2]}" stroke="none"/>
-    ${a.has('wand') ? `<g data-accessory="wand">
-      <path d="M42 188L109 225" stroke="#A68163" stroke-width="7"/>
-      <path d="M42 188L109 225" stroke="#FFE4A7" stroke-width="3"/>
-      <path d="${star}" transform="translate(38 181) scale(1.4)" fill="#FFDA78" stroke="#C2984D" stroke-width="1.8"/>
-      <path d="M32 176L35 172" stroke="#FFF7D9" stroke-width="3"/>
-      <path d="M16 155V163M12 159H20" stroke="#D6B161" stroke-width="2"/>
-    </g>` : ''}
-    <path d="M111 193C96 198 95 223 108 227C119 229 123 219 122 207M188 193C203 198 204 223 191 227C180 229 176 219 177 207" fill="${p[0]}"/>
-    ${a.has('champion') ? `<g data-accessory="champion" stroke="#655AAB" stroke-width="2.5">
-      <path d="M116 184L104 194Q98 203 101 215L119 219L117 237Q150 248 184 237L181 219L200 215Q203 204 196 194L183 184Z" fill="#779DE5"/>
-      <path d="M150 190L183 184L196 194Q203 204 200 215L181 219L184 237Q167 243 150 242Z" fill="#9380DC"/>
-      <path d="M130 190L150 207L170 190" fill="#E2E6FF"/>
-      <path d="M150 208V239M103 213L118 216M182 216L198 212M120 236Q150 245 181 236" fill="none" stroke="#D8D6FF" stroke-width="3"/>
-      <path d="${star}" transform="translate(131 219) scale(.65)" fill="#FFE49B" stroke="none"/>
-      <path d="${star}" transform="translate(173 215) scale(.42)" fill="#F4E9FF" stroke="none"/>
-      <circle cx="150" cy="212" r="2" fill="#FFF1B9" stroke="none"/>
-    </g>` : ''}
-    <ellipse cx="124" cy="244" rx="23" ry="14" fill="${p[0]}"/>
-    <ellipse cx="177" cy="244" rx="23" ry="14" fill="${p[0]}"/>
-    <path d="M115 245V249M123 246V250M178 246V250M186 245V249" fill="none" stroke-width="2"/>
-    <path d="M69 96C57 80 54 39 66 31C76 24 101 43 114 60M187 60C201 42 226 24 236 33C246 43 238 80 229 96" fill="${p[0]}"/>
-    <path d="M72 72C68 62 65 46 70 43C75 41 90 52 97 64ZM204 64C212 52 226 42 230 46C234 50 230 67 226 74Z" fill="#F0A6AE" stroke="none"/>
-    <path d="M60 110C60 78 84 59 117 56L128 44L138 52Q148 35 157 50Q170 43 181 56C217 58 239 80 240 111L250 124L245 135L255 146L247 154L250 165C236 184 210 191 185 193Q150 202 115 193C86 192 61 181 50 166L54 155L46 146L55 134L50 124Z" fill="${p[0]}"/>
-    <path d="M65 152C75 179 104 188 132 188M172 188C198 189 225 180 236 165" fill="none" stroke="${p[3]}" stroke-width="7" opacity=".45"/>
-    <path d="M122 67Q129 77 136 69M145 61Q150 74 155 63M164 68Q170 77 178 67" fill="none" stroke="${p[3]}" stroke-width="5"/>
-  </g>
-  ${a.has('scarf') ? `<g data-accessory="scarf" stroke="#8160B9" stroke-width="2.5" stroke-linejoin="round">
-    <path d="M161 199L180 197L192 227Q181 234 170 228L157 207Z" fill="#9B77D6"/>
-    <path d="M170 218L186 215M173 224L189 221" stroke="#CEB9ED" stroke-width="3"/>
-    <path d="M112 187Q150 203 188 187L191 201Q150 218 109 201Z" fill="#AE8CE5"/>
-    <path d="M121 198Q145 207 161 203" fill="none" stroke="#D5C1F1" stroke-width="3" stroke-linecap="round"/>
-    <ellipse cx="172" cy="201" rx="10" ry="9" fill="#9B77D6"/>
-  </g>` : ''}
-  ${a.has('hat') ? `<g data-accessory="hat" stroke="#C29A4D" stroke-width="2.5" stroke-linejoin="round">
-    <path d="M130 53L154 15Q159 8 165 16L184 54Z" fill="#FFD881"/>
-    <path d="M158 17L177 52" fill="none" stroke="#FFE9B7" stroke-width="6" stroke-linecap="round"/>
-    <ellipse cx="157" cy="54" rx="33" ry="8" fill="#FFE6A5"/>
-    <path d="${star}" transform="translate(157 34) scale(.64)" fill="#FFF6D9" stroke-width="2"/>
-  </g>` : ''}
-  <ellipse cx="150" cy="163" rx="35" ry="25" fill="${p[2]}"/>
-  ${smiling ? '<path d="M95 129Q111 107 127 129M173 129Q189 107 205 129" fill="none" stroke="#382D43" stroke-width="5" stroke-linecap="round"/>' : `<g fill="#382D43">
-    <ellipse cx="111" cy="126" rx="18" ry="23"/>
-    <ellipse cx="189" cy="126" rx="18" ry="23"/>
-  </g>
-  <g fill="#79617E">
-    <ellipse cx="113" cy="138" rx="10" ry="6"/>
-    <ellipse cx="191" cy="138" rx="10" ry="6"/>
-  </g>
-  <g fill="#FFFFFF">
-    <ellipse cx="105" cy="117" rx="6" ry="8"/>
-    <ellipse cx="183" cy="117" rx="6" ry="8"/>
-    <circle cx="117" cy="132" r="3"/><circle cx="195" cy="132" r="3"/>
-  </g>`}
-  <g fill="#EE8F9E" opacity=".65">
-    <ellipse cx="83" cy="153" rx="15" ry="9"/>
-    <ellipse cx="217" cy="153" rx="15" ry="9"/>
-  </g>
-  <g stroke="#FFF0EB" stroke-width="2.5" stroke-linecap="round" opacity=".8">
-    <path d="M77 152L76 155M84 152L83 155M211 152L210 155M218 152L217 155"/>
-  </g>
-  <path d="M150 152C142 143 135 153 150 161C165 153 158 143 150 152Z" fill="#CE778B"/>
-  <path d="M150 161V165M150 165Q143 176 136 167M150 165Q157 176 164 167" fill="none" stroke="#80596A" stroke-width="2.5" stroke-linecap="round"/>
-  <g stroke="${p[1]}" stroke-width="2" stroke-linecap="round" opacity=".75">
-    <path d="M66 141L77 144M65 151L76 151M223 144L234 141M224 151L235 151"/>
-  </g>
-  ${a.has('glasses') ? `<g data-accessory="glasses" fill="none" stroke="#74638F" stroke-width="4" stroke-linecap="round">
-    <circle cx="111" cy="126" r="27"/><circle cx="189" cy="126" r="27"/>
-    <path d="M138 124Q150 116 162 124M84 122L73 118M216 122L227 118"/>
-    <path d="M94 111L101 106M172 111L179 106" stroke="#FFFFFF" stroke-width="3" opacity=".8"/>
-  </g>` : ''}
-</svg>`;
-}
-
-// Keep immutable AI samples separate from teacher overrides.
 function sampleEvidence(id){
  if(id==='an')return [
  {id:'q1',q:'Q1',skill:'Past tense · 過去式',before:'go → goed',after:'went',count:2,observation:'回頭嘗試兩種寫法，最後改成不規則過去式。順序為示意。',status:'pending',note:''},
@@ -1091,65 +1024,162 @@ function sampleEvidence(id){
  const data={mia:['goes','went','Past tense'],leo:['She have','She has','Subject–verb agreement'],zoe:['We is','We are','Present continuous'],noah:['play','played','Regular past tense'],ava:['goed','went','Irregular past tense']};
  const v=data[id]||data.mia;return [{id:'q1',q:'Q1',skill:v[2],before:v[0],after:v[1],count:1,observation:'示範作業可見修改；需老師確認原稿與學生說明。',status:'pending',note:''}];
 }
+const SUBJECT_FINDINGS={
+ english:[{type:'retry',icon:'🔁',title:'第 1 題：你試了兩次',text:'go → goed → went，你沒有放棄，最後找到正確的過去式！'},{type:'fixed',icon:'✨',title:'第 2 題：自己發現了',text:'have 改成 has，你有回頭檢查 she 後面的字。'},{type:'check',icon:'🔍',title:'第 3 題：有擦過的地方',text:'Milo 看不清原本寫什麼，老師會幫忙看看，不算錯。'},{type:'next',icon:'🌱',title:'第 4 題：還差一點點',text:'「I went to…」你想去哪裡？先說給 Milo 聽也可以。'}],
+ math:[{type:'retry',icon:'🔁',title:'第 2 題：重新算了一次',text:'你擦掉再算，這次的直式排得更整齊了。'},{type:'fixed',icon:'✨',title:'第 3 題：找到小錯誤',text:'你把 36 改成 38，有自己檢查進位。'},{type:'check',icon:'🔍',title:'第 4 題：單位要看看',text:'答案後面好像沒有寫「厘米」，老師會再確認。'},{type:'next',icon:'🌱',title:'第 5 題：最後一步',text:'算式寫好了，只差寫出答案句子！'}],
+ chinese:[{type:'retry',icon:'🔁',title:'「晴」字重寫了',text:'你擦掉再寫，筆畫比第一次更整齊。'},{type:'fixed',icon:'✨',title:'造句寫得很完整',text:'第 2 題用了「因為……所以……」，句子很清楚。'},{type:'check',icon:'🔍',title:'有一個字看不清',text:'第 3 題有個字擦得很淡，老師會幫忙看。'},{type:'next',icon:'🌱',title:'第 4 題還沒寫完',text:'可以先把想法說出來，再慢慢寫下來。'}],
+ gs:[{type:'retry',icon:'🔁',title:'圖表改過一次',text:'你重新畫了溫度的線，比原來更準確。'},{type:'fixed',icon:'✨',title:'找到正確答案',text:'第 2 題從「固體」改成「液體」，你有想一想。'},{type:'check',icon:'🔍',title:'有一題圈了兩個答案',text:'老師會問問你，比較想選哪一個。'},{type:'next',icon:'🌱',title:'最後一題的原因',text:'你寫了答案，可以再加一句「因為……」。'}]
+};
 function mindBridge(){return {
- role:'student',screen:'home',roleOptions:[{id:'student',label:'Student 學生'},{id:'parent',label:'Parent 家長'},{id:'teacher',label:'Teacher 老師'}],mode:'app',uploaded:false,loading:false,stage:'',points:120,owned:[],equipped:[],petHappy:false,
- mood:'',moods:[{id:'good',face:'😊',label:'有成就感'},{id:'unsure',face:'🥺',label:'有點不確定'},{id:'tired',face:'😮‍💨',label:'有點累了'}],wordIndex:0,total:2,streak:2,lastDate:'',
- rewards:[{id:'icecream',title:'一起吃冰淇淋',kind:'streak',target:3,claimed:false}],reviews:{},items:[{id:'glasses',name:'黑框眼鏡',price:40,art:'👓'},{id:'scarf',name:'紫色領巾',price:60,art:'🧣'},{id:'hat',name:'金星帽子',price:80,art:'🌟'},{id:'wand',name:'魔法杖',price:100,art:'🪄'}],
- toast:'',toastTimer:null,modal:'',returnFocus:null,editingId:null,deleteId:null,draft:{title:'',kind:'streak',target:3},formError:'',storageWarning:false,
- 
- roster:[{id:'an',name:'Alex 小安'},{id:'mia',name:'Mia'},{id:'leo',name:'Leo'},{id:'zoe',name:'Zoe'},{id:'noah',name:'Noah'},{id:'ava',name:'Ava'}],selectedId:'an',reviewFilter:'all',reviewDraft:{before:'',after:'',count:1,status:'confirmed',note:''},reviewTarget:null,feedbacks:{},generating:false,
+ role:'student',screen:'home',roleOptions:[{id:'student',label:'學生'},{id:'parent',label:'家長'},{id:'teacher',label:'老師'}],
+ uploaded:false,points:120,displayPoints:120,bumpStars:false,xp:120,owned:[],equipped:['glasses'],petHappy:false,hearts:[],
+ mood:'',moodDate:'',shareMood:true,pendingMood:'',
+ moods:[{id:'proud',face:'🤩',label:'超有成就感',color:'#FFE07A'},{id:'good',face:'😊',label:'還不錯',color:'#BDF0CF'},{id:'unsure',face:'🤔',label:'有點不確定',color:'#D9D2FF'},{id:'stuck',face:'😣',label:'有點卡住',color:'#FFD0C0'},{id:'tired',face:'😮‍💨',label:'有點累了',color:'#CFE6FF'}],
+ subjects:[{id:'english',name:'英文',icon:'🔤',place:'字母森林',color:'#BDF0CF'},{id:'math',name:'數學',icon:'🧮',place:'數字火山',color:'#FFD0C0'},{id:'chinese',name:'中文',icon:'🏯',place:'漢字城堡',color:'#FFE07A'},{id:'gs',name:'常識',icon:'🔬',place:'發現洞穴',color:'#D9D2FF'}],
+ subjectFindings:SUBJECT_FINDINGS,
+ wordIndex:0,total:2,streak:2,lastDate:'',history:[],
+ rewards:[{id:'icecream',title:'一起吃冰淇淋',kind:'streak',target:3,claimed:false}],reviews:{},
+ items:[{id:'glasses',name:'圓圓眼鏡',price:40,art:'👓'},{id:'scarf',name:'紫色領巾',price:60,art:'🧣'},{id:'hat',name:'金星帽子',price:80,art:'🌟'},{id:'wand',name:'魔法杖',price:100,art:'🪄'}],
+ toast:'',toastTimer:null,modal:'',returnFocus:null,editingId:null,deleteId:null,draft:{title:'',kind:'streak',target:3},formError:'',
+ // mission
+ mOpen:false,mStep:'subject',subject:'',source:'camera',photo:'',rot:0,camStream:null,camReady:false,camError:'',fileError:'',dragOver:false,deviceBusy:false,flash:false,
+ checks:[],scanStep:0,foundDots:[],timers:[],lastAward:false,burst:[],missionReturn:null,
+ stepList:[{id:'subject',icon:'🏝️',label:'選科目'},{id:'capture',icon:'📷',label:'拍照'},{id:'preview',icon:'👀',label:'檢查'},{id:'confirm',icon:'🚀',label:'出發'},{id:'scan',icon:'🔍',label:'分析'},{id:'feel',icon:'💬',label:'感受'},{id:'reward',icon:'🎁',label:'獎勵'}],
+ scanLines:[{short:'看整張紙',say:'嗯……先看看整張紙。'},{short:'找改過的地方',say:'咦？這裡有擦過的痕跡！'},{short:'數完成的題目',say:'一、二、三……你完成了好多題。'},{short:'準備鼓勵',say:'找到了！正在準備給你的話…'}],
+ roster:[{id:'an',name:'Alex 小安'},{id:'mia',name:'Mia'},{id:'leo',name:'Leo'},{id:'zoe',name:'Zoe'},{id:'noah',name:'Noah'},{id:'ava',name:'Ava'}],selectedId:'an',reviewFilter:'all',reviewDraft:{before:'',after:'',count:1,status:'confirmed',note:''},reviewTarget:null,feedbacks:{},approved:{},generating:false,
  tasks:[{id:'starter',title:'One sentence, one brave try',instructions:'Finish Q4: Write one sentence about your weekend. Start with I went to… Then tell your teacher which word you were unsure about.',targets:['an'],points:20,due:'',submissions:{}}],taskDraft:{title:'',instructions:'',target:'an',points:20,due:''},taskError:'',answerTaskId:null,taskAnswer:'',
-
- 
+ peerSignals:{mia:{uploaded:true},leo:{uploaded:true,why:'自述「有點卡住」，Q2 未完成'},zoe:{uploaded:true},noah:{uploaded:false,why:'本週只上傳 1 天，可先關心原因'},ava:{uploaded:true}},
  demoFriday:false,clockDay:new Date().getDay(),activeWeek:'',weeklyEarned:{an:120,mia:180,leo:150,zoe:130,noah:100,ava:90},joinedWeeks:{},cheers:[],championOwners:[],weeklyResults:{},
  peerPets:[{id:'mia',pet:'Boba',coat:'cream',accessories:['scarf','hat'],motto:'One more try, one more smile.'},{id:'leo',pet:'Pepper',coat:'gray',accessories:['glasses'],motto:'Curiosity looks good on you.'},{id:'zoe',pet:'Mochi',coat:'lavender',accessories:['wand'],motto:'Little steps are magic.'},{id:'noah',pet:'Coco',coat:'cocoa',accessories:['hat'],motto:'Today I asked for help.'},{id:'ava',pet:'Bean',coat:'mint',accessories:['scarf'],motto:'Learning at my own pace.'}],
 
- get moodLabel(){return this.moods.find(m=>m.id===this.mood)?.label||'尚未分享感受'},
+ // ---------- derived ----------
+ get level(){return 1+Math.floor(this.xp/100)},
+ get doneToday(){return this.lastDate===this.localDay()},
+ get moodToday(){return !!this.mood && this.moodDate===this.localDay()},
+ get questDone(){return [this.doneToday,this.moodToday,this.myTasks.length&&this.myTasks.every(t=>t.submissions.an),this.rewards.length&&this.rewards.every(r=>r.claimed)].filter(Boolean).length},
+ get openTasks(){return this.myTasks.filter(t=>!t.submissions.an).length},
+ get petLine(){if(this.petHappy)return '嘻嘻，好癢！你今天也很棒 ♥';if(this.doneToday)return '我看見你今天再試了一次，好厲害！';return this.streak>=2?'你已經連續 '+this.streak+' 天了！今天也一起吧？':'我準備好放大鏡了，拿功課來吧！'},
+ get stepIndex(){return this.stepList.findIndex(s=>s.id===this.mStep)},
+ get findings(){return SUBJECT_FINDINGS[this.subject]||SUBJECT_FINDINGS.english},
+ get lastMission(){return this.history[this.history.length-1]||null},
+ moodOf(id){return this.moods.find(m=>m.id===id)},
+ get moodLabel(){return this.moodOf(this.mood)?.label||'尚未分享'},
+ get moodFace(){return this.moodOf(this.mood)?.face||'💬'},
+ subjectOf(id){return this.subjects.find(s=>s.id===id)||this.subjects[0]},
+ subjectData(){return {english:{next:'把第 4 題的句子說完：I went to…'},math:{next:'第 5 題寫上答案句子。'},chinese:{next:'第 4 題先說一說，再寫下來。'},gs:{next:'最後一題加一句「因為……」。'}}[this.subject]||{next:'挑一題，再試一次。'}},
+ get feedbackText(){const s=this.subjectOf(this.subject).name;const m={proud:'你覺得很有成就感，因為你真的回頭修正了答案！',good:'穩穩地完成了，Milo 給你一個大大的擁抱。',unsure:'有點不確定很正常，問題留下來，老師和 Milo 會陪你一起想。',stuck:'卡住的時候，你還是把功課交出來了，這很勇敢。',tired:'累了還願意完成，先休息一下，喝口水吧。'}[this.mood]||'謝謝你把功課交給我。';return '這份'+s+'功課，你改了好幾個地方。'+m},
+ get parentMoodText(){return {proud:'孩子說「超有成就感」。可以具體指出他改對的地方：「你自己發現 has 要這樣寫，好厲害。」',good:'孩子說「還不錯」。可以問：「今天哪一題最順利？」讓他說說自己的方法。',unsure:'孩子說自己有點不確定。可以問：「是還不熟悉 went，還是擔心再次寫錯？」先聽答案，再一起決定下一步。',stuck:'孩子說有點卡住。先不急著教答案，可以問：「卡在哪一個字？我們一起找找例句好嗎？」',tired:'孩子說有點累了。這時適合問：「要不要先休息一下，再一起完成一小題？」'}[this.mood]||'我們看見孩子回頭修正答案，但還不知道他當時怎麼想。請先問：「你改這個字時，是怎麼想的？」'},
  get encouragement(){const q=this.evidence('an')[0];if(q.status==='unreadable')return '「這裡看不清楚，不用急著判斷對錯。你願意告訴我，你原本想寫什麼嗎？」';return [`「我看到你把 “${q.before}” 改成 “${q.after}”，你有回頭試著修正。你是怎樣想到這個寫法的？我們再一起看看第 4 題，好嗎？」`,`「這頁不只留下答案，也留下你嘗試的痕跡。你改成 “${q.after}” 時，是更確定了，還是仍有疑問？」`,this.mood==='tired'?'「你說今天有點累。謝謝你還願意嘗試。我們先休息，再選一小題一起看看，好嗎？」':`「你願意回頭檢查 “${q.after}”，值得被肯定。第 4 題想寫的故事是什麼？你可以先說，我們一起找英文。」`][this.wordIndex]},
- evidence(id){return sampleEvidence(id).map(e=>({...e,...(this.reviews[id]?.[e.id]||{})}))},editCount(id){return this.evidence(id).reduce((sum,e)=>sum+e.count,0)},reviewedCount(id){return this.evidence(id).filter(e=>e.status!=='pending').length},reviewLabel(e){return {pending:'待老師複核',confirmed:'老師已確認',corrected:'老師已更正',unreadable:'無法辨認，不作判斷'}[e.status]},
+ get weekDays(){const out=[];const names=['日','一','二','三','四','五','六'];const set=new Set(this.history.map(h=>h.date));for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const key=this.localDay(d);const demo=(i===1||i===2)&&this.streak>=2;out.push({key,label:names[d.getDay()],on:set.has(key)||demo})}return out},
+ get skillTrack(){const r=this.reviewedCount('an');return [{name:'過去式 went / has',pct:70,note:'會自己回頭修正'},{name:'完成整份功課',pct:this.doneToday?85:60,note:'Q4 尚未完成'},{name:'老師複核進度',pct:Math.round(r/3*100),note:r+' / 3'}]},
+ get uploadedCount(){return this.roster.filter(s=>s.id==='an'?this.doneToday||this.uploaded:this.peerSignals[s.id]?.uploaded).length},
+ get pendingTotal(){return this.roster.reduce((n,s)=>n+this.evidence(s.id).filter(e=>e.status==='pending').length,0)},
+ get supportList(){const out=[];if(['unsure','stuck','tired'].includes(this.mood))out.push({id:'an',why:'自述「'+this.moodLabel+'」· Q4 未完成'});else out.push({id:'an',why:'Q4 未完成，可先口述再寫'});for(const [id,s] of Object.entries(this.peerSignals))if(s.why)out.push({id,why:s.why});return out},
+ petOf(id){if(id==='an')return {coat:'peach',accessories:this.equipped};return this.peerPets.find(p=>p.id===id)||{coat:'peach',accessories:[]}},
+ evidence(id){return sampleEvidence(id).map(e=>({...e,...(this.reviews[id]?.[e.id]||{})}))},editCount(id){return this.evidence(id).reduce((s,e)=>s+e.count,0)},reviewedCount(id){return this.evidence(id).filter(e=>e.status!=='pending').length},reviewLabel(e){return {pending:'待老師複核',confirmed:'老師已確認',corrected:'老師已更正',unreadable:'無法辨認，不作判斷'}[e.status]},
  petMarkup(a,c,h){return typeof petSVG==='function'?petSVG(a,c,h):''},
- boot(){try{const d=JSON.parse(localStorage.getItem('mindbridge-v2')||'null');if(d?.version===2){for(const k of this.persistKeys())if(d[k]!==undefined)this[k]=d[k]}}catch(e){this.notify('本機資料無法讀取，已載入示範資料。')}this.ensureWeek();this.save();setInterval(()=>{this.clockDay=new Date().getDay();if(this.activeWeek!==this.weekKey()){this.ensureWeek();this.save()}},30000);this.$nextTick(()=>window.lucide?.createIcons())},
- persistKeys(){return ['points','owned','equipped','uploaded','mood','total','streak','lastDate','rewards','reviews' ,'feedbacks' ,'tasks' ,'activeWeek','weeklyEarned','joinedWeeks','cheers','championOwners','weeklyResults' /* PERSIST_KEYS */]},
- save(){try{const d={version:2};for(const k of this.persistKeys())d[k]=this[k];localStorage.setItem('mindbridge-v2',JSON.stringify(d))}catch(e){this.storageWarning=true;this.notify('儲存失敗；互動可繼續，但重整後不保留。')}},notify(t){clearTimeout(this.toastTimer);this.toast=t;this.toastTimer=setTimeout(()=>this.toast='',4200)},
- shopLabel(i){return this.equipped.includes(i.id)?'已穿戴 · 卸下':this.owned.includes(i.id)?'已擁有 · 穿戴':'✦ '+i.price},
- equip(i){if(this.equipped.includes(i.id)){this.equipped=this.equipped.filter(x=>x!==i.id);this.notify('已卸下'+i.name)}else{if(!this.owned.includes(i.id)){if(this.points<i.price){this.notify('還差 '+(i.price-this.points)+' 積分。完成學習小步驟再來吧！');return}this.points-=i.price;this.owned.push(i.id)}this.equipped.push(i.id);this.notify('Milo 穿上了'+i.name+'！')}this.save()},
- localDay(d=new Date()){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')},addPoints(n,reason){this.points+=n; this.ensureWeek();this.weeklyEarned.an=(this.weeklyEarned.an||0)+n;},
- upload(){if(this.loading)return;this.loading=true;this.stage=this.mode==='device'?'模擬拍攝架定位作業…':'模擬拍照上傳…';setTimeout(()=>this.stage='整理塗改、擦拭與未完成句子…',550);setTimeout(()=>{this.uploaded=true;this.loading=false;const today=this.localDay();let awarded=false;if(today!==this.lastDate){const y=new Date();y.setDate(y.getDate()-1);this.streak=!this.lastDate||this.lastDate===this.localDay(y)?this.streak+1:1;this.total++;this.lastDate=today;this.addPoints(30,'每日上傳');awarded=true}this.save();this.notify(awarded?'今天的努力已記錄！+30 積分。':'已更新範例；今天的上傳積分已領過。')},1100)},
- progress(r){return r.kind==='streak'?this.streak:this.total},claim(r){if(r.claimed||this.progress(r)<r.target)return;r.claimed=true;this.save();this.notify('已記錄兌換，和家人約好享受小獎勵吧！')},
- openModal(name){this.returnFocus=document.activeElement;this.modal=name;this.$nextTick(()=>[...this.$refs.modalRoot.querySelectorAll('input,textarea,select,button')].find(e=>e.offsetParent!==null)?.focus())},closeModal(){this.modal='';this.$nextTick(()=>this.returnFocus?.focus())},
- trapFocus(event){if(!this.modal)return;const els=[...this.$refs.modalRoot.querySelectorAll('input,textarea,select,button')].filter(e=>e.offsetParent!==null&&!e.disabled);if(!els.length)return;const first=els[0],last=els[els.length-1];if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus()}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus()}},
+
+ worksheet(marked){const st=(t,d)=>marked?`<span class="sticker" style="animation-delay:${d}s">${t}</span>`:'';
+  return `<div class="ws ${marked?'marked':''}"><div class="ws-head"><span>English · Grade 4</span><span>Name: Alex</span></div><h4>A little better, every day.</h4>
+  <div class="q">1. Yesterday, I <span class="hl a pencil"><s>go</s> <s>goed</s> went</span> to the park.${st('🔁 試了 2 次',.2)}</div>
+  <div class="q">2. She <span class="hl a pencil"><s>have</s> has</span> two cats.${st('✨ 自己改對',.55)}</div>
+  <div class="q">3. We <span class="hl b pencil"><span class="smudge">is</span> are</span> playing outside.${st('🔍 老師會看',.9)}</div>
+  <div class="q">4. Write one sentence about your weekend.<br><span class="hl c pencil">I went to …</span>${st('🌱 還差一點',1.25)}</div></div>`},
+
+ // ---------- boot / persistence ----------
+ boot(){try{const d=JSON.parse(localStorage.getItem('mindbridge-v3')||'null');if(d?.version===3){for(const k of this.persistKeys())if(d[k]!==undefined)this[k]=d[k]}}catch(e){this.notify('本機資料無法讀取，已載入示範資料。')}
+  this.displayPoints=this.points;this.ensureWeek();this.save();
+  setInterval(()=>{this.clockDay=new Date().getDay();if(this.activeWeek!==this.weekKey()){this.ensureWeek();this.save()}},30000);
+  this.$watch('mStep',v=>{if(v==='capture'&&this.source==='camera')this.startCamera();else if(v!=='capture')this.stopCamera();this.$nextTick(()=>this.$refs.missionRoot.querySelector('.m-body').scrollTop=0)})},
+ persistKeys(){return ['points','xp','owned','equipped','uploaded','mood','moodDate','shareMood','total','streak','lastDate','history','rewards','reviews','feedbacks','approved','tasks','activeWeek','weeklyEarned','joinedWeeks','cheers','championOwners','weeklyResults']},
+ save(){try{const d={version:3};for(const k of this.persistKeys())d[k]=this[k];localStorage.setItem('mindbridge-v3',JSON.stringify(d))}catch(e){this.notify('儲存失敗；重新整理後不會保留。')}},
+ notify(t){clearTimeout(this.toastTimer);this.toast=t;this.toastTimer=setTimeout(()=>this.toast='',3800)},
+ go(role,screen){if(this.mOpen)this.exitMission();this.role=role;this.screen=screen;window.scrollTo(0,0)},
+ localDay(d=new Date()){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')},
+ reduced(){return matchMedia('(prefers-reduced-motion: reduce)').matches},
+
+ // ---------- pet ----------
+ pat(){this.petHappy=true;const id=Date.now();this.hearts.push(...[-40,0,40].map((x,i)=>({id:id+i,x})));setTimeout(()=>{this.hearts=this.hearts.filter(h=>h.id<id)},1700);clearTimeout(this._pt);this._pt=setTimeout(()=>this.petHappy=false,1800)},
+ shopLabel(i){return this.equipped.includes(i.id)?'穿著中 · 點一下脫下':this.owned.includes(i.id)?'已擁有 · 穿上':i.price+' ⭐'},
+ equip(i){if(this.equipped.includes(i.id)){this.equipped=this.equipped.filter(x=>x!==i.id);this.notify('脫下了'+i.name)}else{if(!this.owned.includes(i.id)){if(this.points<i.price){this.notify('還差 '+(i.price-this.points)+' ⭐。交功課或完成小任務就能賺到！');return}this.points-=i.price;this.displayPoints=this.points;this.owned.push(i.id)}this.equipped.push(i.id);this.pat();this.notify('Milo 穿上了'+i.name+'！')}this.save()},
+ toggleChampion(){if(!this.championOwners.includes('an'))return;if(this.equipped.includes('champion'))this.equipped=this.equipped.filter(x=>x!=='champion');else this.equipped.push('champion');this.save()},
+ addPoints(n){this.points+=n;this.xp+=n;this.ensureWeek();this.weeklyEarned.an=(this.weeklyEarned.an||0)+n},
+ countUp(){const from=this.displayPoints,to=this.points;if(this.reduced()||from===to){this.displayPoints=to;return}const t0=performance.now(),dur=900;const tick=t=>{const k=Math.min(1,(t-t0)/dur);this.displayPoints=Math.round(from+(to-from)*(1-Math.pow(1-k,3)));if(k<1)requestAnimationFrame(tick);else{this.bumpStars=true;setTimeout(()=>this.bumpStars=false,500)}};requestAnimationFrame(tick)},
+
+ // ---------- mission flow ----------
+ openMission(){this.missionReturn=document.activeElement;this.mOpen=true;this.mStep='subject';this.subject='';this.photo='';this.rot=0;this.source='camera';this.pendingMood='';this.fileError='';this.lastAward=false;
+  this.checks=[{id:'all',label:'整頁都在照片裡',on:false},{id:'clear',label:'字看得清清楚楚',on:false},{id:'hand',label:'沒有手指擋住',on:false}];
+  document.body.style.overflow='hidden';this.$nextTick(()=>this.$refs.missionRoot.querySelector('.island')?.focus())},
+ exitMission(dest){this.stopCamera();this.clearTimers();this.mOpen=false;document.body.style.overflow='';if(dest)this.screen=dest;this.$nextTick(()=>(dest?null:this.missionReturn)?.focus?.())},
+ onEscape(){if(this.modal)this.closeModal();else if(this.mOpen&&this.mStep!=='scan')this.exitMission()},
+ pickSubject(id){this.subject=id;setTimeout(()=>{if(this.mOpen&&this.mStep==='subject')this.mStep='capture'},this.reduced()?0:380)},
+ setSource(s){this.source=s;this.fileError='';if(s==='camera')this.startCamera();else this.stopCamera()},
+ async startCamera(){this.camError='';this.camReady=false;if(this.camStream)return this.attachStream();
+  if(!navigator.mediaDevices?.getUserMedia){this.camError='這部裝置不能直接打開相機。可以改用「相簿」上傳照片。';return}
+  try{this.camStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'},width:{ideal:1920},height:{ideal:1440}},audio:false});
+   if(!this.mOpen||this.mStep!=='capture'||this.source!=='camera'){this.stopCamera();return}this.attachStream()}
+  catch(e){this.camError=e.name==='NotAllowedError'?'相機還沒有被允許使用。請在瀏覽器允許相機，或改用相簿。':'找不到可以用的相機。可以改用「相簿」或「掃描機」。'}},
+ attachStream(){const v=this.$refs.video;v.srcObject=this.camStream;v.onloadedmetadata=()=>{v.play();this.camReady=true};if(v.readyState>=1){v.play();this.camReady=true}},
+ stopCamera(){if(this.camStream){this.camStream.getTracks().forEach(t=>t.stop());this.camStream=null}this.camReady=false;if(this.$refs.video)this.$refs.video.srcObject=null},
+ snap(){const v=this.$refs.video;if(!this.camReady||!v.videoWidth)return;this.photo=this.downscale(v,v.videoWidth,v.videoHeight);this.doFlash();this.stopCamera();this.mStep='preview'},
+ downscale(src,w,h){const max=1400,k=Math.min(1,max/Math.max(w,h));const c=this.$refs.canvas;c.width=Math.round(w*k);c.height=Math.round(h*k);c.getContext('2d').drawImage(src,0,0,c.width,c.height);return c.toDataURL('image/jpeg',.85)},
+ doFlash(){if(this.reduced())return;this.flash=true;setTimeout(()=>this.flash=false,450)},
+ readFile(f){this.fileError='';if(!f)return;if(!f.type.startsWith('image/')){this.fileError='這不是圖片喔，請選 JPG 或 PNG 照片。';return}if(f.size>20*1024*1024){this.fileError='照片太大了（超過 20MB），請選另一張。';return}
+  const url=URL.createObjectURL(f);const img=new Image();img.onload=()=>{this.photo=this.downscale(img,img.naturalWidth,img.naturalHeight);URL.revokeObjectURL(url);this.mStep='preview'};img.onerror=()=>{this.fileError='這張照片打不開，請換一張試試。';URL.revokeObjectURL(url)};img.src=url},
+ deviceScan(){if(this.deviceBusy)return;this.deviceBusy=true;setTimeout(()=>{this.deviceBusy=false;if(!this.mOpen)return;this.photo='sample';this.doFlash();this.mStep='preview'},this.reduced()?200:2000)},
+ useSample(){this.stopCamera();this.source='sample';this.photo='sample';if(!this.subject)this.subject='english';this.mStep='preview'},
+ retake(){this.photo='';this.rot=0;if(this.source==='sample')this.source='camera';this.mStep='capture';if(this.source==='camera')this.startCamera()},
+ clearTimers(){this.timers.forEach(clearTimeout);this.timers=[]},
+ later(fn,ms){this.timers.push(setTimeout(fn,ms))},
+ submitMission(){this.mStep='scan';this.scanStep=0;this.foundDots=[];this.uploaded=true;const step=this.reduced()?150:1050;const dots=[{e:'⭐',x:58,y:24},{e:'✏️',x:30,y:44},{e:'⭐',x:64,y:58},{e:'🌱',x:26,y:76}];
+  for(let i=1;i<=4;i++)this.later(()=>{this.scanStep=i;this.foundDots.push({...dots[i-1],id:i})},step*i);
+  this.later(()=>{this.recordUpload();this.mStep='reveal'},step*4+(this.reduced()?50:500))},
+ recordUpload(){const today=this.localDay();this.lastAward=false;if(today!==this.lastDate){const y=new Date();y.setDate(y.getDate()-1);this.streak=!this.lastDate||this.lastDate===this.localDay(y)?this.streak+1:1;this.total++;this.lastDate=today;this.addPoints(30);this.lastAward=true}
+  this.history.push({at:Date.now(),date:today,subject:this.subject||'english',mood:''});if(this.history.length>60)this.history=this.history.slice(-60);this.save()},
+ finishFeel(){if(this.pendingMood){this.mood=this.pendingMood;this.moodDate=this.localDay();const h=this.history[this.history.length-1];if(h)h.mood=this.mood}this.save();this.mStep='reward';
+  const em=['⭐','✨','⭐','💛','⭐','🌟'];this.burst=Array.from({length:14},(_,i)=>{const a=i/14*Math.PI*2;return {id:Date.now()+i,e:em[i%em.length],x:Math.round(Math.cos(a)*(140+Math.random()*60)),y:Math.round(Math.sin(a)*(110+Math.random()*50)-40)}});
+  this.later(()=>this.countUp(),this.reduced()?0:800)},
+
+ // ---------- rewards & tasks ----------
+ progress(r){return r.kind==='streak'?this.streak:this.total},
+ claim(r){if(r.claimed||this.progress(r)<r.target)return;r.claimed=true;this.save();this.notify('🎉 已兌換！和家人約好時間享受吧。')},
+ openModal(name){this.returnFocus=document.activeElement;this.modal=name;this.$nextTick(()=>[...this.$refs.modalRoot.querySelectorAll('input,textarea,select,button')].find(e=>e.offsetParent!==null)?.focus())},
+ closeModal(){this.modal='';this.$nextTick(()=>this.returnFocus?.focus())},
+ trapFocus(event){const root=this.modal?this.$refs.modalRoot:this.mOpen?this.$refs.missionRoot:null;if(!root)return;const els=[...root.querySelectorAll('input,textarea,select,button,label.dropzone')].filter(e=>e.offsetParent!==null&&!e.disabled);if(!els.length)return;const first=els[0],last=els[els.length-1];if(!root.contains(document.activeElement)){event.preventDefault();first.focus();return}if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus()}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus()}},
  openReward(r=null){this.editingId=r?.id||null;this.draft=r?{title:r.title,kind:r.kind,target:r.target}:{title:'',kind:'streak',target:3};this.formError='';this.openModal('reward')},
- saveReward(){const title=this.draft.title.trim(),target=Number(this.draft.target);if(!title||!Number.isInteger(target)||target<1||target>30){this.formError='請輸入名稱及 1–30 的整數目標。';return}if(this.editingId)Object.assign(this.rewards.find(x=>x.id===this.editingId),{title,kind:this.draft.kind,target});else this.rewards.push({id:crypto.randomUUID(),title,kind:this.draft.kind,target,claimed:false});this.save();this.closeModal();this.notify('獎勵已儲存，學生頁已同步。')},deleteReward(){this.rewards=this.rewards.filter(r=>r.id!==this.deleteId);this.deleteId=null;this.save();this.closeModal();this.notify('已刪除獎勵。')},
- async copyText(t){try{await navigator.clipboard.writeText(t);this.notify('已複製到剪貼簿。')}catch(e){this.notify('瀏覽器無法自動複製，請選取文字手動複製。')}},
- 
+ saveReward(){const title=this.draft.title.trim(),target=Number(this.draft.target);if(!title||!Number.isInteger(target)||target<1||target>30){this.formError='請輸入名稱及 1–30 的整數目標。';return}if(this.editingId)Object.assign(this.rewards.find(x=>x.id===this.editingId),{title,kind:this.draft.kind,target});else this.rewards.push({id:crypto.randomUUID(),title,kind:this.draft.kind,target,claimed:false});this.save();this.closeModal();this.notify('約定已儲存，學生任務板已同步。')},
+ deleteReward(){this.rewards=this.rewards.filter(r=>r.id!==this.deleteId);this.deleteId=null;this.save();this.closeModal();this.notify('已刪除約定。')},
+ async copyText(t){try{await navigator.clipboard.writeText(t);this.notify('已複製。')}catch(e){this.notify('瀏覽器無法自動複製，請手動選取文字。')}},
  get filteredRoster(){return this.roster.filter(s=>this.reviewFilter==='all'||(this.reviewFilter==='done'?this.reviewedCount(s.id)===this.evidence(s.id).length:this.reviewedCount(s.id)<this.evidence(s.id).length))},
  studentName(id){return this.roster.find(s=>s.id===id)?.name||id},
  original(id,eid){return sampleEvidence(id).find(e=>e.id===eid)},
  openReview(e){this.reviewTarget={studentId:this.selectedId,eid:e.id};this.reviewDraft={before:e.before,after:e.after,count:e.count,status:e.status==='pending'?'confirmed':e.status,note:e.note};this.formError='';this.openModal('review')},
  saveReview(){const d=this.reviewDraft,count=Number(d.count);if(!Number.isInteger(count)||count<0||count>20||!d.after.trim()||(d.status!=='unreadable'&&!d.before.trim())){this.formError='請填寫辨識文字與 0–20 的整數次數。';return}const {studentId,eid}=this.reviewTarget;
- const before=d.status==='unreadable'?'無法辨認':d.before.trim();const orig=this.original(studentId,eid);const changed=before!==orig.before||d.after.trim()!==orig.after||count!==orig.count;
- const status=d.status==='confirmed'&&changed?'corrected':d.status;
- this.reviews[studentId]={...(this.reviews[studentId]||{}),[eid]:{before,after:d.after.trim(),count,status,note:d.note.trim(),observation:status==='unreadable'?'原字無法辨認；僅保留可見修改區，不推測原答案。':status==='corrected'?'老師已修正辨識，請以複核紀錄與學生說明為準。':orig.observation}};
- delete this.feedbacks[studentId];this.save();this.closeModal();this.notify('複核已儲存；家長頁同步更新。')},
- generate(){if(this.generating)return;const id=this.selectedId,e=this.evidence(id)[0],snapshot=JSON.stringify(this.evidence(id));this.generating=true;setTimeout(()=>{if(JSON.stringify(this.evidence(id))!==snapshot){this.generating=false;this.notify('複核資料已更新，請重新生成。');return}this.feedbacks[id]=e.status==='unreadable'?'觀察：原字無法辨認。\n教學建議：先與學生確認想表達的意思，不據此判定對錯。\n回饋：Tell me what you wanted to say. We can find the words together.':`觀察：${e.before} → ${e.after}（${this.reviewLabel(e)}）。\n教學建議：請學生說明 ${e.skill} 中，為什麼改成「${e.after}」，再練習一個相近句子。\n回饋：I noticed you tried again. Can you tell me why you chose “${e.after}”?`;
- this.generating=false;this.save();this.notify(this.studentName(id)+' 的示範回饋已生成。')},700)},
+  const before=d.status==='unreadable'?'無法辨認':d.before.trim();const orig=this.original(studentId,eid);const changed=before!==orig.before||d.after.trim()!==orig.after||count!==orig.count;const status=d.status==='confirmed'&&changed?'corrected':d.status;
+  this.reviews[studentId]={...(this.reviews[studentId]||{}),[eid]:{before,after:d.after.trim(),count,status,note:d.note.trim(),observation:status==='unreadable'?'原字無法辨認；僅保留可見修改區，不推測原答案。':status==='corrected'?'老師已修正辨識，請以複核紀錄與學生說明為準。':orig.observation}};
+  delete this.feedbacks[studentId];this.save();this.closeModal();this.notify('複核已儲存，家長頁同步更新。')},
+ generate(){if(this.generating)return;const id=this.selectedId,e=this.evidence(id)[0],snap=JSON.stringify(this.evidence(id));this.generating=true;setTimeout(()=>{if(JSON.stringify(this.evidence(id))!==snap){this.generating=false;this.notify('複核資料已更新，請重新生成。');return}
+  this.feedbacks[id]=e.status==='unreadable'?'觀察：原字無法辨認。\n教學建議：先與學生確認想表達的意思，不據此判定對錯。\n回饋：Tell me what you wanted to say. We can find the words together.':`觀察：${e.before} → ${e.after}（${this.reviewLabel(e)}）。\n教學建議：請學生說明 ${e.skill} 中，為什麼改成「${e.after}」，再練習一個相近句子。\n回饋：I noticed you tried again. Can you tell me why you chose “${e.after}”?`;
+  this.generating=false;this.save();this.notify(this.studentName(id)+' 的回饋已生成，可以修改後再批准。')},700)},
+ approveFeedback(){const id=this.selectedId,t=(this.feedbacks[id]||'').trim();if(!t){this.notify('回饋是空白的，請先生成或輸入內容。');return}this.approved[id]=t;this.save();this.notify('已批准，'+this.studentName(id)+' 會在地圖頁看到。')},
  get myTasks(){return this.tasks.filter(t=>t.targets.includes('an'))},
- assignTask(){const d=this.taskDraft,n=Number(d.points);if(!d.title.trim()||!d.instructions.trim()||!Number.isInteger(n)||n<5||n>50){this.taskError='請填寫任務及 5–50 的整數積分。';return}if(d.due&&d.due<this.localDay()){this.taskError='請選擇今天或之後的截止日期。';return}const targets=d.target==='all'?this.roster.map(s=>s.id):[d.target];if(!targets.every(id=>this.roster.some(s=>s.id===id)))return;this.tasks.push({id:crypto.randomUUID(),title:d.title.trim(),instructions:d.instructions.trim(),points:n,due:d.due,targets,submissions:{}});this.taskDraft={title:'',instructions:'',target:'an',points:20,due:''};this.taskError='';this.save();this.notify('任務已派發，學生頁已同步。')},
+ assignTask(){const d=this.taskDraft,n=Number(d.points);if(!d.title.trim()||!d.instructions.trim()||!Number.isInteger(n)||n<5||n>50){this.taskError='請填寫任務及 5–50 的整數星星。';return}if(d.due&&d.due<this.localDay()){this.taskError='請選擇今天或之後的截止日期。';return}const targets=d.target==='all'?this.roster.map(s=>s.id):[d.target];this.tasks.push({id:crypto.randomUUID(),title:d.title.trim(),instructions:d.instructions.trim(),points:n,due:d.due,targets,submissions:{}});this.taskDraft={title:'',instructions:'',target:'an',points:20,due:''};this.taskError='';this.save();this.notify('任務已派發，學生任務板已同步。')},
  openTask(t){if(t.submissions.an)return;this.answerTaskId=t.id;this.taskAnswer='';this.formError='';this.openModal('answer')},
- submitTask(){const t=this.tasks.find(t=>t.id===this.answerTaskId);if(!t||!t.targets.includes('an')||t.submissions.an)return;if(!this.taskAnswer.trim()){this.formError='請先寫下你的嘗試或思考。';return}t.submissions.an={answer:this.taskAnswer.trim(),status:'submitted',submittedAt:this.localDay()};this.save();this.closeModal();this.notify('已提交給老師。謝謝你願意試試看！')},
- approveTask(id,studentId){const t=this.tasks.find(t=>t.id===id),s=t?.submissions[studentId];if(!s||s.status!=='submitted')return;s.status='approved';if(studentId==='an')this.addPoints(t.points,'老師確認任務');else { this.ensureWeek();this.weeklyEarned[studentId]=(this.weeklyEarned[studentId]||0)+t.points; }this.save();this.notify('已確認努力，積分只會發放一次。')},
+ submitTask(){const t=this.tasks.find(t=>t.id===this.answerTaskId);if(!t||t.submissions.an)return;if(!this.taskAnswer.trim()){this.formError='先寫下你的嘗試或想法吧。';return}t.submissions.an={answer:this.taskAnswer.trim(),status:'submitted',submittedAt:this.localDay()};this.save();this.closeModal();this.notify('交給老師了！謝謝你願意試試看。')},
+ approveTask(id,sid){const t=this.tasks.find(t=>t.id===id),s=t?.submissions[sid];if(!s||s.status!=='submitted')return;s.status='approved';if(sid==='an'){this.addPoints(t.points);this.displayPoints=this.points}else{this.ensureWeek();this.weeklyEarned[sid]=(this.weeklyEarned[sid]||0)+t.points}this.save();this.notify('已確認努力，星星只會發放一次。')},
 
- 
+ // ---------- club ----------
  weekKey(d=new Date()){const x=new Date(d.getFullYear(),d.getMonth(),d.getDate());x.setDate(x.getDate()-((x.getDay()+6)%7));return this.localDay(x)},
  ensureWeek(){const key=this.weekKey();if(!this.activeWeek){this.activeWeek=key;return}if(this.activeWeek!==key){this.activeWeek=key;this.weeklyEarned=Object.fromEntries(this.roster.map(s=>[s.id,0]));this.cheers=[];this.demoFriday=false}},
  get clubOpen(){return this.clockDay===5||this.demoFriday},get joined(){return !!this.joinedWeeks[this.activeWeek]},get currentResult(){return this.weeklyResults[this.activeWeek]||null},
- get rankedStudents(){return this.roster.map(s=>({...s,points:Number(this.weeklyEarned[s.id]||0)})).sort((a,b)=>b.points-a.points||a.id.localeCompare(b.id))},get leaders(){const top=this.rankedStudents[0]?.points||0;return top>0?this.rankedStudents.filter(s=>s.points===top):[]},rankOf(id){const s=this.rankedStudents.find(s=>s.id===id);return 1+this.rankedStudents.filter(x=>x.points>s.points).length},
+ get rankedStudents(){return this.roster.map(s=>({...s,points:Number(this.weeklyEarned[s.id]||0)})).sort((a,b)=>b.points-a.points||a.id.localeCompare(b.id))},
+ get leaders(){const top=this.rankedStudents[0]?.points||0;return top>0?this.rankedStudents.filter(s=>s.points===top):[]},
+ rankOf(id){const s=this.rankedStudents.find(s=>s.id===id);return 1+this.rankedStudents.filter(x=>x.points>s.points).length},
  get showcaseEntries(){const peers=this.peerPets.map(s=>({...s,accessories:[...s.accessories,...(this.championOwners.includes(s.id)?['champion']:[])]}));return this.joined?[{id:'an',pet:'Milo',coat:'peach',accessories:this.equipped,motto:'Every try tells a story.'},...peers]:peers},
- joinClub(){this.ensureWeek();if(!this.clubOpen||this.role!=='student')return;this.joinedWeeks[this.activeWeek]=true;this.save();this.notify('Milo 加入了 Friday Pet Club！你的穿戴會即時同步展示。')},withdrawClub(){delete this.joinedWeeks[this.activeWeek];this.save();this.notify('已收起你的展示，隨時可以再加入。')},
- cheer(id){if(!this.clubOpen||this.role!=='student'||id==='an'||this.cheers.includes(id))return;this.cheers.push(id);this.save();this.notify('已送出鼓勵。每個願意嘗試的人，都值得被看見。')},
- settleWeek(){this.ensureWeek();if(this.role!=='teacher'||!this.clubOpen||this.currentResult)return;if(!this.leaders.length){this.notify('本週尚無已獲得積分，暫不頒發冠軍。');this.closeModal();return}const winners=this.leaders.map(s=>s.id);this.weeklyResults[this.activeWeek]={winners,scores:this.rankedStudents.map(s=>({id:s.id,points:s.points})),settledAt:this.localDay()};for(const id of winners)if(!this.championOwners.includes(id))this.championOwners.push(id);this.save();this.closeModal();this.notify('星光外套已頒發給 '+winners.map(id=>this.studentName(id)).join('、')+'！')},
- toggleChampion(){if(!this.championOwners.includes('an'))return;if(this.equipped.includes('champion'))this.equipped=this.equipped.filter(x=>x!=='champion');else this.equipped.push('champion');this.save()},
-
- reset(){try{localStorage.removeItem('mindbridge-v2')}catch(e){}location.reload()}
+ joinClub(){this.ensureWeek();if(!this.clubOpen||this.role!=='student')return;this.joinedWeeks[this.activeWeek]=true;this.save();this.notify('Milo 上台了！你的穿搭會即時同步。')},
+ withdrawClub(){delete this.joinedWeeks[this.activeWeek];this.save();this.notify('已收起展示，隨時可以再上台。')},
+ cheer(id){if(!this.clubOpen||this.role!=='student'||id==='an'||this.cheers.includes(id))return;this.cheers.push(id);this.save();this.notify('👏 已送出鼓勵！')},
+ settleWeek(){this.ensureWeek();if(this.role!=='teacher'||!this.clubOpen||this.currentResult)return;if(!this.leaders.length){this.notify('本週還沒有星星紀錄。');this.closeModal();return}const winners=this.leaders.map(s=>s.id);this.weeklyResults[this.activeWeek]={winners,scores:this.rankedStudents.map(s=>({id:s.id,points:s.points})),settledAt:this.localDay()};for(const id of winners)if(!this.championOwners.includes(id))this.championOwners.push(id);this.save();this.closeModal();this.notify('星光外套已頒發給 '+winners.map(id=>this.studentName(id)).join('、')+'！')},
+ reset(){try{localStorage.removeItem('mindbridge-v3')}catch(e){}location.reload()}
 }}
 </script></body></html>
